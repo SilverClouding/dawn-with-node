@@ -14,7 +14,7 @@ npm run create:snippet mySnippetName
 
 This will:
 1. Create the Liquid template with proper stylesheet inclusion
-2. Generate the SCSS file with BEM structure
+2. Generate the CSS file with BEM structure
 3. Set up responsive breakpoints
 4. Add standard padding/margin variables
 
