@@ -9,7 +9,8 @@ Dawn includes CLI commands to generate new sections and snippets with the correc
 npm run create:section -- "My Custom Section"
 
 # Create a new snippet
-npm run create:snippet mySnippetName
+npm run create:snippet -- "My Custom Snippet"
+
 ```
 
 This will:
