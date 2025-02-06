@@ -1,0 +1,29 @@
+{% if localization.available_languages.size > 1 %}
+  <div data-localisation-form data-localisation-language class="localisation">
+    {% form 'localization' %}
+      <button type="button" data-click-toggle='{"target": "[data-localisation-language]", "toggle": "is-expanded"}' class="localisation__arrow">{% render 'icon-arrow-down' | fillColour: "#000" %}</button>
+      <ul id="LanguageList" role="list" data-local-list>
+        {% for language in localization.available_languages %}
+          <li
+            class="{% if language.iso_code == localization.language.iso_code %}selected{% endif %}"
+            tabindex="-1"
+          >
+            <button
+              {% if language.iso_code == localization.language.iso_code %}
+                aria-current="true"
+              {% endif %}
+              hreflang="{{ language.iso_code }}"
+              lang="{{ language.iso_code }}"
+              data-value="{{ language.iso_code }}"
+              type="submit"
+            >
+              {{ language.endonym_name | capitalize }}
+            </button>
+          </li>
+        {% endfor %}
+      </ul>
+
+      <input type="hidden" name="language_code" value="{{ localization.language.iso_code }}">
+    {% endform %}
+  </div>
+{% endif %}

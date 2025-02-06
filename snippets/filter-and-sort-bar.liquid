@@ -1,0 +1,28 @@
+<div class="filter-and-sort">
+  <div class="container">
+    <div class="filter-and-sort__upper filter-and-sort__upper--{{ filter_layout }}{% if filter_layout != 'button' %} filter-and-sort__upper--hide-btn{% endif %}">
+      <button
+        class="filter-and-sort__btn btn btn--primary btn--filter"
+        data-click-toggle='
+          [
+            {"target":"body","toggle":"filters-open,modal-open"},
+            {"target":"html","toggle":"modal-open"}
+          ]
+        '
+      >
+        {{ 'collections.general.filter_button' | t }}
+        <span class="filter-and-sort__count" data-app-layer-portal="search-filter-count"></span>
+      </button>
+
+      {% if filter_layout == 'horizontal' %}
+        {% render 'search-filters', filter_layout: filter_layout %}
+      {% endif %}
+
+      {% render 'search-sort-by' %}
+    </div>
+
+    <div class="fiilter-and-sort__lower">
+      <div data-app-layer-portal="search-filter-quick-removes"></div>
+    </div>
+  </div>
+</div>

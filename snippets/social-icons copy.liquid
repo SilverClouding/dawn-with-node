@@ -1,0 +1,33 @@
+{% assign list = 'facebook,instagram,tiktok,x,pinterest,snapchat,tumblr,youtube,vimeo' | split: ',' %}
+<ul class="social-icons">
+  {% for social in list %}
+    {% assign link_key = 'social_' | append: social | append: '_link' %}
+    {% assign color_key = 'social_' | append: social | append: '_color' %}
+    {% if settings[link_key] != blank %}
+      <li>
+        <a href="{{ settings[link_key] }}" target="_blank" class="social-icons__link social-icons__link--{{  social }}" title="{{ social }}" aria-label="{{ social }}">
+          {%- case social -%}
+            {%- when 'facebook' -%}
+              {%- render 'icon-facebook', color: settings[color_key] -%}
+            {%- when 'instagram' -%}
+              {%- render 'icon-instagram', color: settings[color_key] -%}
+            {%- when 'tiktok' -%}
+              {%- render 'icon-tiktok', color: settings[color_key] -%}
+            {%- when 'x' -%}
+              {%- render 'icon-x', color: settings[color_key] -%}
+            {%- when 'pinterest' -%}
+              {%- render 'icon-pinterest', color: settings[color_key] -%}
+            {%- when 'snapchat' -%}
+              {%- render 'icon-snapchat', color: settings[color_key] -%}
+            {%- when 'tumblr' -%}
+              {%- render 'icon-tumblr', color: settings[color_key] -%}
+            {%- when 'youtube' -%}
+              {%- render 'icon-youtube', color: settings[color_key] -%}
+            {%- when 'vimeo' -%}
+              {%- render 'icon-vimeo', color: settings[color_key] -%}
+          {%- endcase -%}
+        </a>
+      </li>
+    {% endif %}
+  {% endfor %}
+</ul>

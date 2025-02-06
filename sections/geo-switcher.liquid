@@ -1,0 +1,277 @@
+{%- assign countries = section.blocks | where: 'type', 'country' -%}
+
+{% assign indexCount = 0 %}
+<script>
+  window.geoSwitcher = {
+    redirectData: [
+    {% for country in countries %}
+      {% assign data = country.settings %}
+      {
+        "subFolder": "{{ data.subfolder }}",
+        "localesNotToShow": "{{ data.country_code }}",
+        "index": "{{ indexCount }}"
+      }{%- unless forloop.last -%},{%- endunless -%}
+      {% assign indexCount = indexCount | plus: 1 %}
+    {% endfor %}
+  ]
+  }
+</script>
+{% if section.blocks != blank %}
+  <div data-geo-switcher class="geo-switcher">
+    <div class="geo-switcher__underlay" data-geo-dismiss></div>
+    <div class="geo-switcher__inner">
+      <button class="geo-switcher__close" aria-label="close" data-geo-dismiss></button>
+      {% for country in countries %}
+        <div
+          data-geo-switcher-domain="{{ country.settings.domain }}"
+          data-geo-switcher-currency="{{ country.settings.currency }}"
+        ></div>
+      {% endfor %}
+      <div class="heading-3">{{ section.settings.title }}</div>
+      <div class="select-wrapper">
+        <label for="geo-switcher-region" class="label">{{ section.settings.region_label }}</label>
+        <select name="geo-switcher-region" id="geo-switcher-region" class="select" data-geo-switcher-region>
+          {% for country in countries %}
+            {% if country.settings.currency != blank %}
+              <option
+                value="{{ country.settings.domain }}"
+                data-region="{{ country.settings.title | handleize }}"
+              >
+                {{ country.settings.title }}
+              </option>
+            {% endif %}
+          {% endfor %}
+        </select>
+      </div>
+      <div class="select-wrapper">
+        <label for="geo-switcher-language" class="label">{{ section.settings.language_label }}</label>
+        <select name="geo-switcher-language" id="geo-switcher-language" class="select" data-geo-switcher-language>
+          {% for country in countries %}
+            {% assign showOption = false %}
+            {% if country.settings.domain contains request.origin %}
+              {% assign showOption = true %}
+            {% endif %}
+            {% if country.settings.currency != blank %}
+              {% for i in (1..8) %}
+                {% assign name = 'language_name_' | append: i %}
+                {% assign code = 'language_code_' | append: i %}
+                {% assign subfolder = 'subfolder_' | append: i %}
+                {% if country.settings[name] != blank %}
+                  <option
+                    data-code="{{ country.settings[code] }}"
+                    data-region="{{ country.settings.title | handleize }}"
+                    {% unless showOption %}
+                      class="hide"
+                    {% endunless %}
+                    value="{% if country.settings[subfolder] != blank %}{{ country.settings.domain | append: country.settings[subfolder] }}{% else %}{{ country.settings.domain }}{% endif %}"
+                  >
+                    {{ country.settings[name] }}
+                  </option>
+                {% endif %}
+              {% endfor %}
+            {% endif %}
+          {% endfor %}
+        </select>
+      </div>
+      <button class="btn btn--primary btn--block" data-geo-switcher-redirect>
+        {{ section.settings.button_label }}
+      </button>
+    </div>
+  </div>
+{% endif %}
+{% schema %}
+{
+  "name": "Geo Switcher",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Please choose your location"
+    },
+    {
+      "type": "text",
+      "id": "region_label",
+      "label": "Region Label",
+      "default": "Select Region"
+    },
+    {
+      "type": "text",
+      "id": "language_label",
+      "label": "Language Label",
+      "default": "Select Language"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button Label",
+      "default": "Confirm Choices"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "country",
+      "name": "Market",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Country name"
+        },
+        {
+          "type": "text",
+          "id": "currency",
+          "label": "Currency",
+          "default": "EUR"
+        },
+        {
+          "type": "text",
+          "id": "currency_symbol",
+          "label": "Currency Symbol",
+          "default": "€"
+        },
+        {
+          "type": "text",
+          "id": "domain",
+          "label": "Domain",
+          "info": "Ensure the URL contains a trailing slash: https://www.blubolt.com/"
+        },
+        {
+          "type": "textarea",
+          "id": "country_code",
+          "label": "Country codes",
+          "info": "Comma seperated two letter country codes to prevent geo popup show automatically"
+        },
+        {
+          "type": "text",
+          "id": "language_name_1",
+          "label": "Language Name 1"
+        },
+        {
+          "type": "text",
+          "id": "language_code_1",
+          "label": "Language Code 1",
+          "info": "This should be the 2 digit language code"
+        },
+        {
+          "type": "text",
+          "id": "subfolder_1",
+          "label": "Subfolder 1"
+        },
+        {
+          "type": "text",
+          "id": "language_name_2",
+          "label": "Language Name 2"
+        },
+        {
+          "type": "text",
+          "id": "language_code_2",
+          "label": "Language Code 2",
+          "info": "This should be the 2 digit language code"
+        },
+        {
+          "type": "text",
+          "id": "subfolder_2",
+          "label": "Subfolder 2"
+        },
+        {
+          "type": "text",
+          "id": "language_name_3",
+          "label": "Language Name 3"
+        },
+        {
+          "type": "text",
+          "id": "language_code_3",
+          "label": "Language Code 3",
+          "info": "This should be the 2 digit language code"
+        },
+        {
+          "type": "text",
+          "id": "subfolder_3",
+          "label": "Subfolder 3"
+        },
+        {
+          "type": "text",
+          "id": "language_name_4",
+          "label": "Language Name 4"
+        },
+        {
+          "type": "text",
+          "id": "language_code_4",
+          "label": "Language Code 4",
+          "info": "This should be the 2 digit language code"
+        },
+        {
+          "type": "text",
+          "id": "subfolder_4",
+          "label": "Subfolder 4"
+        },
+        {
+          "type": "text",
+          "id": "language_name_5",
+          "label": "Language Name 5"
+        },
+        {
+          "type": "text",
+          "id": "language_code_5",
+          "label": "Language Code 5",
+          "info": "This should be the 2 digit language code"
+        },
+        {
+          "type": "text",
+          "id": "subfolder_5",
+          "label": "Subfolder 5"
+        },
+        {
+          "type": "text",
+          "id": "language_name_6",
+          "label": "Language Name 6"
+        },
+        {
+          "type": "text",
+          "id": "language_code_6",
+          "label": "Language Code 6",
+          "info": "This should be the 2 digit language code"
+        },
+        {
+          "type": "text",
+          "id": "subfolder_6",
+          "label": "Subfolder 6"
+        },
+        {
+          "type": "text",
+          "id": "language_name_7",
+          "label": "Language Name 7"
+        },
+        {
+          "type": "text",
+          "id": "language_code_7",
+          "label": "Language Code 7",
+          "info": "This should be the 2 digit language code"
+        },
+        {
+          "type": "text",
+          "id": "subfolder_7",
+          "label": "Subfolder 7"
+        },
+        {
+          "type": "text",
+          "id": "language_name_8",
+          "label": "Language Name 8"
+        },
+        {
+          "type": "text",
+          "id": "language_code_8",
+          "label": "Language Code 8",
+          "info": "This should be the 2 digit language code"
+        },
+        {
+          "type": "text",
+          "id": "subfolder_8",
+          "label": "Subfolder 8"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

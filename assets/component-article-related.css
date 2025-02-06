@@ -1,0 +1,7 @@
+.article-related__collection {
+  display: grid;
+  gap: 12px;
+}
+.article-related__collection .heading-4 {
+  margin: 0;
+}

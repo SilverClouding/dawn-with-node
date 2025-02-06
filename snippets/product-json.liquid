@@ -1,0 +1,86 @@
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org/",
+    "@type": "ProductGroup",
+    "name": "{{ product.title | escape }}",
+    "description": "{{ product.description | strip_html | escape | strip_newlines }}",
+    "url": "{{ shop.url }}{{ product.url }}",
+    {% if product.featured_image %}
+      {% assign image_size = product.featured_image.width | append: 'x' %}
+      "image": [
+        "https:{{ product.featured_image.src | image_url: image_size }}"
+      ],
+    {% endif %}
+    {% if current_variant.sku != blank %}
+      "sku": "{{ current_variant.sku }}",
+    {% endif %}
+    "brand": {
+      "@type": "Thing",
+      "name": "{{ product.vendor | escape }}"
+    },
+    "productGroupID": "{{ product.sku }}",
+    "variesBy": [
+      {% for option in product.options %}
+        "https://schema.org/{{ option | downcase }}"{% unless forloop.last %},{% endunless %}
+      {% endfor %}
+    ],
+    "hasVariant": [
+      {% for variant in product.variants %}
+      {
+        "@type": "Product",
+        {% if variant.title != blank %}
+          "name" : "{{ product.title | escape }} - {{ variant.title | escape }}",
+        {% endif %}
+        {% if variant.sku != blank %}
+          "sku": "{{ variant.sku }}",
+        {% endif %}
+        {% if variant.image %}
+          {% assign variant_image_size = variant.image.width | append: 'x' %}
+          "image": "http:{{ variant.image.src | image_url: variant_image_size }}",
+        {% else  %}
+          {% assign variant_image_size = product.featured_image.width | append: 'x' %}
+          "image": "http:{{ product.featured_image.src | image_url: variant_image_size }}",
+        {% endif %}
+        {% if variant.weight != blank %}
+          "weight": {
+            "@type": "QuantitativeValue",
+            {% if variant.weight_unit != blank %}
+              "unitCode": "{{ variant.weight_unit }}",
+            {% endif %}
+            "value": "{{ variant.weight | weight_with_unit: variant.weight_unit }}"
+          },
+        {% endif %}
+        {% for option in product.options %}
+          {% assign i = 0 %}
+          "{{ option }}": "{{ variant.options[i] }}",
+          {% assign i = 1 | plus : 1 %}
+        {% endfor %}
+        "offers": {
+          "@type": "Offer",
+          "url": "{{ shop.url }}{{ variant.url }}",
+          "price" : "{{ variant.price | divided_by: 100.00 }}",
+          "priceCurrency" : "{{ shop.currency }}"
+        }
+      }{% unless forloop.last %},{% endunless %}
+      {% endfor %}
+    ]
+  }
+</script>
+<script type="application/ld+json">
+  {% for media in product.media %}
+    {% if media.media_type == 'video' %}
+      {
+        "@context": "http://schema.org/",
+        "@type": "VideoObject",
+        "name": "{{ product.title | escape }}",
+        "description": "{{ product.description | strip_html | escape | strip_newlines }}",
+        "thumbnailUrl": [
+          "{{ media.preview_image.src | image_url }}"
+        ],
+        "uploadDate": "{{ product.created_at }}",
+        "duration": "PT0M{% assign duration = media.duration | split: '' %}{% if duration.size > 4 %}{{ duration | slice: 0, 2 }}{% else %}{{ duration | slice: 0, 1 }}{% endif %}S",
+        "contentUrl": "{{ media.sources[0].url }}"
+      }
+      {% endif %}
+  {% endfor %}
+</script>

@@ -1,0 +1,11 @@
+{%- comment -%}
+  {% render 'nosto-element', id: section.settings.nosto_id %}
+{%- endcomment -%}
+
+{%- if id != blank -%}
+  <div
+    class="nosto_element"
+    data-nosto-elem
+    id="{{ id }}"
+  ></div>
+{%- endif -%}

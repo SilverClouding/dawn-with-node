@@ -1,0 +1,114 @@
+{% comment %}
+  The article should have a metafield setup for Two Images, Featured Product and Banner. These fields should be a Metaobject List field, each referencing the relevant Metaobject definition.
+
+  Two Images Fields
+  * Name
+  * ID
+  * Left Image
+  * Right Image
+
+  Featured Product Fields
+  * Name
+  * ID
+  * Product
+
+  Banner Fields
+  * Name
+  * ID
+  * Image
+  * Image Mobile
+  * Title
+  * Content
+  * CTA Text
+  * CTA Link
+{% endcomment %}
+
+{% assign article_content = article.content %}
+
+{% for twoImages in article.metafields.SITE_NAME.two_images.value %}
+  {% assign shortCode = '[#]' | replace: '#', twoImages.id %}
+  {% assign leftImage = twoImages.left_image.value %}
+  {% assign rightImage = twoImages.right_image.value %}
+
+  {% capture twoImagesContent %}
+    <div class="fifty-fifty-images">
+      <div class='fifty-fifty-images__grid'>
+        <div class='fifty-fifty-images__block'>
+          <div class="fifty-fifty-images__image">
+            {% render 'image', img: leftImage, width: 350, vw_desktop: 50 %}
+          </div>
+        </div>
+        <div class='fifty-fifty-images__block'>
+          <div class="fifty-fifty-images__image">
+            {% render 'image', img: rightImage, width: 350, vw_desktop: 50 %}
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endcapture %}
+
+  {% if article_content contains shortCode %}
+    {% comment %} Check if the shortcode is found {% endcomment %}
+    {% if leftImage != blank and rightImage != blank %}
+      {% comment %} Check we have images and replace the shortcode with the relevant html {% endcomment %}
+      {% assign article_content = article_content | replace: shortCode, twoImagesContent %}
+    {% else %}
+      {% comment %} If we don't, replace the shortcode completely {% endcomment %}
+      {% assign article_content = article_content | replace: shortCode, '' %}
+    {% endif %}
+  {% endif %}
+{% endfor %}
+
+{% for featuredProduct in article.metafields.SITE_NAME.featured_product.value %}
+  {% assign shortCode = '[#]' | replace: '#', featuredProduct.id %}
+  {% assign prod = featuredProduct.product %}
+
+  {% capture featuredProductContent %}
+    {% render 'product-card', product: prod %}
+  {% endcapture %}
+
+  {% if article_content contains shortCode %}
+    {% comment %} Check if the shortcode is found {% endcomment %}
+    {% if prod != blank %}
+      {% comment %} Check we have a product and replace the shortcode with the relevant html {% endcomment %}
+      {% assign article_content = article_content | replace: shortCode, featuredProductContent %}
+    {% else %}
+      {% comment %} If we don't, replace the shortcode completely {% endcomment %}
+      {% assign article_content = article_content | replace: shortCode, '' %}
+    {% endif %}
+  {% endif %}
+{% endfor %}
+
+{% for banner in article.metafields.SITE_NAME.banner.value %}
+  {% assign shortCode = '[#]' | replace: '#', banner.id %}
+  {% assign bannerImage = banner.image.value %}
+  {% assign bannerMobileImage = banner.image_mobile.value %}
+  {% assign bannerTitle = banner.title %}
+  {% assign bannerContent = banner.content %}
+  {% assign bannerCtaText = banner.cta_text %}
+  {% assign bannerCtaLink = banner.cta_link %}
+
+  {% capture promoBanner %}
+    {% render 'ad-banner',
+      image: bannerImage,
+      image_mobile: bannerMobileImage,
+      title: bannerTitle,
+      text: bannerContent,
+      cta_text: bannerCtaText,
+      url: bannerCtaLink
+    %}
+  {% endcapture %}
+
+  {% if article_content contains shortCode %}
+    {% comment %} Check if the shortcode is found {% endcomment %}
+    {% if bannerImage != blank %}
+      {% comment %} Check we have an image and replace the shortcode with the relevant html {% endcomment %}
+      {% assign article_content = article_content | replace: shortCode, promoBanner %}
+    {% else %}
+      {% comment %} If we don't, replace the shortcode completely {% endcomment %}
+      {% assign article_content = article_content | replace: shortCode, '' %}
+    {% endif %}
+  {% endif %}
+{% endfor %}
+
+{{ article_content }}

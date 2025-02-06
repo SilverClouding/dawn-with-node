@@ -1,0 +1,18 @@
+{% comment %}
+  {% render 'product-quick-add-button', product: product %}
+{% endcomment %}
+
+{%- capture low_stock_limit -%}
+  {% render 'get-low-stock-limit', product: product %}
+{%- endcapture -%}
+{% assign low_stock_limit = low_stock_limit | strip_newlines | strip | plus: 0 -%}
+{% comment %}str number conversion{% endcomment %}
+{%- capture stock_map -%}{% render 'stock-map-json', variants: product.variants, low_stock_limit: low_stock_limit %}{%- endcapture -%}
+
+<button
+  data-quick-add-btn="{{ product.handle }}"
+  class="quick-add-btn btn btn--primary btn--sm"
+  onclick='window.blubolt.quickadd.open("{{ product.handle }}", {"stockMap": {{ stock_map | json }} })'
+>
+  {{ 'products.product.quickadd_title' | t }}
+</button>

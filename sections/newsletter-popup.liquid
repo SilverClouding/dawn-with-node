@@ -1,0 +1,65 @@
+{%- comment -%}
+  {% render 'newsletter-popup' %}
+{%- endcomment -%}
+{% unless customer and customer.accepts_marketing %}
+  {% if section.settings.show_signup %}
+    <div
+      class="newsletter-popup hide"
+      data-newsletter-popup
+      data-newsletter-delay="{{ section.settings.delay | times: 1000 }}"
+      data-newsletter-expiration="{{ section.settings.expiry }}"
+    >
+      <div class="newsletter-popup__header">
+        {% render 'icon-email' %}
+        <button
+          class="newsletter-popup__close cta"
+          aria-label="{{ 'layout.general.close' | t }}"
+          data-click-toggle='{"target": ".newsletter-popup", "add": "hide"}'
+        >
+          {{ 'layout.general.close' | t }}
+        </button>
+      </div>
+      {% render 'newsletter-signup' %}
+    </div>
+  {% endif %}
+{% endunless %}
+
+{% schema %}
+{
+  "name": "Newsletter Popup",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_signup",
+      "label": "Show signup popup",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "delay",
+      "min": 5,
+      "max": 120,
+      "step": 5,
+      "default": 30,
+      "unit": "s",
+      "label": "Popup Delay",
+      "info": "Delay before the popup shows"
+    },
+    {
+      "type": "range",
+      "id": "expiry",
+      "min": 1,
+      "max": 31,
+      "step": 1,
+      "default": 7,
+      "unit": "day",
+      "label": "Cookie Expiration",
+      "info": "Days to wait before the banner shows again"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,175 @@
+{% comment %}
+  Get selling plan ID - used for subscription products
+
+  If you're using recharge REMOVE THIS FOR LOOP COMPLETELY
+  and uncoment  the recharge code in addToCart.ts
+{% endcomment %}
+{%- for variant in product.variants -%}
+  {% if variant.selling_plan_allocations != blank %}
+    {% for spa in variant.selling_plan_allocations %}
+      {% assign sellingPlanId = spa.selling_plan.id %}
+    {% endfor %}
+  {% endif %}
+{%- endfor -%}
+
+{% comment %} Default to oos {% endcomment %}
+{% assign stockFlag = 'oos' %}
+{% if current_variant.available %}
+  {% assign stockFlag = 'available' %}
+{% endif %}
+
+{% comment %} Get default low stock limit or optional tag based override {% endcomment %}
+{%- capture low_stock_limit -%}
+  {% render 'get-low-stock-limit', product: product %}
+{%- endcapture -%}
+
+{% comment %} String to number conversion {% endcomment %}
+{% assign low_stock_limit = low_stock_limit | strip_newlines | strip | plus: 0 -%}
+
+{% comment %} Get stock map and quantity map {% endcomment %}
+{%- capture stock_map -%}{% render 'stock-map-json', variants: product.variants, low_stock_limit: low_stock_limit %}{%- endcapture -%}
+{% assign stock_map = stock_map | strip_newlines | strip %}
+
+<div class="product-form">
+  {% form 'product', product, data-product-form: product.handle, data-product-in-stock: stockFlag, data-product-stock-map: stock_map, data-low-stock-limit: low_stock_limit %}
+    {% render 'product-swatches', product: product, is_pdp: true, class: 'product-swatches--pdp' %}
+
+    {% render 'product-variant-options', product: product, current_variant: current_variant %}
+
+    <input type="hidden" name="id" value="{{ current_variant.id }}">
+    <input type="hidden" data-product-form-quantity-input value="1" name="quantity">
+    {% comment %} {% render 'quantity-selector', item: product, name: 'quantity', product: true, class: 'quantity-selector--pdp' %} {% endcomment %}
+
+    {% comment %}
+      {% assign giftWithPurchaseProduct = product.metafields.SITE_NAME.gwp_product %}
+      {% if giftWithPurchaseProduct != blank %}
+        <input type="hidden" name="properties[_giftWithPurchaseHandle]" value="{{ giftWithPurchaseProduct.handle }}">
+      {% endif %}
+    {% endcomment %}
+
+    {% comment %}
+      If you're using recharge REMOVE THIS CONDITIONAL
+      AND CONTENT COMPLETLY and uncoment the recharge
+      specific code in addToCart.ts
+    {% endcomment %}
+    {% if sellingPlanId != blank %}
+      <input type="hidden" data-selling-plan-id value="{{ sellingPlanId }}" name="selling_plan">
+    {% endif %}
+
+    {% if product.gift_card? %}
+      <div class="gift-card-recipient" data-gift-card-form>
+        <div class="gift-card-recipient__toggle">
+          <input
+            type="hidden"
+            name="properties[__shopify_send_gift_card_to_recipient]"
+            value="if_present"
+            id="Recipient-control-{{ section.id }}"
+          >
+          <div class="checkbox-wrapper">
+            <input type="checkbox" class="checkbox" id="gift-card-is-gift" name="properties[__shopify_send_gift_card_to_recipient]" value="true" data-gift-card-toggle>
+            <label class="checkbox-label" for="gift-card-is-gift">{{ 'products.gift_card_recipient_form.add_recipient_text' | t }}</label>
+          </div>
+        </div>
+        <div class="gift-card-recipient__details hide" data-gift-card-details>
+          <div class="input-wrapper">
+            <label class="label" for="Recipient-email-{{ section.id }}">
+              {{ 'products.gift_card_recipient_form.email_label' | t }}
+              <span class="asterisk">*</span>
+            </label>
+            <input
+              class="text-input"
+              id="Recipient-email-{{ section.id }}"
+              type="email"
+              placeholder="{{ 'products.gift_card_recipient_form.email_placeholder' | t }}"
+              name="properties[Recipient email]"
+              value="{{ form.email }}"
+              data-gift-card-email
+            >
+          </div>
+          <div class="input-wrapper">
+            <label class="label" for="Recipient-name-{{ section.id }}">{{ 'products.gift_card_recipient_form.name_label' | t }}</label>
+            <input
+              class="text-input"
+              type="text"
+              id="Recipient-name-{{ section.id }}"
+              placeholder="{{ 'products.gift_card_recipient_form.name_placeholder' | t }}"
+              name="properties[Recipient name]"
+              value="{{ form.name }}"
+              maxlength="255"
+            >
+          </div>
+          <div class="input-wrapper">
+            <label class="label" for="Recipient-message-{{ section.id }}">{{ 'products.gift_card_recipient_form.message_label' | t }}</label>
+            <input
+              class="text-input"
+              type="text"
+              id="Recipient-message-{{ section.id }}"
+              placeholder="{{ 'products.gift_card_recipient_form.message_placeholder' | t }}"
+              name="properties[Message]"
+              value="{{ form.message }}"
+              maxlength="200"
+            >
+          </div>
+          <div class="input-wrapper">
+            <label class="label" for="Recipient-date-{{ section.id }}">{{ 'products.gift_card_recipient_form.send_on_label' | t }}</label>
+            {% comment %} Get the current date and convert it to seconds {% endcomment %}
+            {% assign date = 'now' | date: '%s' %}
+            {% comment %} Add 90 days to it (converted to seconds) {% endcomment %}
+            {% assign seconds = 90 | times: 24 | times: 60 | times: 60 %}
+            <input
+              class="text-input"
+              type="date"
+              id="Recipient-date-{{ section.id }}"
+              placeholder="{{ 'products.gift_card_recipient_form.send_on_placeholder' | t }}"
+              name="properties[Send on]"
+              pattern="\d{4}-\d{2}-\d{2}"
+              min="{{ "now" | date: '%Y-%m-%d' }}"
+              max="{{ date | date: '%s' | plus: seconds | date: '%Y-%m-%d' }}"
+              value="{{ form.send_on }}"
+            >
+          </div>
+        </div>
+      </div>
+    {% endif %}
+    {% if product.gift_card? %}
+      {% assign atc_button_text = 'products.product.add_to_cart' | t %}
+    {% else %}
+      {% assign atc_button_text = 'products.product.sold_out' | t %}
+      {% if current_variant.available %}
+        {% assign atc_button_text = 'products.product.add_to_cart' | t %}
+      {% endif %}
+      {% if current_variant.inventory_policy == 'continue' and current_variant.inventory_quantity <= 0 %}
+        {% assign atc_button_text = 'products.product.preorder' | t: date: product.metafields.preorder.date %}
+      {% endif %}
+    {% endif %}
+
+    <button
+      {% unless current_variant.available %}
+        disabled
+      {% endunless %}
+      data-product-form-submit
+      data-in-stock-text="{{ 'products.product.add_to_cart' | t }}"
+      data-unavailable-text="{{ 'products.product.unavailable' | t }}"
+      data-oos-text="{{ 'products.product.sold_out' | t }}"
+      data-preOrder-text="{{ 'products.product.preorder' | t }}"
+      data-success-text="{{ 'products.product.added_to_cart' | t }}"
+      data-add-to-cart
+      data-atc-quantity-input="[data-product-form-quantity-input]"
+      data-atc-product-id="{{ current_variant.id }}"
+      type="submit"
+      class="btn--atc btn btn--primary btn--lg"
+    >
+      {{ atc_button_text }}
+    </button>
+    {% unless product.tags contains 'hide-bis' %}
+      <a
+        class="klaviyo-bis-trigger btn {% if atc_button_class != blank %}{{ atc_button_class }}{% endif %} btn--block {% if current_variant.available %}hide{% endif %}"
+        href="#"
+        data-back-in-stock-notification
+      >
+        <span>{{ 'products.klaviyo_modal.cta' | t }}</span>
+      </a>
+      {% render 'klaviyo-bis' %}
+    {% endunless %}
+  {% endform %}
+</div>

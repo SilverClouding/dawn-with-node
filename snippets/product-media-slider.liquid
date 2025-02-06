@@ -1,0 +1,121 @@
+{% comment %}
+  To use default Swiper zoom uncomment surrounding div and property within object
+{% endcomment %}
+<div class="product-media product-media--slider{% if thumbs %} product-media--thumbs{% endif %}">
+  {% if thumbs %}
+    <div class="product-media__thumbs">
+      <div
+        class="swiper"
+        id="product-media__thumbs"
+        data-swiper
+        data-swiper-thumbs="true"
+        data-swiper-config='
+          {
+            "spaceBetween": 8,
+            "slidesPerView": "auto",
+            "watchSlidesProgress": true,
+            "direction": "vertical",
+            "slideToClickedSlide": true,
+            "navigation": {
+              "nextEl": ".swiper-button-next",
+              "prevEl": ".swiper-button-prev"
+            }
+          }
+        '
+      >
+        <div class="swiper-wrapper">
+          {% for media in product.media %}
+            <div class="swiper-slide">
+              <div class="product-media__thumb{% if media.media_type == 'video' %} product-media__thumb--video{% endif %}">
+                {% assign image = media.image %}
+                {% if media.media_type != 'image' %}
+                  {% assign image = media.preview_image %}
+                {% endif %}
+                {% if media.media_type == 'video' %}
+                  {% render 'icon-play', class: 'product-media__icon' %}
+                {% endif %}
+                {% assign alt = 'Thumbnail for ' | append: media.alt %}
+                {% render 'image', img: image, width: 100, alt: alt, sizes: '100px' %}
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+        <button
+          aria-label="Previous Slide"
+          class="swiper-button swiper-button-prev swiper-button-vertical swiper-button-up"
+        ></button>
+        <button
+          aria-label="Next Slide"
+          class="swiper-button swiper-button-next swiper-button-vertical swiper-button-down"
+        ></button>
+      </div>
+    </div>
+  {% endif %}
+  <div class="product-media__images">
+    <div
+      class="swiper"
+      id="product-media__images"
+      data-swiper
+      data-swiper-config='
+        {
+          {% if zoom %}"zoom": true,{% endif %}
+          "loop": true,
+          "thumbs": true,
+          "freeMode": true,
+          "pagination": {
+            "el": ".swiper-pagination",
+            "type": "progressbar"
+          },
+          "breakpoints": {
+            "1024": {
+              "freeMode": false
+            }
+          }
+        }
+      '
+    >
+      <div class="swiper-wrapper">
+        {% for media in product.media %}
+          {% case media.media_type %}
+            {% when 'image' %}
+              <div class="swiper-slide">
+                <div class="product-media__image" data-main-product-image-wrapper>
+                  {% if zoom %}
+                    <div class="swiper-zoom-container">
+                  {% endif %}
+                  {% if forloop.first %}
+                    {% render 'image', img: media.image, width: 500, height: 500, alt: media.alt, data: 'data-main-product-image', vw_desktop: 50, no_lazy: true, fetchpriority: 'high' %}
+                  {% else %}
+                    {% render 'image', img: media.image, width: 500, height: 500, alt: media.alt, data: 'data-main-product-image', vw_desktop: 50 %}
+                  {% endif %}
+                  {% if zoom %}
+                    </div>
+                  {% endif %}
+                </div>
+              </div>
+              {% assign i = i | plus: 1 %}
+            {% when 'external_video' %}
+              {% comment %}
+                Skip loading an iFrame into swiper as it breaks drag functionality - TODO: TEST!!!
+              {% endcomment %}
+            {% when 'video' %}
+              <div class="swiper-slide">
+                <div class="product-media__video" data-media-id="{{ media.id }}">
+                  {{ media | video_tag: controls: true, mute: true, autoplay: true }}
+                </div>
+              </div>
+            {% when 'model' %}
+              <div class="swiper-slide">
+                <div class="product-media__model " data-media-id="{{ media.id }}">
+                  {{ media | model_viewer_tag: touch-action: 'pan-x', interaction-policy: 'allow-when-focused', disable-zoom: 'true' }}
+                </div>
+              </div>
+          {% endcase %}
+        {% endfor %}
+      </div>
+      <div class="swiper-pagination"></div>
+    </div>
+  </div>
+
+  {% render 'product-stickers', product: product, class: 'product-stickers--overlay' %}
+</div>

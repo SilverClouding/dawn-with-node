@@ -1,0 +1,18 @@
+{% comment %}
+  {% render 'payment-icons' %}
+{% endcomment %}
+{% unless shop.enabled_payment_types == empty %}
+  <section class="payment-icons">
+    {% unless no_title %}
+      <p>{{ 'layout.footer.payment_buttons_text' | t }}</p>
+    {% endunless %}
+
+    <ul class="payment-icons__list">
+      {% for type in shop.enabled_payment_types %}
+        <li class="payment-icons__item">
+          {{ type | payment_type_svg_tag: class: 'payment-icons__icon' }}
+        </li>
+      {% endfor %}
+    </ul>
+  </section>
+{% endunless %}

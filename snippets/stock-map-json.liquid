@@ -1,0 +1,26 @@
+{
+{%- for variant in variants -%}
+  {% assign availabilityFlag = 'oos' %}
+  {%- if variant.available -%}
+    {%- if product.gift_card? -%}
+      {%- assign availabilityFlag = 'available' -%}
+    {%- elsif variant.inventory_policy == 'continue' and variant.inventory_quantity <= 0 -%}
+      {%- assign availabilityFlag = 'pre-order' -%}
+    {%- elsif variant.inventory_quantity < low_stock_limit -%}
+      {%- assign availabilityFlag = 'low' -%}
+    {%- else -%}
+      {%- assign availabilityFlag = 'available' -%}
+    {%- endif -%}
+  {%- endif -%}
+  "{{ variant.id }}": { "availability": {% if product.type == 'Gift Cards' %}{{ 'available' | json }}{% else %}{{ availabilityFlag | json }}{% endif %}, "qty": {% if product.type == 'Gift Cards' %}{{ 999 | json }}{% else %}{{ variant.inventory_quantity | json }}{% endif %}, "selling_plan_id":
+  {% if variant.selling_plan_allocations != blank -%}
+    {%- for spa in variant.selling_plan_allocations -%}
+      {{ spa.selling_plan.id | json }}
+    {%- endfor -%}
+  {% else %}
+    ""
+  {%- endif %}
+  }
+  {%- unless forloop.last %},{% endunless %}
+{%- endfor -%}
+}

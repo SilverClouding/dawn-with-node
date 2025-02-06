@@ -1,0 +1,962 @@
+<div class="style-guide">
+  <div class="container">
+    <div class="style-guide__heading">
+      <h4 class="heading-4">Containers</h4>
+    </div>
+
+    <div class="style-guide__subheading">
+      <h4 class="heading-4">.container</h4>
+    </div>
+
+    <div class="container container--sm">
+      <div class="style-guide__subheading">
+        <h4 class="heading-4">.container.container--sm</h4>
+      </div>
+    </div>
+
+    <div class="style-guide__heading">
+      <h4 class="heading-4">Typography</h4>
+    </div>
+
+    <div class="style-guide__subheading">
+      <h4 class="heading-4">Headings</h4>
+    </div>
+
+    <h1 class="heading heading--primary">.heading.heading--primary</h1>
+    <h1 class="heading heading--secondary">.heading.heading--secondary</h1>
+    <h1 class="heading-1">.heading-1</h1>
+    <h2 class="heading-2">.heading-2</h2>
+    <h3 class="heading-3">.heading-3</h3>
+    <h4 class="heading-4">.heading-4</h4>
+    <h5 class="heading-5">.heading-5</h5>
+
+    <div class="style-guide__subheading">
+      <h4 class="heading-4">Subheadings</h4>
+    </div>
+
+    <h4 class="subheading-1">.subheading-1</h4>
+    <h4 class="subheading-2">.subheading-2</h4>
+    <h4 class="subheading-3">.subheading-3</h4>
+    <h4 class="subheading-4">.subheading-4</h4>
+
+    <div class="style-guide__subheading">
+      <h4 class="heading-4">Paragraphs</h4>
+    </div>
+
+    <div class="style-guide__flex">
+      <p>paragraph</p>
+      <p class="paragraph paragraph--md">.paragraph.paragraph--md</p>
+      <p class="small">.small</p>
+    </div>
+
+    <div class="style-guide__subheading">
+      <h4 class="heading-4">Lists</h4>
+    </div>
+
+    <div class="style-guide__flex">
+      <ul>
+        <li>ul</li>
+        <li>Lorem ipsum dolor sit amet consectetur adipisicing elit.</li>
+        <li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Labore beatae error iusto rem fuga? Maxime consequatur saepe magni fugit rerum, officiis consectetur inventore architecto possimus, eligendi harum cumque, illo tempore!</li>
+      </ul>
+
+      <ol>
+        <li>ol</li>
+        <li>Lorem ipsum dolor sit amet consectetur adipisicing elit.</li>
+        <li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Labore beatae error iusto rem fuga? Maxime consequatur saepe magni fugit rerum, officiis consectetur inventore architecto possimus, eligendi harum cumque, illo tempore!</li>
+      </ol>
+    </div>
+
+    <div class="style-guide__subheading">
+      <h4 class="heading-4">Labels</h4>
+    </div>
+
+    <div class="style-guide__flex">
+      {%- comment -%}@a11y-lint-ignore{%- endcomment -%}
+      <label class="label">.label</label>
+    </div>
+
+    <div class="style-guide__subheading">
+      <h4 class="heading-4">CTAs</h4>
+    </div>
+
+    <div class="style-guide__flex">
+      <a class="cta">.cta</a>
+      <a class="cta" disabled>.cta[disabled]</a>
+      <a class="cta cta--ltr">.cta.cta--ltr</a>
+      <a class="cta cta--rtl">.cta.cta--rtl</a>
+    </div>
+
+    <div class="style-guide__subheading">
+      <h4 class="heading-4">Links</h4>
+    </div>
+
+    <div class="style-guide__flex style-guide__flex--top">
+      <div class="rte">
+        <p>A paragraph within an <span class="style-guide__code">.rte</span> with an <a href="#!">a tag</a> in it</p>
+      </div>
+      <p>A paragraph with a <a href="#!" class="link">.link</a> in it</p>
+      <p><a href="#!" class="link">.link</a></p>
+    </div>
+
+    <div class="style-guide__heading">
+      <h4 class="heading-4">Colours</h4>
+    </div>
+
+    <div class="style-guide__info">
+      <p>These are set in Theme Settings > Colours</p>
+    </div>
+
+    <div class="style-guide__subheading">
+      <h4 class="heading-4">Brand Colours</h4>
+    </div>
+
+    <div class="style-guide__cards">
+      <div class="style-guide__card">
+        <div class="style-guide__color" style="--bg: var(--color-main-1)"></div>
+        <p>SCSS Variable: <span class="style-guide__code">$colorMain1</span></p>
+        <p>CSS Variable: <span class="style-guide__code">--color-main-1</span></p>
+        <p>
+          Hex Value: <span class="style-guide__code">{{ settings.color_1 }}</span>
+        </p>
+        <p>Customizer Name: <span class="style-guide__code">Colour 1</span></p>
+      </div>
+      <div class="style-guide__card">
+        <div class="style-guide__color" style="--bg: var(--color-main-2)"></div>
+        <p>SCSS Variable: <span class="style-guide__code">$colorMain2</span></p>
+        <p>CSS Variable: <span class="style-guide__code">--color-main-2</span></p>
+        <p>
+          Hex Value: <span class="style-guide__code">{{ settings.color_2 }}</span>
+        </p>
+        <p>Customizer Name: <span class="style-guide__code">Colour 2</span></p>
+      </div>
+      <div class="style-guide__card">
+        <div class="style-guide__color" style="--bg: var(--color-main-3)"></div>
+        <p>SCSS Variable: <span class="style-guide__code">$colorMain3</span></p>
+        <p>CSS Variable: <span class="style-guide__code">--color-main-3</span></p>
+        <p>
+          Hex Value: <span class="style-guide__code">{{ settings.color_3 }}</span>
+        </p>
+        <p>Customizer Name: <span class="style-guide__code">Colour 3</span></p>
+      </div>
+      <div class="style-guide__card">
+        <div class="style-guide__color" style="--bg: var(--color-main-4)"></div>
+        <p>SCSS Variable: <span class="style-guide__code">$colorMain4</span></p>
+        <p>CSS Variable: <span class="style-guide__code">--color-main-4</span></p>
+        <p>
+          Hex Value: <span class="style-guide__code">{{ settings.color_4 }}</span>
+        </p>
+        <p>Customizer Name: <span class="style-guide__code">Colour 4</span></p>
+      </div>
+      <div class="style-guide__card">
+        <div class="style-guide__color" style="--bg: var(--color-main-5)"></div>
+        <p>SCSS Variable: <span class="style-guide__code">$colorMain5</span></p>
+        <p>CSS Variable: <span class="style-guide__code">--color-main-5</span></p>
+        <p>
+          Hex Value: <span class="style-guide__code">{{ settings.color_5 }}</span>
+        </p>
+        <p>Customizer Name: <span class="style-guide__code">Colour 5</span></p>
+      </div>
+      <div class="style-guide__card">
+        <div class="style-guide__color" style="--bg: var(--color-main-6)"></div>
+        <p>SCSS Variable: <span class="style-guide__code">$colorMain6</span></p>
+        <p>CSS Variable: <span class="style-guide__code">--color-main-6</span></p>
+        <p>
+          Hex Value: <span class="style-guide__code">{{ settings.color_6 }}</span>
+        </p>
+        <p>Customizer Name: <span class="style-guide__code">Colour 6</span></p>
+      </div>
+      <div class="style-guide__card">
+        <div class="style-guide__color" style="--bg: var(--color-main-7)"></div>
+        <p>SCSS Variable: <span class="style-guide__code">$colorMain7</span></p>
+        <p>CSS Variable: <span class="style-guide__code">--color-main-7</span></p>
+        <p>
+          Hex Value: <span class="style-guide__code">{{ settings.color_7 }}</span>
+        </p>
+        <p>Customizer Name: <span class="style-guide__code">Colour 7</span></p>
+      </div>
+      <div class="style-guide__card">
+        <div class="style-guide__color" style="--bg: var(--color-main-8)"></div>
+        <p>SCSS Variable: <span class="style-guide__code">$colorMain8</span></p>
+        <p>CSS Variable: <span class="style-guide__code">--color-main-8</span></p>
+        <p>
+          Hex Value: <span class="style-guide__code">{{ settings.color_8 }}</span>
+        </p>
+        <p>Customizer Name: <span class="style-guide__code">Colour 8</span></p>
+      </div>
+    </div>
+
+    <div class="style-guide__subheading">
+      <h4 class="heading-4">Notifications</h4>
+    </div>
+
+    <div class="style-guide__cards">
+      <div class="style-guide__card">
+        <div class="style-guide__color" style="--bg: var(--color-success)"></div>
+        <p>SCSS Variable: <span class="style-guide__code">$colorSuccess</span></p>
+        <p>CSS Variable: <span class="style-guide__code">--color-success</span></p>
+        <p>
+          Hex Value: <span class="style-guide__code">{{ settings.color_success }}</span>
+        </p>
+        <p>Customizer Name: <span class="style-guide__code">Colour Success</span></p>
+      </div>
+      <div class="style-guide__card">
+        <div class="style-guide__color" style="--bg: var(--color-info)"></div>
+        <p>SCSS Variable: <span class="style-guide__code">$colorInfo</span></p>
+        <p>CSS Variable: <span class="style-guide__code">--color-info</span></p>
+        <p>
+          Hex Value: <span class="style-guide__code">{{ settings.color_info }}</span>
+        </p>
+        <p>Customizer Name: <span class="style-guide__code">Colour Info</span></p>
+      </div>
+      <div class="style-guide__card">
+        <div class="style-guide__color" style="--bg: var(--color-warning)"></div>
+        <p>SCSS Variable: <span class="style-guide__code">$colorWarning</span></p>
+        <p>CSS Variable: <span class="style-guide__code">--color-warning</span></p>
+        <p>
+          Hex Value: <span class="style-guide__code">{{ settings.color_warning }}</span>
+        </p>
+        <p>Customizer Name: <span class="style-guide__code">Colour Warning</span></p>
+      </div>
+      <div class="style-guide__card">
+        <div class="style-guide__color" style="--bg: var(--color-error)"></div>
+        <p>SCSS Variable: <span class="style-guide__code">$colorError</span></p>
+        <p>CSS Variable: <span class="style-guide__code">--color-error</span></p>
+        <p>
+          Hex Value: <span class="style-guide__code">{{ settings.color_error }}</span>
+        </p>
+        <p>Customizer Name: <span class="style-guide__code">Colour Error</span></p>
+      </div>
+    </div>
+
+    <div class="style-guide__heading">
+      <h4 class="heading-4">Buttons</h4>
+    </div>
+
+    <div class="style-guide__info">
+      <p>
+        Button colours are based on the colours defined above. They can be updated in
+        <span class="style-guide__code">css-variables.liquid</span>.
+      </p>
+    </div>
+
+    <div class="style-guide__subheading">
+      <h4 class="heading-4">Primary</h4>
+    </div>
+
+    <div class="style-guide__flex">
+      <button class="btn btn--primary">.btn.btn--primary</button>
+      <button class="btn btn--primary" disabled>.btn.btn--primary[disabled]</button>
+    </div>
+
+    <div class="style-guide__subheading">
+      <h4 class="heading-4">Primary Outline</h4>
+    </div>
+
+    <div class="style-guide__flex">
+      <button class="btn btn--primary-outline">.btn.btn--primary-outline</button>
+      <button class="btn btn--primary-outline" disabled>.btn.btn--primary-outline[disabled]</button>
+    </div>
+
+    <div class="style-guide__subheading">
+      <h4 class="heading-4">Secondary</h4>
+    </div>
+
+    <div class="style-guide__flex">
+      <button class="btn btn--secondary">.btn.btn--secondary</button>
+      <button class="btn btn--secondary" disabled>.btn.btn--secondary[disabled]</button>
+    </div>
+
+    <div class="style-guide__subheading">
+      <h4 class="heading-4">Secondary Outline</h4>
+    </div>
+
+    <div class="style-guide__flex">
+      <button class="btn btn--secondary-outline">.btn.btn--secondary-outline</button>
+      <button class="btn btn--secondary-outline" disabled>.btn.btn--secondary-outline[disabled]</button>
+    </div>
+
+    <div class="style-guide__heading">
+      <h4 class="heading-4">Form Fields</h4>
+    </div>
+
+    <div class="style-guide__subheading">
+      <h4 class="heading-4">Text Input</h4>
+    </div>
+    <div class="style-guide__info">
+      <p>Wrapper class: <span class="style-guide__code">.input-wrapper</span></p>
+      <p>Label class: <span class="style-guide__code">.label</span></p>
+      <p>Input class: <span class="style-guide__code">.text-input</span></p>
+    </div>
+    <div class="style-guide__flex style-guide__flex--top">
+      <div class="input-wrapper">
+        <label class="label" for="text-input-value">Empty</label>
+        <input id="text-input-value" class="text-input" type="text" value="">
+      </div>
+      <div class="input-wrapper">
+        <label class="label" for="text-input-placeholder">Placeholder</label>
+        <input id="text-input-placeholder" class="text-input" type="text" placeholder=".text-input">
+      </div>
+      <div class="input-wrapper">
+        <label class="label" for="text-input-success">Valid</label>
+        <input id="text-input-success" class="text-input" type="text" value=".text-input" required>
+        <p class="input-feedback input-feedback--success">.input-feedback.input-feedback--success</p>
+      </div>
+      <div class="input-wrapper">
+        <label class="label" for="text-input-error">Invalid</label>
+        <input id="text-input-error" class="text-input" type="text" value=".text-input" required pattern="[a-zA-Z0-9]">
+        <p class="input-feedback input-feedback--error">.input-feedback.input-feedback--error</p>
+      </div>
+    </div>
+
+    <div class="style-guide__subheading">
+      <h4 class="heading-4">Select</h4>
+    </div>
+    <div class="style-guide__info">
+      <p>Wrapper class: <span class="style-guide__code">.select-wrapper</span></p>
+      <p>Label class: <span class="style-guide__code">.label</span></p>
+      <p>Input class: <span class="style-guide__code">.select</span></p>
+    </div>
+    <div class="style-guide__flex style-guide__flex--top">
+      <div class="select-wrapper">
+        <label for="select" class="label">Select label</label>
+        <select class="select" id="select">
+          <option>Option 1</option>
+          <option>Option 2</option>
+          <option>Option 3</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="style-guide__subheading">
+      <h4 class="heading-4">Checkbox</h4>
+    </div>
+    <div class="style-guide__info">
+      <p>Wrapper class: <span class="style-guide__code">.checkbox-wrapper</span></p>
+      <p>Label class: <span class="style-guide__code">.checkbox-label</span></p>
+      <p>Input class: <span class="style-guide__code">.checkbox</span></p>
+    </div>
+    <div class="style-guide__flex style-guide__flex--top">
+      <div class="checkbox-wrapper">
+        <input type="checkbox" id="checkbox_input" value="1" class="checkbox">
+        <label class="checkbox-label" for="checkbox_input"> Confirm the checkbox </label>
+      </div>
+      <div class="checkbox-wrapper">
+        <input type="checkbox" id="checkbox_input" value="1" class="checkbox" checked>
+        <label class="checkbox-label" for="checkbox_input"> Confirm the checkbox </label>
+      </div>
+    </div>
+
+    <div class="style-guide__subheading">
+      <h4 class="heading-4">Radio</h4>
+    </div>
+    <div class="style-guide__info">
+      <p>Wrapper class: <span class="style-guide__code">.radio-wrapper</span></p>
+      <p>Label class: <span class="style-guide__code">.radio-label</span></p>
+      <p>Input class: <span class="style-guide__code">.radio</span></p>
+    </div>
+    <div class="style-guide__flex style-guide__flex--top">
+      <div class="radio-wrapper">
+        <input type="radio" id="radio_input_1" name="radio_group" value="1" class="radio">
+        <label class="radio-label" for="radio_input_1"> Click a radio </label>
+      </div>
+      <div class="radio-wrapper">
+        <input type="radio" id="radio_input_2" name="radio_group" value="1" class="radio" checked>
+        <label class="radio-label" for="radio_input_2"> Click a radio </label>
+      </div>
+    </div>
+
+    <div class="style-guide__subheading">
+      <h4 class="heading-4">Quantity Selector</h4>
+    </div>
+    <div class="style-guide__info">
+      <p>Wrapper class: <span class="style-guide__code">.quantity-selector</span></p>
+      <p>Input class: <span class="style-guide__code">.text-input.input-quantity</span></p>
+      <p>Button class: <span class="style-guide__code">.quantity-selector__btn</span></p>
+    </div>
+    <div class="style-guide__flex style-guide__flex--top">
+      <div class="quantity-selector">
+        <button class="quantity-selector__btn quantity-selector__btn--dec" aria-label="-"></button>
+        <input type="number" id="quantity" class="quantity-selector__input" value="1">
+        <button class="quantity-selector__btn quantity-selector__btn--inc" aria-label="+"></button>
+      </div>
+    </div>
+
+    <div class="style-guide__heading">
+      <h4 class="heading-4">Variant Options</h4>
+    </div>
+    <div class="variant-option__options">
+      <div class="variant-option__option">
+        <input
+          class="variant-option__radio visually-hidden"
+          type="radio"
+          value="6"
+          data-index="option"
+          name="Size"
+          data-option-name="Size"
+          data-option-label="6"
+          data-option-value="6"
+          data-option-select=""
+          id="variant-option__size-6"
+        >
+        <label class="variant-option__label" for="variant-option__size-6"> 0 - UK 6 </label>
+      </div>
+      <div class="variant-option__option">
+        <input
+          class="variant-option__radio visually-hidden"
+          type="radio"
+          value="8"
+          data-index="option"
+          name="Size"
+          data-option-name="Size"
+          data-option-label="8"
+          data-option-value="8"
+          data-option-select=""
+          id="variant-option__size-8"
+        >
+        <label class="variant-option__label" for="variant-option__size-8"> 0 - UK 8 </label>
+      </div>
+      <div class="variant-option__option--oos">
+        <input
+          class="variant-option__radio visually-hidden"
+          type="radio"
+          value="10"
+          data-index="option"
+          name="Size"
+          data-option-name="Size"
+          data-option-label="10"
+          data-option-value="10"
+          data-option-select=""
+          id="variant-option__size-10"
+        >
+        <label class="variant-option__label" for="variant-option__size-10"> 0 - UK 10 </label>
+      </div>
+    </div>
+
+    <div class="style-guide__heading">
+      <h4 class="heading-4">Alerts</h4>
+    </div>
+    <div class="style-guide__flex">
+      <h4 class="alert alert--success">.alert alert--success</h4>
+      <h4 class="alert alert--warning">.alert alert--warning</h4>
+      <h4 class="alert alert--error">.alert alert--error</h4>
+      <h4 class="alert alert--info">.alert alert--info</h4>
+    </div>
+
+    <div class="style-guide__heading">
+      <h4 class="heading-4">Icons</h4>
+    </div>
+
+    <div class="style-guide__subheading">
+      <h4 class="heading-4">SVG Icons</h4>
+    </div>
+    <div class="style-guide__info">
+      <p>Hover over the icon to get the filename</p>
+    </div>
+    <div class="style-guide__icon-grid style-guide__icon-grid--svg">
+      <div class="style-guide__icon" title="clock.svg" style="--bg: url({{ 'clock.svg' | asset_url }});"></div>
+      <div
+        class="style-guide__icon"
+        title="customer-account-icon.svg"
+        style="--bg: url({{ 'customer-account-icon.svg' | asset_url }});"
+      ></div>
+      <div
+        class="style-guide__icon"
+        title="customer-details-icon.svg"
+        style="--bg: url({{ 'customer-details-icon.svg' | asset_url }});"
+      ></div>
+      <div
+        class="style-guide__icon"
+        title="customer-help-icon.svg"
+        style="--bg: url({{ 'customer-help-icon.svg' | asset_url }});"
+      ></div>
+      <div
+        class="style-guide__icon"
+        title="customer-logout-icon.svg"
+        style="--bg: url({{ 'customer-logout-icon.svg' | asset_url }});"
+      ></div>
+      <div
+        class="style-guide__icon"
+        title="customer-orders-icon.svg"
+        style="--bg: url({{ 'customer-orders-icon.svg' | asset_url }});"
+      ></div>
+      <div
+        class="style-guide__icon"
+        title="customer-password-icon.svg"
+        style="--bg: url({{ 'customer-password-icon.svg' | asset_url }});"
+      ></div>
+      <div
+        class="style-guide__icon"
+        title="customer-wishlist-icon.svg"
+        style="--bg: url({{ 'customer-wishlist-icon.svg' | asset_url }});"
+      ></div>
+      <div
+        class="style-guide__icon"
+        title="fake-image.svg"
+        style="--bg: url({{ 'fake-image.svg' | asset_url }});"
+      ></div>
+      <div
+        class="style-guide__icon"
+        title="grey-cross-bg.svg"
+        style="--bg: url({{ 'grey-cross-bg.svg' | asset_url }});"
+      ></div>
+      <div
+        class="style-guide__icon"
+        title="icon-account.svg"
+        style="--bg: url({{ 'icon-account.svg' | asset_url }});"
+      ></div>
+      <div
+        class="style-guide__icon"
+        title="icon-add-address.svg"
+        style="--bg: url({{ 'icon-add-address.svg' | asset_url }});"
+      ></div>
+      <div
+        class="style-guide__icon"
+        title="icon-arrow-down.svg"
+        style="--bg: url({{ 'icon-arrow-down.svg' | asset_url }});"
+      ></div>
+      <div
+        class="style-guide__icon"
+        title="icon-arrow-full-white.svg"
+        style="--bg: url({{ 'icon-arrow-full-white.svg' | asset_url }});"
+      ></div>
+      <div
+        class="style-guide__icon"
+        title="icon-arrow-full.svg"
+        style="--bg: url({{ 'icon-arrow-full.svg' | asset_url }});"
+      ></div>
+      <div
+        class="style-guide__icon"
+        title="icon-arrow-grey-down.svg"
+        style="--bg: url({{ 'icon-arrow-grey-down.svg' | asset_url }});"
+      ></div>
+      <div
+        class="style-guide__icon"
+        title="icon-arrow-back.svg"
+        style="--bg: url({{ 'icon-arrow-back.svg' | asset_url }});"
+      ></div>
+      <div
+        class="style-guide__icon"
+        title="icon-arrow-white.svg"
+        style="--bg: url({{ 'icon-arrow-white.svg' | asset_url }});"
+      ></div>
+      <div
+        class="style-guide__icon"
+        title="icon-arrow.svg"
+        style="--bg: url({{ 'icon-arrow.svg' | asset_url }});"
+      ></div>
+      <div
+        class="style-guide__icon"
+        title="icon-basket.svg"
+        style="--bg: url({{ 'icon-basket.svg' | asset_url }});"
+      ></div>
+      <div
+        class="style-guide__icon"
+        title="icon-chevron-black-down.svg"
+        style="--bg: url({{ 'icon-chevron-black-down.svg' | asset_url }});"
+      ></div>
+      <div
+        class="style-guide__icon"
+        title="icon-close.svg"
+        style="--bg: url({{ 'icon-close.svg' | asset_url }});"
+      ></div>
+      <div
+        class="style-guide__icon"
+        title="icon-close-grey.svg"
+        style="--bg: url({{ 'icon-close-grey.svg' | asset_url }});"
+      ></div>
+      <div
+        class="style-guide__icon"
+        title="icon-close-white.svg"
+        style="--bg: url({{ 'icon-close-white.svg' | asset_url }});"
+      ></div>
+      <div
+        class="style-guide__icon"
+        title="icon-error.svg"
+        style="--bg: url({{ 'icon-error.svg' | asset_url }});"
+      ></div>
+      <div
+        class="style-guide__icon"
+        title="icon-faq-account.svg"
+        style="--bg: url({{ 'icon-faq-account.svg' | asset_url }});"
+      ></div>
+      <div
+        class="style-guide__icon"
+        title="icon-faq-delivery.svg"
+        style="--bg: url({{ 'icon-faq-delivery.svg' | asset_url }});"
+      ></div>
+      <div
+        class="style-guide__icon"
+        title="icon-faq-information.svg"
+        style="--bg: url({{ 'icon-faq-information.svg' | asset_url }});"
+      ></div>
+      <div
+        class="style-guide__icon"
+        title="icon-faq-orders.svg"
+        style="--bg: url({{ 'icon-faq-orders.svg' | asset_url }});"
+      ></div>
+      <div
+        class="style-guide__icon"
+        title="icon-faq-payments.svg"
+        style="--bg: url({{ 'icon-faq-payments.svg' | asset_url }});"
+      ></div>
+      <div
+        class="style-guide__icon"
+        title="icon-faq-returns.svg"
+        style="--bg: url({{ 'icon-faq-returns.svg' | asset_url }});"
+      ></div>
+      <div
+        class="style-guide__icon"
+        title="icon-faq-technical.svg"
+        style="--bg: url({{ 'icon-faq-technical.svg' | asset_url }});"
+      ></div>
+      <div
+        class="style-guide__icon"
+        title="icon-info-grey.svg"
+        style="--bg: url({{ 'icon-info-grey.svg' | asset_url }});"
+      ></div>
+      <div
+        class="style-guide__icon"
+        title="icon-info-red.svg"
+        style="--bg: url({{ 'icon-info-red.svg' | asset_url }});"
+      ></div>
+      <div class="style-guide__icon" title="icon-info.svg" style="--bg: url({{ 'icon-info.svg' | asset_url }});"></div>
+      <div
+        class="style-guide__icon"
+        title="icon-international.svg"
+        style="--bg: url({{ 'icon-international.svg' | asset_url }});"
+      ></div>
+      <div class="style-guide__icon" title="icon-menu.svg" style="--bg: url({{ 'icon-menu.svg' | asset_url }});"></div>
+      <div
+        class="style-guide__icon"
+        title="icon-minus.svg"
+        style="--bg: url({{ 'icon-minus.svg' | asset_url }});"
+      ></div>
+      <div
+        class="style-guide__icon"
+        title="icon-phone.svg"
+        style="--bg: url({{ 'icon-phone.svg' | asset_url }});"
+      ></div>
+      <div class="style-guide__icon" title="icon-plus.svg" style="--bg: url({{ 'icon-plus.svg' | asset_url }});"></div>
+      <div
+        class="style-guide__icon"
+        title="icon-search.svg"
+        style="--bg: url({{ 'icon-search.svg' | asset_url }});"
+      ></div>
+      <div
+        class="style-guide__icon"
+        title="icon-sort-arrow.svg"
+        style="--bg: url({{ 'icon-sort-arrow.svg' | asset_url }});"
+      ></div>
+      <div
+        class="style-guide__icon"
+        title="icon-star--empty.svg"
+        style="--bg: url({{ 'icon-star--empty.svg' | asset_url }});"
+      ></div>
+      <div
+        class="style-guide__icon"
+        title="icon-star--filled.svg"
+        style="--bg: url({{ 'icon-star--filled.svg' | asset_url }});"
+      ></div>
+      <div
+        class="style-guide__icon"
+        title="icon-success.svg"
+        style="--bg: url({{ 'icon-success.svg' | asset_url }});"
+      ></div>
+      <div
+        class="style-guide__icon"
+        title="icon-warning.svg"
+        style="--bg: url({{ 'icon-warning.svg' | asset_url }});"
+      ></div>
+      <div class="style-guide__icon" title="logo.svg" style="--bg: url({{ 'logo.svg' | asset_url }});"></div>
+      <div
+        class="style-guide__icon"
+        title="search-loading.svg"
+        style="--bg: url({{ 'search-loading.svg' | asset_url }});"
+      ></div>
+    </div>
+    <div class="style-guide__info">
+      <p>
+        Tip: If an icon is black and you need it to be white (or vice versa) give
+        <span class="style-guide__code">filter: invert(1);</span> a try
+      </p>
+    </div>
+    <div class="style-guide__icon-grid style-guide__icon-grid--svg">
+      <div class="style-guide__icon" title="icon-info.svg" style="--bg: url({{ 'icon-info.svg' | asset_url }});"></div>
+      <div
+        class="style-guide__icon"
+        title="icon-info.svg"
+        style="--bg: url({{ 'icon-info.svg' | asset_url }}); filter: invert(1);"
+      ></div>
+    </div>
+
+    <div class="style-guide__subheading">
+      <h4 class="heading-4">Liquid Icons</h4>
+    </div>
+    <div class="style-guide__icon-grid style-guide__icon-grid--liquid">
+      <div class="style-guide__render">
+        <div class="icon-wrapper">{% render 'icon-account' %}</div>
+        <p class="style-guide__code">{% raw %}{% render 'icon-account' %}{% endraw %}</p>
+      </div>
+      <div class="style-guide__render">
+        <div class="icon-wrapper">{% render 'icon-cart' %}</div>
+        <p class="style-guide__code">{% raw %}{% render 'icon-cart' %}{% endraw %}</p>
+      </div>
+      <div class="style-guide__render">
+        <div class="icon-wrapper">{% render 'icon-close' %}</div>
+        <p class="style-guide__code">{% raw %}{% render 'icon-close' %}{% endraw %}</p>
+      </div>
+      <div class="style-guide__render">
+        <div class="icon-wrapper">{% render 'icon-copy' %}</div>
+        <p class="style-guide__code">{% raw %}{% render 'icon-copy' %}{% endraw %}</p>
+      </div>
+      <div class="style-guide__render">
+        <div class="icon-wrapper">{% render 'icon-download' %}</div>
+        <p class="style-guide__code">{% raw %}{% render 'icon-download' %}{% endraw %}</p>
+      </div>
+      <div class="style-guide__render">
+        <div class="icon-wrapper">{% render 'icon-facebook' %}</div>
+        <p class="style-guide__code">{% raw %}{% render 'icon-facebook' %}{% endraw %}</p>
+      </div>
+      <div class="style-guide__render">
+        <div class="icon-wrapper">{% render 'icon-grid-large' %}</div>
+        <p class="style-guide__code">{% raw %}{% render 'icon-grid-large' %}{% endraw %}</p>
+      </div>
+      <div class="style-guide__render">
+        <div class="icon-wrapper">{% render 'icon-grid-small' %}</div>
+        <p class="style-guide__code">{% raw %}{% render 'icon-grid-small' %}{% endraw %}</p>
+      </div>
+      <div class="style-guide__render">
+        <div class="icon-wrapper">{% render 'icon-hamburger' %}</div>
+        <p class="style-guide__code">{% raw %}{% render 'icon-hamburger' %}{% endraw %}</p>
+      </div>
+      <div class="style-guide__render">
+        <div class="icon-wrapper">{% render 'icon-international' %}</div>
+        <p class="style-guide__code">{% raw %}{% render 'icon-international' %}{% endraw %}</p>
+      </div>
+      <div class="style-guide__render">
+        <div class="icon-wrapper">{% render 'icon-phone' %}</div>
+        <p class="style-guide__code">{% raw %}{% render 'icon-phone' %}{% endraw %}</p>
+      </div>
+      <div class="style-guide__render">
+        <div class="icon-wrapper">{% render 'icon-pinterest' %}</div>
+        <p class="style-guide__code">{% raw %}{% render 'icon-pinterest' %}{% endraw %}</p>
+      </div>
+      <div class="style-guide__render">
+        <div class="icon-wrapper">{% render 'icon-play' %}</div>
+        <p class="style-guide__code">{% raw %}{% render 'icon-play' %}{% endraw %}</p>
+      </div>
+      <div class="style-guide__render">
+        <div class="icon-wrapper">{% render 'icon-print' %}</div>
+        <p class="style-guide__code">{% raw %}{% render 'icon-print' %}{% endraw %}</p>
+      </div>
+      <div class="style-guide__render">
+        <div class="icon-wrapper">{% render 'icon-search' %}</div>
+        <p class="style-guide__code">{% raw %}{% render 'icon-search' %}{% endraw %}</p>
+      </div>
+      <div class="style-guide__render">
+        <div class="icon-wrapper">{% render 'icon-x' %}</div>
+        <p class="style-guide__code">{% raw %}{% render 'icon-x' %}{% endraw %}</p>
+      </div>
+    </div>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@6.6.6/css/flag-icons.min.css"
+    >
+    <div class="style-guide__subheading">
+      <h4 class="heading-4">Flag Icons</h4>
+    </div>
+    <div class="style-guide__info">
+      <p>
+        Flags are taken from <a href="https://github.com/lipis/flag-icons" class="link" target="_blank">flag icons</a>. If you require flag icons then uncomment the stylesheet on line 15 of
+        <span class="style-guide__code">theme.liquid</span>
+      </p>
+      <p>
+        To display an icon use the code
+        <span class="style-guide__code">&lt;span class="fi fi-gb"&gt;&lt;/span&gt;</span> where <span class="style-guide__code">gb</span> is the <a href="https://www.iso.org/obp/ui/#search" class="link" target="_blank">2 letter country code</a>. Add the class <span class="style-guide__code">fis</span> for a square icon
+      </p>
+    </div>
+    <span class="fi fi-gb"></span>
+    <span class="fi fi-gb fis"></span>
+
+    <div class="style-guide__heading">
+      <h4 class="heading-4">Product Cards</h4>
+    </div>
+    {% assign collection = collections['alternate-collection'] %}
+    <div class="grid-list">
+      {% for product in collection.products limit: 4 %}
+        <div class="grid-item">
+          {% render 'product-card', product: product %}
+        </div>
+      {% endfor %}
+    </div>
+
+    <div class="style-guide__heading">
+      <h4 class="heading-4">Accordion</h4>
+    </div>
+
+    <div class="style-guide__info">
+      <p>There is a VSCode snippet for this element. Type <span class="style-guide__code">accordion</span> and press TAB to insert the code.</p>
+      <p>There are two config options in attributes. Both accept boolean only (true or false).</p>
+      <p>If you'd like a mobile only accordion then set <span class="style-guide__code">"mobileOnly": true</span>. In this case accordion changes to a row with columns on desktop</p>
+      <p>If you'd like all accordion elements to collapse when you expand an accordion element (default behavior) then set <span class="style-guide__code">"closeAllOnOpen": true</span>, otherwise change it to false.</p>
+    </div>
+
+    <div
+      class="accordion"
+      data-accordion
+      data-accordion-config='
+        {
+          "mobileOnly": false,
+          "closeAllOnOpen": true
+        }
+      '
+    >
+      <ul class="accordion__list">
+        <li class="accordion__item">
+          <p class="accordion__title heading-5" tabindex="0" data-accordion-toggle>Accordion Title 1</p>
+          <div class="accordion__content">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam aliquam eget metus id mattis. Phasellus lectus ligula, venenatis eu massa pulvinar, malesuada condimentum arcu. Ut nunc sapien, rutrum non gravida eget, aliquam vel sem. Morbi ultricies arcu condimentum diam maximus facilisis. Quisque in dictum urna. Integer sollicitudin ac arcu eget porttitor.</div>
+        </li>
+        <li class="accordion__item">
+          <p class="accordion__title heading-5" tabindex="0" data-accordion-toggle>Accordion Title 2</p>
+          <div class="accordion__content">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam aliquam eget metus id mattis. Phasellus lectus ligula, venenatis eu massa pulvinar, malesuada condimentum arcu. Ut nunc sapien, rutrum non gravida eget, aliquam vel sem. Morbi ultricies arcu condimentum diam maximus facilisis. Quisque in dictum urna. Integer sollicitudin ac arcu eget porttitor.</div>
+        </li>
+        <li class="accordion__item">
+          <p class="accordion__title heading-5" tabindex="0" data-accordion-toggle>Accordion Title 3</p>
+          <div class="accordion__content">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam aliquam eget metus id mattis. Phasellus lectus ligula, venenatis eu massa pulvinar, malesuada condimentum arcu. Ut nunc sapien, rutrum non gravida eget, aliquam vel sem. Morbi ultricies arcu condimentum diam maximus facilisis. Quisque in dictum urna. Integer sollicitudin ac arcu eget porttitor.</div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="style-guide__heading">
+      <h4 class="heading-4">.rte</h4>
+    </div>
+    <div class="style-guide__info">
+      <p>This is used on client input content such as pages and articles</p>
+    </div>
+    <div class="container container--sm">
+      <div class="rte">
+        <h1>This is a header 1</h1>
+        <p>Proin eu sapien tincidunt, fermentum urna sed, pretium enim. Morbi facilisis porttitor turpis, non finibus dolor ultricies quis. Mauris in posuere metus. Cras porttitor feugiat arcu at consequat. Etiam consequat elit eu velit blandit, quis porta odio ornare. Integer lacus justo, egestas ac pharetra molestie, blandit at erat. Suspendisse in lectus vehicula, porta velit non, ullamcorper urna. Curabitur sagittis hendrerit augue, at fermentum erat iaculis consectetur. Quisque eleifend pellentesque nunc, in pharetra arcu tristique et.</p>
+        <h2>This is a header 2</h2>
+        <p>Proin eu sapien tincidunt, fermentum urna sed, pretium enim. Morbi facilisis porttitor turpis, non finibus dolor ultricies quis. Mauris in posuere metus. Cras porttitor feugiat arcu at consequat. Etiam consequat elit eu velit blandit, quis porta odio ornare. Integer lacus justo, egestas ac pharetra molestie, blandit at erat. Suspendisse in lectus vehicula, porta velit non, ullamcorper urna. Curabitur sagittis hendrerit augue, at fermentum erat iaculis consectetur. Quisque eleifend pellentesque nunc, in pharetra arcu tristique et.</p>
+        <h3>This is a header 3</h3>
+        <p>Proin eu sapien tincidunt, fermentum urna sed, pretium enim. Morbi facilisis porttitor turpis, non finibus dolor ultricies quis. Mauris in posuere metus. Cras porttitor feugiat arcu at consequat. Etiam consequat elit eu velit blandit, quis porta odio ornare. Integer lacus justo, egestas ac pharetra molestie, blandit at erat. Suspendisse in lectus vehicula, porta velit non, ullamcorper urna. Curabitur sagittis hendrerit augue, at fermentum erat iaculis consectetur. Quisque eleifend pellentesque nunc, in pharetra arcu tristique et.</p>
+        <h4>This is a header 4</h4>
+        <p>Proin eu sapien tincidunt, fermentum urna sed, pretium enim. Morbi facilisis porttitor turpis, non finibus dolor ultricies quis. Mauris in posuere metus. Cras porttitor feugiat arcu at consequat. Etiam consequat elit eu velit blandit, quis porta odio ornare. Integer lacus justo, egestas ac pharetra molestie, blandit at erat. Suspendisse in lectus vehicula, porta velit non, ullamcorper urna. Curabitur sagittis hendrerit augue, at fermentum erat iaculis consectetur. Quisque eleifend pellentesque nunc, in pharetra arcu tristique et.</p>
+        <h5>This is a header 5</h5>
+        <p>Proin eu sapien tincidunt, fermentum urna sed, pretium enim. Morbi facilisis porttitor turpis, non finibus dolor ultricies quis. Mauris in posuere metus. Cras porttitor feugiat arcu at consequat. Etiam consequat elit eu velit blandit, quis porta odio ornare. Integer lacus justo, egestas ac pharetra molestie, blandit at erat. Suspendisse in lectus vehicula, porta velit non, ullamcorper urna. Curabitur sagittis hendrerit augue, at fermentum erat iaculis consectetur. Quisque eleifend pellentesque nunc, in pharetra arcu tristique et.</p>
+        <p>
+          <img src="https://cdn.shopify.com/s/files/1/0725/8718/2374/files/a_1024x1024.png?v=1680188663" alt="Giro" width="1024" height="605">
+        </p>
+        <p>Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Praesent <strong>commodo cursus magna</strong>, vel scelerisque nisl consectetur et. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.</p>
+        <ul>
+          <li>ul</li>
+          <li>Lorem ipsum dolor sit amet consectetur adipisicing elit.</li>
+          <li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Labore beatae error iusto rem fuga? Maxime consequatur saepe magni fugit rerum, officiis consectetur inventore architecto possimus, eligendi harum cumque, illo tempore!</li>
+        </ul>
+        <ol>
+          <li>ol</li>
+          <li>Lorem ipsum dolor sit amet consectetur adipisicing elit.</li>
+          <li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Labore beatae error iusto rem fuga? Maxime consequatur saepe magni fugit rerum, officiis consectetur inventore architecto possimus, eligendi harum cumque, illo tempore!</li>
+        </ol>
+        <blockquote>
+          <p>“Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+        </blockquote>
+        <table width="100%">
+          <tbody>
+            <tr>
+              <td>Table Heading</td>
+              <td>Table Heading</td>
+              <td>Table Heading</td>
+              <td>Table Heading</td>
+            </tr>
+            <tr>
+              <td>Table Content</td>
+              <td>Table Content</td>
+              <td>Table Content</td>
+              <td>Table Content</td>
+            </tr>
+            <tr>
+              <td>Table Content</td>
+              <td>Table Content</td>
+              <td>Table Content</td>
+              <td>Table Content</td>
+            </tr>
+            <tr>
+              <td>Table Content</td>
+              <td>Table Content</td>
+              <td>Table Content</td>
+              <td>Table Content</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="style-guide__heading">
+      <h4 class="heading-4">Animations</h4>
+    </div>
+    <div style="display: flex; gap: 24px; margin-bottom: 24px; color: white;">
+      <div data-anim class="anim-fade-in" style="width: 400px; height: 400px; background-color: var(--color-main-1);">data-anim class="anim-fade-in"</div>
+      <div
+        data-anim
+        class="anim-fade-in anim-delay anim-delay-333"
+        style="width: 400px; height: 400px; background-color: var(--color-main-1);"
+      >
+        data-anim class="anim-fade-in anim-delay anim-delay-333"
+      </div>
+      <div
+        data-anim
+        class="anim-fade-in anim-delay anim-delay-666"
+        style="width: 400px; height: 400px; background-color: var(--color-main-1);"
+      >
+        data-anim class="anim-fade-in anim-delay anim-delay-666"
+      </div>
+    </div>
+    <div style="display: flex; gap: 24px; margin-bottom: 24px; color: white;">
+      <div
+        data-anim
+        class="anim-slide-in-left"
+        style="width: 400px; height: 400px; background-color: var(--color-main-1);"
+      >
+        data-anim class="anim-slide-in-left"
+      </div>
+      <div
+        data-anim
+        class="anim-slide-in-left anim-delay anim-delay-333"
+        style="width: 400px; height: 400px; background-color: var(--color-main-1);"
+      >
+        data-anim class="anim-slide-in-left anim-delay anim-delay-333"
+      </div>
+      <div
+        data-anim
+        class="anim-slide-in-left anim-delay anim-delay-666"
+        style="width: 400px; height: 400px; background-color: var(--color-main-1);"
+      >
+        data-anim class="anim-slide-in-left anim-delay anim-delay-666"
+      </div>
+    </div>
+
+    <div class="style-guide__heading">
+      <h4 class="heading-4">Section Examples</h4>
+    </div>
+    <div class="style-guide__info">
+      <p>Add any important sections below</p>
+    </div>
+  </div>
+  <!-- container -->
+</div>
+<!-- style__guide -->
+
+{% schema %}
+{
+  "name": "Style Guide",
+  "settings": [
+    {
+      "type": "header",
+      "content": "This should only be used on page.style-guide.json"
+    }
+  ]
+}
+{% endschema %}

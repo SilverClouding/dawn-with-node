@@ -1,0 +1,58 @@
+.absolute-center {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+[data-anim] {
+  transition-duration: 333ms;
+  transition-timing-function: ease-in-out;
+}
+[data-anim].anim-delay-333 {
+  transition-delay: 333ms;
+}
+[data-anim].anim-delay-666 {
+  transition-delay: 666ms;
+}
+[data-anim].anim-delay-999 {
+  transition-delay: 999ms;
+}
+[data-anim].anim-fade-in {
+  opacity: 0;
+  transition-property: opacity;
+}
+@media screen and (prefers-reduced-motion: reduce) {
+  [data-anim].anim-fade-in {
+    opacity: 1;
+  }
+}
+[data-anim].anim-fade-in.anim-active {
+  opacity: 1;
+}
+[data-anim].anim-slide-in-left {
+  transform: translateX(66px);
+  transition-property: transform, opacity;
+  opacity: 0;
+}
+@media screen and (prefers-reduced-motion: reduce) {
+  [data-anim].anim-slide-in-left {
+    opacity: 1;
+    transform: none;
+  }
+}
+[data-anim].anim-slide-in-left.anim-active {
+  transform: translateX(0);
+  opacity: 1;
+}
+@media screen and (prefers-reduced-motion: reduce) {
+  [data-anim].anim-active {
+    transition: none;
+  }
+}
+
+.payment-icons__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}

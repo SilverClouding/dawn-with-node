@@ -1,0 +1,38 @@
+<section
+  class="content-divider"
+  style="--height-m: {{ section.settings.height_m }}px; --height-d: {{ section.settings.height_d }}px;"
+></section>
+
+{% schema %}
+{
+  "name": "Content Divider",
+  "settings": [
+    {
+      "type": "range",
+      "id": "height_m",
+      "min": 8,
+      "max": 128,
+      "step": 8,
+      "unit": "px",
+      "label": "Divider Height (Mobile)",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "height_d",
+      "min": 8,
+      "max": 128,
+      "step": 8,
+      "unit": "px",
+      "label": "Divider Height (Desktop)",
+      "default": 48
+    }
+  ],
+  "presets": [
+    {
+      "name": "Content Divider",
+      "category": "Baseline"
+    }
+  ]
+}
+{% endschema %}

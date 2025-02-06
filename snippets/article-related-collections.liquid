@@ -1,0 +1,41 @@
+{%- comment -%}
+  {% render 'article-related-collections' %}
+
+  The article should have a metafield setup for Related Articles, Related Collections, and Related Products. These fields should be a Metaobject List field, each referencing the relevant Metaobject definition.
+
+  Related Articles
+  * Name
+  * Articles (Single Line Text List)
+
+  Related Collections
+  * Name
+  * Collections (Collection List)
+
+  Related Articles
+  * Name
+  * Products (Product List)
+{%- endcomment -%}
+
+{% assign metaobject = article.metafields.SITE_NAME.related_articles.value %}
+{% if metaobject %}
+  <div class="article-related article-related--collections">
+    <div class="container">
+      <div class="article-related__header">
+        <h2 class="heading-2">{{ 'blogs.article.related_products' | t }}</h2>
+      </div>
+      <div class="grid-list">
+        {% for collection in metaobject.collections.value %}
+          <div class="grid-item">
+            <a href="{{ collection.url }}" class="article-related__collection">
+              {% if collection.image != blank or collection.products.first != blank %}
+                {%- assign image_object = collection.image | default: collection.products.first.featured_image -%}
+                {% render 'image', img: image_object, width: 300, height: 300 %}
+              {% endif %}
+              <h4 class="heading-4">{{ collection.title }}</h4>
+            </a>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+{% endif %}

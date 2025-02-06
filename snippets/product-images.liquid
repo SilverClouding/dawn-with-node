@@ -1,0 +1,54 @@
+{% assign useThumbnails = section.settings.use_thumbnails %}
+
+{% if useThumbnails %}
+  <div data-main-product-image-wrapper>
+    <img
+      width="1000"
+      height="1000"
+      alt="{{ product.title }}"
+      data-main-product-image
+      src="{{ product.featured_image | image_url: width: 1000, height: 1000 }}"
+    >
+  </div>
+  <script type="text/javascript">
+    window.addEventListener('DOMContentLoaded', function (event) {
+      window.blubolt.dom.initialiseZoom('[data-main-product-image-wrapper]', 2);
+    });
+  </script>
+  <ul>
+    {% for image in product.images %}
+      <li data-product-thumbnail-index="{{ forloop.index }}">
+        <img width="100" height="100" src="{{ image | image_url: width: 100, height: 100 }}" alt="">
+      </li>
+    {% endfor %}
+  </ul>
+{% else %}
+  {% comment %} Image Slider (using GliderJS) {% endcomment %}
+  <div class="glide" id="product-image-slider" data-glide-mob data-id="product-image-slider">
+    <div class="glide__track" data-glide-el="track">
+      <ul class="glide__slides">
+        {% for image in product.images %}
+          <li class="glide__slide" data-image-zoom-toggle data-image-index="{{ forloop.index }}">
+            <img
+              width="1000"
+              height="1000"
+              alt="{{ image.alt }}"
+              src="{{ image | image_url: width: 600, height: 600, crop: 'center' }}"
+              data-src="{{ image | image_url: width: 1000, height: 1000, crop: 'center' }}"
+            >
+          </li>
+        {% endfor %}
+      </ul>
+
+      <div class="glide__bullets" data-glide-el="controls[nav]">
+        {% for image in product.images %}
+          <button
+            class="glide__bullet"
+            aria-label="Slide {{ forloop.index }}"
+            data-glide-dir="={{ forloop.index | minus: 1 }}"
+          ></button>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+{% endif %}

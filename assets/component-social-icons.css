@@ -1,0 +1,11 @@
+.social-icons {
+  display: flex;
+  gap: 6px;
+}
+.social-icons.social-icons--footer {
+  display: grid;
+}
+.social-icons__link svg {
+  width: 16px;
+  height: 16px;
+}

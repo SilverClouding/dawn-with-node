@@ -1,0 +1,92 @@
+{% assign adverts = section.blocks | where: 'type', 'advert' %}
+<section class="navigation">
+  <nav class="navigation__nav" role="navigation">
+    {% comment %} Close nav button {% endcomment %}
+    <button
+      class="navigation__close"
+      role="button"
+      type="button"
+      data-click-toggle='
+        [
+          {"target": "body", "remove": "modal-open,mobile-nav-open"},
+          {"target": "html", "remove": "modal-open"}
+        ]
+      '
+    >
+      {% render 'icon-close' %}
+      <p>{{ 'layout.general.close' | t }}</p>
+    </button>
+
+    {% comment %} Hierarchy nav {% endcomment %}
+    <ul class="navigation__list navigation__list--parent">
+      {% for link in linklists[section.settings.menu].links %}
+        {% if link.links != blank %}
+          <li class="navigation__item navigation__item--parent" id="nav-{{ link.title | handleize }}" data-nav-item="true">
+            <button type="button" role="button" class="navigation__link navigation__link--parent" data-nav-toggle>
+              {{ link.title }}
+            </button>
+            <div class="navigation__mega">
+              <div class="container">
+                <div class="navigation__title">
+                  <button class="navigation__back" data-nav-btn-back>
+                    <span class="visually-hidden">{{ 'layout.general.back' | t }}</span>
+                    {% render 'icon-arrow-back' %}
+                    <p>{{ link.title }}</p>
+                  </button>
+                </div>
+
+                <ul class="navigation__list navigation__list--child">
+                  {% for childLink in link.links %}
+                    <li class="navigation__item navigation__item--child">
+                      <a href="{{ childLink.url }}" class="navigation__link navigation__link--child">
+                        <p>{{ childLink.title }}</p>
+                      </a>
+                      <ul class="navigation__list navigation__list--grandchild">
+                        {% for grandChildLink in childLink.links %}
+                          <li class="navigation__item navigation__item--grandchild">
+                            <a href="{{ grandChildLink.url }}" class="navigation__link navigation__link--grandchild">
+                              {{ grandChildLink.title }}
+                            </a>
+                          </li>
+                        {% endfor %}
+                      </ul>
+                    </li>
+                  {% endfor %}
+
+                  {% for block in adverts %}
+                    {% if block.settings.menu_name == link.title %}
+                      <li class="navigation__advert">
+                        <a href="{{ block.settings.cta_link }}" class="navigation__advert-link">
+                          <div class="navigation__advert-image">
+                            {% render 'image', img: block.settings.image, width: 230, height: 230, sizes: '230px' %}
+                          </div>
+                          <div class="navigation__advert-content">
+                            <p>{{ block.settings.title }}</p>
+                            <button type="button" class="cta">{{ block.settings.cta_text }}</button>
+                          </div>
+                        </a>
+                      </li>
+                    {% endif %}
+                  {% endfor %}
+                </ul>
+                <a class="btn btn--primary btn--block btn--shop-all" href="{{ link.url }}">{{ 'layout.general.shop_all' | t }}</a>
+              </div>
+            </div>
+          </li>
+        {% else %}
+          <li class="navigation__item navigation__item--parent" id="nav-{{ link.title | handleize }}" data-nav-item="true">
+            <a href="{{ link.url }}" class="navigation__link navigation__link--single">
+              {{ link.title }}
+            </a>
+          </li>
+        {% endif %}
+      {% endfor %}
+    </ul>
+
+    {% comment %} Mobile actions {% endcomment %}
+    <div class="navigation__actions">
+      {% render 'header-icon-customer', button_only: false %}
+      {% render 'header-icon-contact' %}
+    </div>
+  </nav>
+</section>

@@ -1,0 +1,43 @@
+{% # prettier-ignore %}
+
+body.klaviyo-bis-close { position: relative; }
+
+#klaviyo-bis-modal { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); max-width: 520px; width: 90%; background: {{ settings.color_1 }}; color: {{ settings.color_3 }}; padding: 24px; }
+
+#klaviyo-bis-modal #container { margin: unset; padding: unset; background: unset; position: static; }
+
+@media screen and (min-width: 1024px) { #klaviyo-bis-modal { padding: 40px; } }
+
+#klaviyo-bis-modal .close { color: {{ settings.color_3 }}; text-shadow: unset; top: 16px; right: 16px; width: 44px; height: 44px; }
+
+#klaviyo-bis-modal .alert { margin: 16px 0 0; background: unset; border: unset; padding: 0; }
+
+#klaviyo-bis-modal .alert-danger { color: {{ settings.color_error }}; }
+
+#klaviyo-bis-modal .alert-success { color: {{ settings.color_success }}; }
+
+#klaviyo-bis-modal .modal-title { margin: 0 0 16px; }
+
+@media screen and (min-width: 768px) { #klaviyo-bis-modal .modal-title { margin: 0 0 24px; } }
+
+#klaviyo-bis-modal p { margin: 0 0 16px; }
+
+#klaviyo-bis-modal .submit-container, #klaviyo-bis-modal .small-print { margin: 0; }
+
+#klaviyo-bis-modal .form-group { margin: 0 0 16px; }
+
+#klaviyo-bis-modal .form-control { color: {{ settings.color_3 }}; line-height: 1; margin-bottom: 4px; background: transparent; border-radius: 0; box-shadow: unset; padding: unset; }
+
+#klaviyo-bis-modal .form-control::placeholder { color: {{ settings.color_3 }}; }
+
+#klaviyo-bis-modal .form-control:focus, #klaviyo-bis-modal .form-control:focus-visible { outline: 0; }
+
+#klaviyo-bis-modal .selectpicker { appearance: none; -moz-appearance: none; -webkit-appearance: none; }
+
+#klaviyo-bis-modal #variant_select { position: relative; }
+
+#klaviyo-bis-modal #variant_select::after { content: ''; display: block; position: absolute; right: 15px; height: 0px; width: 0px; top: 50%; border: 7px solid {{ settings.color_background_dark }}; border-bottom-color: transparent; border-left-color: transparent; border-right-color: transparent; transform: translateY(-15%); }
+
+#klaviyo-bis-modal .btn { cursor: pointer; text-align: center; transition: all 500ms ease-in-out; border: 1px solid {{ settings.color_3 }}; color: {{ settings.color_3 }}; }
+
+#klaviyo-bis-modal .btn:hover { background: {{ settings.color_3 }}; border: 1px solid {{ settings.color_1 }}; color: {{ settings.color_1 }}; }

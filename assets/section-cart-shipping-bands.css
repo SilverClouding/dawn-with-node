@@ -1,0 +1,9 @@
+.cart-shipping-bands__list {
+  display: grid;
+  gap: 16px;
+}
+.cart-shipping-bands__item {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: 20px 1fr;
+}

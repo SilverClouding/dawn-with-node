@@ -1,0 +1,113 @@
+<div class="featured-products" data-featured-products>
+  <div class="container">
+    <div class="featured-products__header">
+      <h2 class="heading-3">{{ section.settings.title }}</h2>
+      {% if section.settings.cta_link != blank %}
+        <a class="view-all cta cta--arrow" href="{{ section.settings.cta_link }}">{{ section.settings.cta_text }}</a>
+      {% endif %}
+    </div>
+    <div
+      class="swiper featured-products__swiper"
+      data-swiper
+      id="swiper__{{ section.id }}"
+      data-id="swiper__{{ section.id }}"
+      data-swiper-config='
+        {
+          "loop": true,
+          "slidesPerView": 1.5,
+          "spaceBetween": 16,
+          "freeMode": true,
+          "navigation": {
+            "nextEl": ".swiper-button-next",
+            "prevEl": ".swiper-button-prev"
+          },
+          "pagination": {
+            "el": ".swiper-pagination",
+            "type": "progressbar"
+          },
+          "breakpoints": {
+            "768": {
+              "slidesPerView": 3,
+              "spaceBetween": 16
+            },
+            "1024": {
+              "slidesPerView": 4,
+              "spaceBetween": 8,
+              "freeMode": false
+            }
+          }
+        }
+      '
+    >
+      <div class="swiper-wrapper">
+        {% if section.settings.collection != blank %}
+          {% for product in section.settings.collection.products limit: section.settings.limit %}
+            <div class="swiper-slide">
+              {% render 'product-card', product: product %}
+            </div>
+          {% endfor %}
+        {% elsif section.settings.product_list != blank %}
+          {% for product in section.settings.product_list limit: section.settings.limit %}
+            <div class="swiper-slide">
+              {% render 'product-card', product: product %}
+            </div>
+          {% endfor %}
+        {% endif %}
+      </div>
+      <button aria-label="Previous Slide" class="swiper-button swiper-button-prev"></button>
+      <button aria-label="Next Slide" class="swiper-button swiper-button-next"></button>
+      <div class="swiper-pagination"></div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Featured Products",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title"
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "CTA Text",
+      "default": "Shop All"
+    },
+    {
+      "type": "url",
+      "id": "cta_link",
+      "label": "CTA Link"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "product_list",
+      "id": "product_list",
+      "label": "Product List"
+    },
+    {
+      "type": "range",
+      "id": "limit",
+      "min": 4,
+      "max": 12,
+      "step": 4,
+      "unit": "pr",
+      "label": "Limit",
+      "default": 8,
+      "info": "Total amount of products shown"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured Products",
+      "category": "Baseline"
+    }
+  ]
+}
+{% endschema %}

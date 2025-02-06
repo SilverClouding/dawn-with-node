@@ -1,0 +1,219 @@
+{% assign has_preorder_items = false %}
+<section class="cart">
+  <div class="container">
+    {% if cart.item_count > 0 %}
+      <h1 class="heading-2 cart__title">{{ 'cart.general.title' | t }}</h1>
+
+      <form action="{{ routes.cart_url }}" method="post" novalidate>
+        <div class="cart__content">
+          <div class="cart__items-container">
+            {% render 'promo-bar-portal' %}
+
+            <ul class="cart__items" data-aid="cart__items">
+              {% for line_item in cart.items %}
+                {% assign is_pre_order_item = false %}
+                {% assign pre_order_message = '' %}
+                {% for tag in line_item.product.tags %}
+                  {% assign tag_to_compare = tag | downcase %}
+                  {% if tag_to_compare == 'sticker preorder' %}
+                    {% assign has_preorder_items = true %}
+                    {% assign is_pre_order_item = true %}
+                    {% assign pre_order_message = line_item.product.metafields.preorder.message %}
+                    {% break %}
+                  {% endif %}
+                {% endfor %}
+
+                <li class="cart__item" data-aid="cart__item">
+                  <div class="cart__item-image">
+                    <a href="{{ line_item.url | within: collections.all }}" class="img-container">
+                      <span class="visually-hidden">{{ line_item.product.title }}</span>
+                      {% render 'image', img: line_item.product.featured_image, width: 150, height: 150, alt: line_item.product.title, class: 'cart__item--image', sizes: '150px' %}
+                    </a>
+                  </div>
+
+                  <div class="cart__item-details-wrapper">
+                    <div class="cart__item-details cart__item-details--title">
+                      <div class="cart__item--title">
+                        <h5 class="heading-5">
+                          <a href="{{ line_item.url }}">{{ line_item.product.title }}</a>
+                        </h5>
+
+                        {% if is_pre_order_item %}
+                          <span class="cart__item--preorder">{{ pre_order_message }}</span>
+                        {% endif %}
+
+                        {% unless line_item.product.has_only_default_variant %}
+                          <p>{{ line_item.variant.title }}</p>
+                        {% endunless %}
+                      </div>
+                    </div>
+
+                    <div class="cart__item-details cart__item-details--quantity">
+                      {% render 'quantity-selector', item: line_item %}
+                      <button
+                        type="submit"
+                        class="cta cart__item-update cart__item-update--{{ line_item.id }} hide"
+                      >
+                        {{ 'cart.general.update' | t }}
+                      </button>
+                    </div>
+
+                    <div class="cart__item-details cart__item-details--price">
+                      {% render 'product-price', product: line_item.product %}
+                    </div>
+
+                    <div class="cart__item-details cart__item-details--remove">
+                      <a href="{{ routes.cart_change_url }}?line={{ forloop.index }}&amp;quantity=0" class="cta">
+                        {{ 'cart.general.remove' | t }}
+                      </a>
+                    </div>
+                  </div>
+                </li>
+              {% endfor %}
+            </ul>
+
+            <div
+              data-app-layer-portal="cart-upsells"
+              data-show-shopify-upsells="{{ settings.show_shopify_upsells | json }}"
+            ></div>
+          </div>
+
+          <div class="cart__summary-container">
+            <div class="cart__summary">
+              <h2 class="heading-2">{{ 'cart.general.summary_title' | t }}</h2>
+
+              <hr class="separator">
+
+              <div class="cart__subtotal">
+                {% assign item_text = cart.item_count | pluralize: 'item', 'items' %}
+                <p class="heading-4">
+                  {{ 'cart.general.subtotal' | t: item_count: cart.item_count, item_text: item_text }}
+                </p>
+                <p class="heading-4">{{ cart.original_total_price | money }}</p>
+              </div>
+              {% if cart.total_discounts > 0 %}
+                <div class="cart__savings">
+                  <p class="heading-4">{{ 'cart.general.savings' | t }}</p>
+                  <p class="heading-4">{{ cart.total_discounts | money }}</p>
+                </div>
+              {% endif %}
+
+              <div class="cart__total">
+                <p class="heading-3">{{ 'cart.general.total' | t }}</p>
+                <p class="heading-3">{{ cart.total_price | money }}</p>
+              </div>
+
+              {% if has_preorder_items %}
+                <p class="cart__summary-preorder">{{ 'cart.general.preorder_notice' | t }}</p>
+              {% endif %}
+
+              <input type="submit" name="checkout" class="btn btn--primary" value="{{ 'cart.general.checkout' | t }}">
+
+              {% render 'cart-shipping-bands', section: section %}
+
+              <hr class="separator">
+
+              <div class="cart__payment-icons">
+                {% render 'payment-icons' %}
+              </div>
+            </div>
+
+            {% if settings.cart_notes_enable %}
+              <div class="cart__notes">
+                <h3 class="heading-3">{{ 'cart.general.note_title' | t }}</h3>
+                <label class="hide" for="CartSpecialInstructions">{{ 'cart.general.note_title' | t }}</label>
+                <textarea
+                  class="text-input"
+                  rows="5"
+                  placeholder="{{ 'cart.general.note_placeholder' | t }}"
+                  name="note"
+                  id="CartSpecialInstructions"
+                  data-validate-input
+                  data-max-chars="{{ settings.cart_notes_max_characters }}"
+                >{{ cart.note }}</textarea>
+                <small class="small">
+                  {{- 'cart.general.note_support_text' | t: max: settings.cart_notes_max_characters -}}
+                </small>
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      </form>
+    {% else %}
+      <h1 class="heading-1">{{ 'cart.general.title' | t }}</h1>
+
+      {% comment %}
+        Cart empty state
+      {% endcomment %}
+      <div class="supports-cookies">
+        <div class="rte">
+          <p>{{ 'cart.general.empty' | t }}</p>
+          <p>{{ 'cart.general.continue_browsing_html' | t }}</p>
+        </div>
+      </div>
+
+      {% comment %}
+        Cart no cookies state
+        ---------------------
+        Browser cookies are required to use the cart. If cookies aren't enabled in the
+        browser a message is displayed prompting the user to enable them.
+      {% endcomment %}
+      <div class="no-cookies-warning">
+        <p>{{ 'cart.general.cookies_required' | t }}</p>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Cart",
+  "settings": [
+    {
+      "type": "header",
+      "content": "This should only be used on cart.json"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_dynamic_recs",
+      "default": true,
+      "label": "Check to show dynamic recommendations"
+    },
+    {
+      "type": "range",
+      "id": "cart_upsell_quantity",
+      "min": 0,
+      "max": 12,
+      "step": 1,
+      "unit": "itm",
+      "label": "Quantity",
+      "default": 3
+    }
+  ],
+  "blocks": [
+    {
+      "type": "shipping_band",
+      "name": "Shipping Information Text",
+      "settings": [
+        {
+          "type": "html",
+          "id": "icon",
+          "label": "Icon",
+          "info": "Visit https://jakearchibald.github.io/svgomg/ and drag and drop the svg onto the page to optimise the image. Click the copy icon (above the blue download arrow) and paste the contents into this field. Icon should be 40x40px"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Icon"
+        },
+        {
+          "type": "richtext",
+          "id": "title",
+          "label": "Title",
+          "default": "<p></p>"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

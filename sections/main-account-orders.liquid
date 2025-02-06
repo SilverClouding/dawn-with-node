@@ -1,0 +1,29 @@
+<section class="customer-template customer-template--account">
+  <div class="container">
+    <div class="customer-account-main">
+      {% render 'customer-account-header' %}
+
+      <section class="customer-account-body">
+        {% render 'customer-account-menu', class_name: 'account-menu' %}
+
+        <div class="customer-content customer-content--orders">
+          {% render 'customer-account-orders' %}
+        </div>
+
+        {% render 'customer-account-menu-mobile', class_name: 'account-menu account-menu--mobile' %}
+      </section>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Account Orders",
+  "settings": [
+    {
+      "type": "header",
+      "content": "This should only be used on account.orders.json"
+    }
+  ]
+}
+{% endschema %}

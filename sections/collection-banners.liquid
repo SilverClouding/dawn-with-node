@@ -1,0 +1,85 @@
+<section class="collection-banners">
+  <div class="container">
+    <header class="collection-banners__header">
+      <h2 class="heading-2">{{ section.settings.title }}</h2>
+    </header>
+
+    {% if section.blocks != blank %}
+      <div class="collection-banners__grid">
+        {% for block in section.blocks %}
+          <div class="collection-banners__item">
+            <a class="collection-banners__link" href="{{ block.settings.cta_link }}" title="{{ block.settings.title }}" aria-label="{{ block.settings.title }}">
+              {% render 'image', img: block.settings.image, alt: block.settings.title, vw_tablet: 100 %}
+            </a>
+            {% if block.settings.title != blank %}
+              <p class="paragraph--lg">{{ block.settings.title }}</p>
+            {% endif %}
+            {% if block.settings.content != blank %}
+              {{ block.settings.content }}
+            {% endif %}
+            {% if block.settings.cta_link != blank %}
+              <a href="{{ block.settings.cta_link }}" class="btn btn--primary btn--block">
+                {{- block.settings.cta_text -}}
+              </a>
+            {% endif %}
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Collection Banners",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Collections"
+    }
+  ],
+  "max_blocks": 4,
+  "blocks": [
+    {
+      "type": "collection",
+      "name": "Collection",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "text",
+          "id": "content",
+          "label": "Content"
+        },
+        {
+          "type": "text",
+          "id": "cta_text",
+          "label": "CTA Text",
+          "default": "Shop Now"
+        },
+        {
+          "type": "url",
+          "id": "cta_link",
+          "label": "CTA Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collection Banners",
+      "category": "Baseline"
+    }
+  ]
+}
+{% endschema %}

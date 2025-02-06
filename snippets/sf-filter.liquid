@@ -1,0 +1,33 @@
+{%- layout none -%}
+{ "label":
+{{- filter.label | json -}}
+, "maxValue":
+{{- filter.max_value.value | default: filter.range_max | json -}}
+, "minValue":
+{{- filter.min_value.value | default: 0 | json -}}
+, "id":
+{{- filter.param_name | json -}}
+, "rangeMax":
+{{- filter.range_max | json -}}
+, "rangeMin":
+{{- filter.range_min | json -}}
+, "type":
+{{- filter.type | json -}}
+, "values": [
+{%- for value in filter.values -%}
+  { "active":
+  {{- value.active | json -}}
+  , "count":
+  {{- value.count | json -}}
+  , "label":
+  {{- value.label | json -}}
+  , "id":
+  {{- value.param_name | json -}}
+  , "value":
+  {{- value.value | json -}}
+  }
+  {%- unless forloop.last -%},{%- endunless -%}
+{%- endfor -%}
+] , "presentation":
+{{- filter.presentation | json -}}
+}

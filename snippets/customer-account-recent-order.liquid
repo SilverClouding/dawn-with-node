@@ -1,0 +1,58 @@
+{% if customer.orders_count > 0 %}
+  <section class="orders-overview">
+    <div class="customer-title customer-title--orders">
+      <div class="title">
+        {% for order in customer.orders %}
+          {% if order.id == customer.last_order.id %}
+            {{ 'customer.orders.recent_order' | t }} - {{ order.name }}
+          {% endif %}
+        {% endfor %}
+      </div>
+
+      <div class="order-actions">
+        {% for order in customer.orders %}
+          {% if order.id == customer.last_order.id %}
+            {% assign reorder_url = '/' %}
+            {% for line_item in order.line_items %}
+              {% capture reorder_url %}{{ reorder_url | append: line_item.variant_id | append: ':' | append: line_item.quantity | append: ',' }}{% endcapture %}
+            {% endfor %}
+
+            <a href="{{ routes.cart_url | append: reorder_url }}" class="btn btn--primary">
+              {{- 'customer.orders.order_again' | t -}}
+            </a>
+            <a href="{{ order.customer_url }}" class="view">{{ 'customer.orders.view_details' | t }}</a>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="customer-details-wrapper customer-details-wrapper--order">
+      <table class="responsive-table">
+        <thead>
+          <tr>
+            <th>{{ 'customer.orders.date' | t }}</th>
+            <th>{{ 'customer.orders.payment_status' | t }}</th>
+            <th>{{ 'customer.orders.fulfillment_status' | t }}</th>
+            <th>{{ 'customer.orders.total' | t }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for order in customer.orders %}
+            {% if order.id == customer.last_order.id %}
+              <tr>
+                <td data-label="{{ 'customer.orders.date' | t }}">
+                  {{ order.created_at | date: format: 'month_day_year' }}
+                </td>
+                <td data-label="{{ 'customer.orders.payment_status' | t }}">{{ order.financial_status_label }}</td>
+                <td data-label="{{ 'customer.orders.fulfillment_status' | t }}">
+                  {{ order.fulfillment_status_label }}
+                </td>
+                <td data-label="{{ 'customer.orders.total' | t }}">{{ order.total_price | money }}</td>
+              </tr>
+            {% endif %}
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+{% endif %}

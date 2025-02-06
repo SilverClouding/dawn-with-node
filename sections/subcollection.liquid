@@ -1,0 +1,95 @@
+<section class="subcollection">
+  <div class="container">
+    <ul class="subcollection__list">
+      {% if section.settings.image_desktop != blank %}
+        <li class="subcollection__item subcollection__item--promo">
+          {% render 'ad-banner', image: section.settings.image_desktop, image_mobile: section.settings.image_mobile, title: section.settings.title, text: section.settings.content, cta_text: section.settings.cta_text, url: section.settings.cta_link %}
+        </li>
+      {% endif %}
+      {% if section.settings.collection != blank %}
+        {% for product in section.settings.collection.products limit: section.settings.limit %}
+          <li class="subcollection__item subcollection__item--product">
+            {% render 'product-card', product: product %}
+          </li>
+        {% endfor %}
+      {% elsif section.settings.product_list != blank %}
+        {% for product in section.settings.product_list limit: section.settings.limit %}
+          <li class="subcollection__item subcollection__item--product">
+            {% render 'product-card', product: product %}
+          </li>
+        {% endfor %}
+      {% endif %}
+    </ul>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Subcollection",
+  "settings": [
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "product_list",
+      "id": "product_list",
+      "label": "Product List"
+    },
+    {
+      "type": "range",
+      "id": "limit",
+      "min": 4,
+      "max": 12,
+      "step": 2,
+      "unit": "pr",
+      "label": "Limit",
+      "default": 8,
+      "info": "Total amount of products shown"
+    },
+    {
+      "type": "header",
+      "content": "Advert Settings"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_desktop",
+      "label": "Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_mobile",
+      "label": "Image Mobile"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Title"
+    },
+    {
+      "type": "richtext",
+      "id": "content",
+      "label": "Content",
+      "default": "<p></p>"
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "CTA Text",
+      "default": "Shop"
+    },
+    {
+      "type": "url",
+      "id": "cta_link",
+      "label": "CTA Link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Subcollection"
+    }
+  ]
+}
+{% endschema %}

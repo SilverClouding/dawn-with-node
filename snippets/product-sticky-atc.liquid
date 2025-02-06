@@ -1,0 +1,69 @@
+{% assign current_variant = product.selected_variant %}
+{%- comment -%}if we can't get a selected variant get the first...{%- endcomment -%}
+{% if current_variant == blank %}
+  {% assign current_variant = product.variants.first %}
+{% endif %}
+
+{%- comment -%}
+  {% render 'product-sticky-atc' %}
+{%- endcomment -%}
+
+<section class="product-sticky-atc">
+  <div class="container">
+    <div class="product-sticky-atc__grid">
+      <div class="product-sticky-atc__form">
+        {% for option in product.options_with_values %}
+          <div class="select-wrapper">
+            <select data-option-select-spoof aria-label="Select {{ option.name }}" id="option-{{ option.position }}" class="select">
+              <option disabled selected>Select {{ option.name }}</option>
+              {% for value in option.values %}
+                <option
+                  value="{{ value }}"
+                  {% if option.selected_value == value or option.values.size <= 1 %}
+                    selected="selected"
+                  {% endif %}
+                >
+                  {{ value }}
+                </option>
+              {% endfor %}
+            </select>
+          </div>
+        {% endfor %}
+
+        <noscript>
+          <select name="id">
+            {% for variant in product.variants %}
+              <option
+                {% if variant == current_variant.id %}
+                  selected="selected"
+                {% endif %}
+                value="{{ variant.id }}"
+              >
+                {{ variant.title }} - {{ variant.price | money }}
+              </option>
+            {% endfor %}
+          </select>
+        </noscript>
+
+        <button
+          {% unless current_variant.available %}
+            disabled
+          {% endunless %}
+          data-product-form-submit-spoof
+          data-in-stock-text="{{ 'products.product.add_to_cart' | t }}"
+          data-unavailable-text="{{ 'products.product.unavailable' | t }}"
+          data-oos-text="{{ 'products.product.sold_out' | t }}"
+          data-preOrder-text="{{ 'products.product.preorder' | t }}"
+          data-success-text="{{ 'products.product.added_to_cart' | t }}"
+          data-add-to-cart
+          data-atc-quantity-input="[data-product-form-quantity-input]"
+          data-atc-product-id="{{ current_variant.id }}"
+          type="submit"
+          class="btn--atc btn btn--primary"
+        >
+          <span>{{ 'products.product.add_to_cart' | t }}</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>

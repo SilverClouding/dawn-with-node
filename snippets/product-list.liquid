@@ -1,0 +1,114 @@
+{% if infinite %}
+  {% paginate collection.products by pagination %}
+    {% assign current_page_0 = paginate.current_page | minus: 1 %}
+    <div
+      data-section-id="{{ section_id }}"
+      data-products-container
+      {% if use_load_more_button %}
+        data-use-load-more-button="true"
+      {% endif %}
+      data-aid="products-list"
+    >
+      {% comment %}
+        START PLACEHOLDERS
+        Contains placeholders of of product card in previous pages
+        to stop layout shift from occuring if landing on a page > 1
+      {% endcomment %}
+      <div data-products-list-placeholders>
+        {% for page in (1..current_page_0) %}
+          <div
+            data-page-number="{{ page }}"
+            data-page-direction="prev"
+            class="product-card-container grid-list"
+          >
+            {% for i in (1..pagination) %}
+              <div class="grid-item" data-placeholder-product>
+                {% render 'product-card', loading: true %}
+              </div>
+            {% endfor %}
+          </div>
+        {% endfor %}
+      </div>
+      {% comment %}
+        END PLACEHOLDERS
+        Contains placeholders of of product card in previous pages
+        to stop layout shift from occuring if landing on a page > 1
+      {% endcomment %}
+      <div data-products-list>
+        {% if collection.products_count == 0 %}
+          <p class="text-center">{{ 'collections.general.no_matches' | t }}</p>
+        {% else %}
+          <div
+            data-page-number="{{ paginate.current_page }}"
+            data-aid="products-list"
+            class="product-card-container grid-list loaded"
+          >
+            {% for product in collection.products %}
+              {% if blocks != blank %}
+                {% assign parentIndex = forloop.index %}
+                {% for block in blocks %}
+                  {% if parentIndex == block.settings.position %}
+                    {% render 'collection-advert', index: forloop.index0, useBlock: true, block_settings: block.settings %}
+                    {% break %}
+                  {% endif %}
+                {% endfor %}
+              {% endif %}
+
+              <div class="grid-item">
+                {% render 'product-card', product: product %}
+              </div>
+            {% endfor %}
+          </div>
+          {% if paginate.next.is_link %}
+            <div
+              data-page-number="{{ current_page | plus: 1 }}"
+              data-page-url="{{ paginate.next.url }}"
+              data-page-direction="next"
+              class="product-card-container grid-list"
+            >
+              <span data-page-trigger class="product-list-loader">{% render 'loading' %}</span>
+            </div>
+          {% endif %}
+        {% endif %}
+      </div>
+    </div>
+  {% endpaginate %}
+{% else %}
+  {%- comment -%}
+    Not infinite i.e. Uses pagination links.
+  {%- endcomment -%}
+  {% paginate collection.products by pagination %}
+    <div data-section-id="{{ section_id }}" data-products-container>
+      <div data-products-list data-aid="products-list" class="product-card-container grid-list">
+        {% for product in collection.products %}
+          {% assign parentIndex = forloop.index %}
+          {% for block in blocks %}
+            {% if parentIndex == block.settings.position %}
+              {% render 'collection-advert', index: forloop.index0, useBlock: true, block_settings: block.settings %}
+              {% break %}
+            {% endif %}
+          {% endfor %}
+
+          <div class="grid-item">
+            {% render 'product-card', product: product %}
+          </div>
+        {% endfor %}
+      </div>
+
+      {% comment %} No results {% endcomment %}
+      {% if collection.products_count == 0 %}
+        <p class="text-center">{{ 'collections.general.no_matches' | t }}</p>
+      {% endif %}
+
+      {% comment %} Pagination {% endcomment %}
+      {% if collection.products_count != 0 %}
+        {% assign current_size = collection.products | size %}
+        {% assign current_count = paginate.current_offset | plus: current_size %}
+        {% assign all_count = collection.products_count %}
+        {% render 'pagination', paginate: paginate, has_heading: true, current_count: current_count, all_count: all_count %}
+      {% else %}
+        {% render 'pagination', paginate: paginate %}
+      {% endif %}
+    </div>
+  {% endpaginate %}
+{% endif %}

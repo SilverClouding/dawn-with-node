@@ -1,0 +1,14 @@
+<div class="cart-shipping-bands">
+  <ul class="cart-shipping-bands__list">
+    {% for block in section.blocks %}
+      <li class="cart-shipping-bands__item">
+        {% if block.settings.icon != blank %}
+          {{ block.settings.icon }}
+        {% elsif block.settings.image != blank %}
+          <img width="40" height="40" src="{{ block.settings.icon | image_url: width: 40, height: 40 }}" alt="{{ block.settings.text | escape }}">
+        {% endif %}
+        {{ block.settings.text }}
+      </li>
+    {% endfor %}
+  </ul>
+</div>

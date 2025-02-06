@@ -1,0 +1,28 @@
+{% if localization.available_countries.size > 1 %}
+  <div data-localisation-form data-localisation-country class="localisation">
+    {% form 'localization' %}
+      <button type="button" data-click-toggle='{"target": "[data-localisation-country]", "toggle": "is-expanded"}' class="localisation__arrow">{% render 'icon-arrow-down' | fillColour: "#000" %}</button>
+      <ul id="CountryList" role="list" data-local-list>
+        {% for country in localization.available_countries %}
+          <li
+            class="{% if country.iso_code == localization.country.iso_code %}selected{% endif %}"
+            tabindex="-1"
+          >
+            <button
+              {% if country.iso_code == localization.country.iso_code %}
+                aria-current="true"
+              {% endif %}
+              data-value="{{ country.iso_code }}"
+              title="{{ country.name }}"
+              type="submit"
+            >
+              {{ country | image_url: height: 15 | image_tag }}
+            </button>
+          </li>
+        {% endfor %}
+      </ul>
+
+      <input type="hidden" name="country_code" value="{{ localization.country.iso_code }}">
+    {% endform %}
+  </div>
+{% endif %}

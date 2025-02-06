@@ -1,0 +1,32 @@
+{%- comment -%}
+  Gets called from image.liquid
+{%- endcomment -%}
+<img
+  class="image-snippet__img{% if modifier != blank %} {{ modifier | escape }}{% endif %}{% if class != blank %} {{ class | escape }}{% endif %}"
+  width="{{ width }}"
+  height="{{ height }}"
+  {% unless no_lazy %}
+    src="{{ placeholder_url }}"
+    loading="lazy"
+  {% else %}
+    src="{{ image_url }}"
+    {% if fetchpriority == 'high' %}
+      loading="eager"
+    {% endif %}
+  {% endunless %}
+  sizes="{{ sizes }}"
+  srcset="{% render 'image-srcset', image_widths: image_widths, width_two_times: width_two_times, ar_width: ar_width, ar_height: ar_height, crop: crop, img: img %}"
+  {% if alt != blank %}
+    alt="{{ alt | escape }}"
+  {% elsif img.alt != blank %}
+    alt="{{ img.alt | escape }}"
+  {% else %}
+    alt="image"
+  {% endif %}
+  {% if data != blank %}
+    {{ data }}
+  {% endif %}
+  {% if fetchpriority != blank %}
+    fetchpriority="{{ fetchpriority }}"
+  {% endif %}
+>

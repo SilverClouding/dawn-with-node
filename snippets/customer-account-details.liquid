@@ -1,0 +1,26 @@
+<section class="customer-details customer-details--overview">
+  <div class="customer-title customer-title--overview">
+    <div class="title">
+      {% if request.path contains '/account/addresses' %}
+        {{ 'customer.orders.personal_title' | t }}
+      {% else %}
+        {{ 'customer.orders.account_title' | t }}
+      {% endif %}
+    </div>
+  </div>
+  <div class="customer-details-wrapper">
+    <div class="customer-profile">
+      <ul>
+        <li>{{ customer.name }}</li>
+        <li><span class="bullet_title">Email: </span>{{ customer.email }}</li>
+        <li><span class="bullet_title">Phone: </span>{{ customer.phone }}</li>
+      </ul>
+    </div>
+
+    {% unless request.path contains '/account/addresses' %}
+      <div class="customer-address">
+        {{ customer.default_address | format_address }}
+      </div>
+    {% endunless %}
+  </div>
+</section>

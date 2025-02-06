@@ -1,0 +1,58 @@
+{% capture trending_searches %}
+    {% if section.settings.trending_searches != blank %}
+    <ul>
+      {% for link in linklists[section.settings.trending_searches].links %}
+        <li class="search__results-item search__results-item--trending">
+          <a href="{{ link.url }}">{{ link.title }}</a>
+        </li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+{% endcapture %}
+
+{% capture trending_collections %}
+  {% if section.settings.trending_collections != blank %}
+    {% for link in linklists[section.settings.trending_collections].links %}
+      <div class="search__results-column">
+        <a href="{{ link.url }}">
+          {% comment %}
+            {% if link.type == 'collection_link' %}
+              {% assign col = link.object %}
+              {% if col.image != blank %}
+                {% assign image = col.image %}
+                <img src="{{ image | image_url: width: 448, height: 448 }}" alt="{{ data.collection.title }}" width="448" height="448">
+              {% endif %}
+            {% endif %}
+          {% endcomment %}
+          <p class="heading-5">{{ link.title }}</p>
+          <span class="cta">{{ 'general.search.quick_search.shop_now' | t }}</span>
+        </a>
+      </div>
+    {% endfor %}
+  {% endif %}
+{% endcapture %}
+
+{% capture trending_products %}
+  {% if section.settings.trending_products != blank %}
+    {% for prod in section.settings.trending_products %}
+      {% render 'product-card', product: prod, simple: true %}
+    {% endfor %}
+  {% endif %}
+{% endcapture %}
+
+{% # prettier-ignore-attributes %}
+<div
+  data-app-layer-portal="search-trending"
+  {% if showSearches and trending_searches != blank %}
+    data-lang-title-searches="{{ 'general.search.quick_search.trending_searches' | t }}"
+    data-list-searches='{{ trending_searches | escape }}'
+  {% endif %}
+  {% if showCollections and trending_collections != blank %}
+    data-lang-title-collections="{{ 'general.search.quick_search.trending_collections' | t }}"
+    data-list-collections='{{ trending_collections | escape }}'
+  {% endif %}
+  {% if showProducts and trending_products != blank %}
+    data-lang-title-products="{{ 'general.search.quick_search.trending_products' | t }}"
+    data-list-products='{{ trending_products | escape }}'
+  {% endif %}
+></div>

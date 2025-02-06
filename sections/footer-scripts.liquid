@@ -1,0 +1,373 @@
+{%- liquid
+  assign password = false
+  if template == 'password'
+    assign password = true
+  endif
+-%}
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace('no-js', '');
+  if (navigator.cookieEnabled) document.documentElement.classList.remove('supports-no-cookies');
+
+  window.blubolt = {
+    {% if collection %}
+      collectionCount: {{ collection.all_products_count }},
+    {% endif %}
+    SearchService: {{ section.settings.fs_service_provider | json }}
+  }
+
+  window.theme = {
+    strings: {
+      addToCart: {{ 'products.product.add_to_cart' | t | json }},
+      soldOut: {{ 'products.product.sold_out' | t | json }},
+      fromTextHtml: {{ 'products.product.from_text_html' | t: price: '[[price]]' | json }},
+      fromToTextHtml: {{ 'products.product.from_to_text_html' | t: price_min: '[[price_min]]', price_max: '[[price_max]]' | json }},
+      unavailable: {{ 'products.product.unavailable' | t | json }},
+      cartRecsOpts: {{ 'cart.general.upsell_options' | t | json }},
+      select: {{ 'products.product.upsell_select' | t | json }},
+      quickAdd: {{ 'products.product.quickadd_title' | t | json }}
+    },
+    moneyFormat: {{ shop.money_format | json }},
+    moneyWithCurrencyFormat: {{ shop.money_with_currency_format | json }},
+    activeCurrency: {{ cart.currency.iso_code | json }},
+    template: {{ template.name | json }},
+    shopName: {{ shop.name | json }},
+    shopUrl: {{ shop.url | append: '/' | json }},
+    sizesArray: [{{ settings.default_setting_sizes_array }}]
+  };
+
+  window.swatches = {
+    {%- for swatch in shop.metaobjects.swatches.values -%}
+      {{ swatch.title | handleize | json }} : {
+        {% if swatch.colors.value != blank %}"colors": [{% for color in swatch.colors.value %}"{{ color }}"{% unless forloop.last %},{% endunless %}{% endfor %}],
+        {% elsif swatch.color != blank %}"colors": ["{{ swatch.color }}"],{% endif %}
+        {% if swatch.pattern != blank %}"pattern": {{ swatch.pattern | image_url: width: 80, height: 80 | json }},{% endif %}
+        "title": {{ swatch.title | json }},
+        "id": {{ swatch.system.id | json }}
+      }{% unless forloop.last %},{% endunless %}
+    {%- endfor %}
+  }
+
+  window.promoBar = {
+    thresholds: [
+      {%- if settings.promo_bar_enable == true -%}
+        {%- for i in (1..20) -%}
+          {%- assign currency_code = 'promo_bar_currency_' | append: i -%}
+          {%- assign threshold_key = 'promo_bar_amount_' | append: i -%}
+          {
+            "code": {{ settings[currency_code] | json }},
+            "threshold": {{ settings[threshold_key] | json }}
+          }
+          {%- if forloop.last != true -%},{%- endif -%}
+        {%- endfor -%}
+      {%- endif -%}
+    ]
+  }
+
+  window.cartUpsells = {
+    strings: {
+      "upsellTitle": {{ 'cart.general.upsell_title' | t | json }}
+    }
+  }
+</script>
+{% unless password %}
+  {% comment %}
+    Filter & Search Provider Configuration setup
+    Need parity between liquid pagination and app layer paginition so come from settings
+  {% endcomment %}
+  {% assign searchFilterDummyTag = settings.filter_dummy_tag %}
+  {% assign rProductsPerPage = settings.pagination_count | plus: 0 %}
+  {% assign rLoadMoreMode = 'paginate' %}
+  {% if settings.products_infinite_scroll %}
+    {% assign rLoadMoreMode = 'infinite' %}
+  {% endif %}
+  {% if settings.use_load_more_button %}
+    {% assign rLoadMoreMode = 'loadMore' %}
+  {% endif %}
+
+  {% if section.settings.fs_service_provider == 'none' %}
+    {% assign hasFilterSearchServiceProvider = false %}
+  {% else %}
+    {% assign hasFilterSearchServiceProvider = true %}
+    {% assign filterSearchConfig = false %}
+    {% for block in section.blocks %}
+      {% if block.type contains section.settings.fs_service_provider %}
+        {% assign filterSearchConfig = block.settings %}
+      {% endif %}
+    {% endfor %}
+  {% endif %}
+
+  <div
+    data-app-layer="main"
+    data-app-layer-config-test
+    {% if hasFilterSearchServiceProvider %}
+      data-app-layer-config-search="{{ filterSearchConfig | json | escape }}"
+      data-app-layer-config-search-products-per-page="{{ rProductsPerPage | json }}"
+      data-app-layer-config-search-load-more-mode="{{ rLoadMoreMode }}"
+      data-app-layer-config-search-filter-dummy-tag="{{ searchFilterDummyTag }}"
+      data-app-layer-config-markets-enabled="{{ shop.enabled_currencies.size | plus: 0 }}"
+      data-app-layer-config-active-collection-id="{{ collection.id }}"
+      data-app-layer-config-active-collection-handle="{{ collection.handle }}"
+      data-app-layer-config-active-collection-title="{{ collection.title }}"
+    {% else %}
+      data-app-layer-config-search="false"
+    {% endif %}
+  ></div>
+
+  <div data-app-layer-portal="quickadd"></div>
+  <script>
+    window.quickAdd = {
+      strings: {
+        "lowStockText" : {{ 'products.product.low_stock' | t | json }},
+        "inStockText": {{ 'products.product.available' | t | json }},
+        "fullDetailsCta": {{ 'products.product.full_details' | t | json }},
+        "oosText": {{ 'products.product.sold_out' | t | json }},
+        "unavailableText": {{ 'products.product.unavailable' | t | json }},
+        "atcText": {{ 'products.product.add_to_cart' | t | json }},
+        "pleaseSelectText": {{ 'products.product.please_select' | t | json }},
+        "title": {{ 'products.product.quickadd_title' | t | json }}
+      }
+    }
+  </script>
+
+  <script type="application/json" data-storefront-api-config>
+    {
+      "shop": "{{ shop.name }}",
+      "apiVersion": "{{ settings.sf_api_version }}",
+      "accessToken": "{{ settings.sf_api_access_token }}"
+    }
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/intersection-observer@0.7.0/intersection-observer.min.js" async></script>
+
+  {% comment %}theme-check-disable MissingTemplate{% endcomment %}
+  {% if theme.role == 'development' or shop.permanent_domain == settings.testing_site_url %}
+    {% render 'script-tags-dev' %}
+  {% else %}
+    {% render 'script-tags-prod' %}
+  {% endif %}
+  {% comment %}theme-check-enable MissingTemplate{% endcomment %}
+
+  {% if settings.gtm_enabled %}
+    <!-- Google Tag Manager (noscript) -->
+    <noscript
+      ><iframe
+        src="https://www.googletagmanager.com/ns.html?id={{ settings.gtm_code }}"
+        height="0"
+        width="0"
+        style="display:none;visibility:hidden"
+      ></iframe
+    ></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+  {% endif %}
+
+  {% if settings.nosto_enabled %}
+    {% if settings.nosto_markets_enabled %}
+      <script type="text/javascript">
+        (() => {window.nostojs=window.nostojs||(cb => {(window.nostojs.q=window.nostojs.q||[]).push(cb);});})();
+        nostojs(api => api.setAutoLoad(false));
+        var Shopify = Shopify || {};
+        Shopify.nosto = {}
+        Shopify.nosto.money_format = {{ shop.money_format | json }};
+      </script>
+    {% else %}
+      {% if settings.nosto_id %}
+        <script async src="//connect.nosto.com/include/{{ settings.nosto_id }}"></script>
+      {% else %}
+        <script async src="//connect.nosto.com/include/shopify-{{ shop.id }}"></script>
+      {% endif %}
+    {% endif %}
+    <script>
+      window.addEventListener('load', function () {
+        (function () {
+          const name = 'nostojs';
+          window[name] =
+            window[name] ||
+            function (cb) {
+              (window[name].q = window[name].q || []).push(cb);
+            };
+        })();
+
+        if (!window['nostojs']) {
+          return;
+        }
+
+        window['nostojs'](function (api) {
+          api.loadRecommendations({});
+        });
+
+        window['nostojs'](function (api) {
+          api.listen('postrender', function () {
+            if (window['blubolt']) {
+              window['blubolt'].dom.swipify();
+              window['blubolt'].dom.nostoUrls();
+              window['blubolt'].dom.nostoSwatches();
+              window['blubolt'].dom.nostoAtc();
+            }
+          });
+        });
+      });
+    </script>
+    {% render 'nosto-tagging' %}
+  {% endif %}
+
+  {% if settings.yotpo_app_key %}
+    <script type="text/javascript">
+      (function e() {
+        var e = document.createElement('script');
+        (e.type = 'text/javascript'), (e.async = true), (e.src = '//staticw2.yotpo.com/{{ settings.yotpo_app_key }}/widget.js');
+        var t = document.getElementsByTagName('script')[0];
+        t.parentNode.insertBefore(e, t);
+      })();
+    </script>
+  {% endif %}
+
+  {% comment %} Shopify only supports relevance and price sorting on the search page. {% endcomment %}
+  {% if section.settings.fs_service_provider == 'shopify' and template == 'search' %}
+    <style>
+      .template-search .filter-and-sort .best-selling,
+      .template-search .filter-and-sort .name-asc,
+      .template-search .filter-and-sort .name-desc,
+      .template-search .filter-and-sort .new-arrival-asc,
+      .template-search .filter-and-sort .new-arrival-desc {
+        display: none;
+      }
+    </style>
+  {% endif %}
+{% endunless %}
+{% schema %}
+{
+  "name": "App Layer",
+  "settings": [
+    {
+      "type": "select",
+      "id": "fs_service_provider",
+      "label": "Filter & Search Service Provider",
+      "options": [
+        {
+          "value": "klevu",
+          "label": "Klevu"
+        },
+        {
+          "value": "boostcommerce",
+          "label": "BoostCommerce"
+        },
+        {
+          "value": "shopify",
+          "label": "Shopify"
+        }
+      ],
+      "default": "shopify",
+      "info": "Ensure the correct Service is being loaded in SearchService.ts"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "fs_klevu",
+      "name": "Filter & Search [Klevu]",
+      "settings": [
+        {
+          "type": "text",
+          "id": "apiKey",
+          "label": "API Key"
+        },
+        {
+          "type": "text",
+          "id": "apiEndpoint",
+          "label": "API Endpoint"
+        },
+        {
+          "type": "text",
+          "id": "qsSuggestionsLimit",
+          "label": "Quick Search Suggestions Limit",
+          "default": "5"
+        },
+        {
+          "type": "text",
+          "id": "qsProductsLimit",
+          "label": "Quick Search Products Limit",
+          "default": "5"
+        },
+        {
+          "type": "text",
+          "id": "qsPagesLimit",
+          "label": "Quick Search Pages Limit",
+          "default": "3"
+        },
+        {
+          "type": "text",
+          "id": "qsCollectionLimit",
+          "label": "Quick Search Collection Limit",
+          "default": "3"
+        },
+        {
+          "type": "checkbox",
+          "id": "suggestionsIncludeUnavailable",
+          "label": "Suggestions Include Unavailable",
+          "info": "Include unavailable products when performing a suggestions search",
+          "default": true
+        }
+      ]
+    },
+    {
+      "type": "fs_boostcommerce",
+      "name": "Filter & Search [Boost]",
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "NOTE: Make sure that you only use one filter tree inside the boost admin. You may need to turn off the search filter tree"
+        },
+        {
+          "type": "text",
+          "id": "apiKey",
+          "label": "API Key",
+          "info": "This is the myshopify URL",
+          "default": "blubolt-demo.myshopify.com"
+        },
+        {
+          "type": "text",
+          "id": "apiEndpoint",
+          "label": "API Endpoint",
+          "default": "https:\/\/services.mybcapps.com\/bc-sf-filter"
+        },
+        {
+          "type": "text",
+          "id": "qsSuggestionsLimit",
+          "label": "Quick Search Suggestions Limit",
+          "default": "5"
+        },
+        {
+          "type": "text",
+          "id": "qsProductsLimit",
+          "label": "Quick Search Products Limit",
+          "default": "5"
+        },
+        {
+          "type": "text",
+          "id": "qsPagesLimit",
+          "label": "Quick Search Pages Limit",
+          "default": "3"
+        },
+        {
+          "type": "text",
+          "id": "qsCollectionLimit",
+          "label": "Quick Search Collection Limit",
+          "default": "3"
+        },
+        {
+          "type": "checkbox",
+          "id": "suggestionsIncludeUnavailable",
+          "label": "Suggestions Include Unavailable",
+          "info": "Include unavailable products when performing a suggestions search",
+          "default": true
+        }
+      ]
+    },
+    {
+      "type": "fs_shopify",
+      "name": "Filter & Search [Shopify]",
+      "settings": []
+    }
+  ]
+}
+{% endschema %}

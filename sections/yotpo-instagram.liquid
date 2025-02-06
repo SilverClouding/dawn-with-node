@@ -1,0 +1,55 @@
+<section class="yotpo-instagram">
+  <div class="container">
+    <div class="yotpo-instagram__header">
+      <h4 class="heading-4">{{ section.settings.title }}</h4>
+      <h5 class="heading-5">
+        <a href="{{ settings.social_instagram_link }}" target="_blank">{{ section.settings.subtitle }}</a>
+      </h5>
+    </div>
+  </div>
+  <div class="yotpo-instagram__embed">
+    <div
+      class="yotpo yotpo-pictures-widget"
+      data-gallery-id="{{ section.settings.yotpo }}"
+      {% if product != blank %}
+        data-product-id="{{ product.id }}"
+      {% endif %}
+    ></div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Yotpo Instagram",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Follow Us"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "@blubolt"
+    },
+    {
+      "type": "text",
+      "id": "yotpo",
+      "label": "Yotpo Embed ID",
+      "info": "Copy and paste the string that follows the id= in the Yotpo URL"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Yotpo Instagram",
+      "category": "Baseline"
+    }
+  ],
+  "disabled_on": {
+    "templates": ["*"],
+    "groups": ["*"]
+  }
+}
+{% endschema %}

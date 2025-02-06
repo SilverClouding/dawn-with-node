@@ -1,0 +1,52 @@
+{
+  "name": "baseline-dawn",
+  "version": "1.0.0",
+  "description": "Repo with the tooling used in the Baseline Shopify theme.",
+  "private": true,
+  "author": "Blubolt",
+  "license": "ISC",
+  "scripts": {
+    "create:section": "node tools/create-section.js",
+    "create:snippet": "node tools/create-snippet.js",
+    "create:template": "node tools/create-template.js",
+    "create:static-page": "node tools/copy-static-page.js",
+    "start:testing": "npm-run-all -p watch:assets serve:testing",
+    "start:live": "npm-run-all -p watch:assets serve:live",
+    "start:baseline": "npm-run-all -p watch:assets:baseline serve:baseline",
+    "watch:assets": "node tools/build.js --mode=development --watch",
+    "watch:assets:baseline": "node tools/build.js --mode=development --watch --baseline",
+    "build": "npm-run-all build:assets scss:lint scss:prettier test:schema",
+    "build:assets": "node tools/build.js --mode=production",
+    "build:assets:baseline": "node tools/build.js --mode=production --baseline",
+    "serve:testing": "shopify theme dev --store=kids-wholesale-clothing-testing.myshopify.com --live-reload=full-page",
+    "serve:live": "shopify theme dev --store=kids-wholesale-clothing-testing.myshopify.com --live-reload=full-page",
+    "serve:baseline": "shopify theme dev --store=blubolt-demo-jm-sandbox.myshopify.com-base --live-reload=full-page",
+    "test:js": "jest",
+    "test:js:watch": "jest --watch",
+    "test:schema": "node tools/schema-validator.js",
+    "test:cypress": "cd integration && npm run cypress:open",
+    "test:cypress:ci": "cd integration && npm run cypress:ci",
+    "scss:prettier": "prettier --write \"src/styles/**/*.scss\"",
+    "scss:lint": "stylelint --fix \"src/styles/**/*.scss\"",
+    "add:standards": "git subtree add --prefix coding-standards standards-origin main --squash",
+    "update:standards": "git subtree pull --prefix coding-standards standards-origin main --squash",
+    "apply-remotes:ssh": "git remote add -f standards-origin git@github.com:blubolt/coding-standards.git",
+    "apply-remotes:https": "git remote add -f standards-origin https://github.com/blubolt/coding-standards.git"
+  },
+  "devDependencies": {
+    "chokidar": "^3.5.3",
+    "cypress": "^13.6.6",
+    "glob": "^10.3.10",
+    "jest": "^29.7.0",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^3.2.5",
+    "sass": "^1.56.0",
+    "sass-loader": "^12.6.0",
+    "stylelint": "^15.0.0",
+    "stylelint-config-standard-scss": "^10.0.0"
+  },
+  "dependencies": {
+    "fs-extra": "^11.3.0",
+    "swiper": "^5.4.5"
+  }
+}

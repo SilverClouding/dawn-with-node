@@ -1,0 +1,88 @@
+<section
+  class="breadcrumbs{% if section.settings.desktop %} breadcrumbs--desktop{% endif %}{% if section.settings.mobile %} breadcrumbs--mobile{% endif %}"
+  role="navigation"
+  aria-label="breadcrumbs"
+  style="{% if section.settings.text_color != blank %}--link-color: {{ section.settings.link_color }};{% endif %}{% if section.settings.text_color != blank %}--text-color: {{ section.settings.text_color }};{% endif %}"
+>
+  <div class="container">
+    <div class="breadcrumbs__list">
+      <a href="{{ routes.root_url }}" title="{{ 'homepage.link_to_name' | t }}">{{ 'homepage.link_to_name' | t }}</a>
+      {% if template contains 'page' %}
+        <span aria-hidden="true" class="breadcrumbs-arrow"></span>
+        <span>{{ page.title }}</span>
+      {% elsif template contains 'product' %}
+        {% if collection.url %}
+          <span aria-hidden="true" class="breadcrumbs-arrow"></span>
+          {{ collection.title | link_to: collection.url }}
+        {% endif %}
+        <span aria-hidden="true" class="breadcrumbs-arrow"></span>
+        <span>{{ product.title }}</span>
+      {% elsif template contains 'collection' and collection.handle %}
+        <span aria-hidden="true" class="breadcrumbs-arrow"></span>
+        {% if current_tags %}
+          {% capture url %}{{ routes.collections_url }}/{{ collection.handle }}{% endcapture %}
+          {{ collection.title | link_to: url }}
+          <span aria-hidden="true" class="breadcrumbs-arrow"></span>
+          <span>{{ current_tags | join: ' + ' }}</span>
+        {% else %}
+          <span>{{ collection.title }}</span>
+        {% endif %}
+      {% elsif template == 'blog' %}
+        <span aria-hidden="true" class="breadcrumbs-arrow"></span>
+        {% if current_tags %}
+          {{ blog.title | link_to: blog.url }}
+          <span aria-hidden="true" class="breadcrumbs-arrow"></span>
+          <span>{{ current_tags | join: ' + ' }}</span>
+        {% else %}
+          <span>{{ blog.title }}</span>
+        {% endif %}
+      {% elsif template == 'article' %}
+        <span aria-hidden="true" class="breadcrumbs-arrow"></span>
+        {{ blog.title | link_to: blog.url }}
+        <span aria-hidden="true" class="breadcrumbs-arrow"></span>
+        <span>{{ article.title }}</span>
+      {% else %}
+        <span aria-hidden="true" class="breadcrumbs-arrow"></span>
+        <span>{{ page_title }}</span>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Breadcrumbs",
+  "class": "shopify-section--breadcrumbs",
+  "settings": [
+    {
+      "type": "color",
+      "id": "link_color",
+      "label": "Link Colour",
+      "default": "#000"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Colour",
+      "default": "#777"
+    },
+    {
+      "type": "checkbox",
+      "id": "desktop",
+      "label": "Show on Desktop",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "mobile",
+      "label": "Show on Mobile",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "Breadcrumbs"
+    }
+  ]
+}
+{% endschema %}

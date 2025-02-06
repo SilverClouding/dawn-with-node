@@ -1,0 +1,55 @@
+{%- comment -%}
+  {% render 'product-price', product: product %}
+{%- endcomment -%}
+
+<div class="product-price">
+  <p>
+    {% if simple %}
+      {% comment %} Simple is passed on the PDP as it uses more bssic logic {% endcomment %}
+      {% if current_variant.compare_at_price != blank and current_variant.compare_at_price > current_variant.price %}
+        {% assign on_sale = true %}
+      {% endif %}
+
+      <span data-product-price
+        {% if on_sale %}
+          class="sale-price"
+        {% endif %}
+      >
+        {{ current_variant.price | money }}
+      </span>
+      <s data-product-compare-at-price>
+        {% if on_sale %}
+          ({{ current_variant.compare_at_price | money }})
+        {% endif %}
+      </s>
+    {% else %}
+      {% if product.compare_at_price > product.price %}
+        {% if product.price_varies %}
+          {%- assign sale_price = product.price | money -%}
+          <span class="price-variation">{{ 'products.product.on_sale_from_html' | t: price: sale_price }}</span>
+        {% else %}
+          {{ 'products.product.on_sale' | t }}
+          <span class="price-variation">{{ product.price | money }}</span>
+        {% endif %}
+
+      {% else %}
+
+        {% if product.price_varies %}
+          {%- assign price = product.price | money -%}
+          <span class="price-variation">{{ 'products.product.from_text_html' | t: price: price }}</span>
+        {% else %}
+          <span>{{ product.price | money }}</span>
+        {% endif %}
+      {% endif %}
+
+      {% if product.compare_at_price > product.price %}
+        <span class="visually-hidden">{{ 'products.product.regular_price' | t }}</span>
+        <s>{{ product.compare_at_price | money }}</s>
+      {% endif %}
+    {% endif %}
+
+    {% unless product.available %}
+      {{ 'products.product.sold_out' | t }}
+    {% endunless %}
+  </p>
+</div>

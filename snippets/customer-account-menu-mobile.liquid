@@ -1,0 +1,31 @@
+{%- comment -%}
+  {%- assign example_linklist = section.settings.example_linklist -%}
+
+  {% render 'account-menu', linklist: linklists[example_linklist], class_name: 'example-menu', linklist_header: linklists[example_linklist].title %}
+{%- endcomment -%}
+{% assign orderTemplates = 'customers/account,customers/order' | split: ',' %}
+{% assign requestPath = request.path | split: '/' %}
+{% assign requestTempate = requestPath[2] %}
+{% unless linklist %}
+  {% assign linklist = linklists['account-menu'] %}
+{% endunless %}
+
+<section class="{{ class_name }}">
+  <div class="mobile-menu">
+    <ul data-account-menu data-mobile-account-menu>
+      {% for link in linklist.links %}
+        <li class="{{ link.title | handleize }} hide {% if link.active or orderTemplates contains template and link.url contains requestTempate %}active{% endif %}">
+          <a href="{{ link.url }}" data-mobile-account-link>{{ link.title }}</a>
+        </li>
+      {% endfor %}
+      <li class="{{ 'customer.account.change_password' | handleize }}">
+        <a href="{{ routes.account_login_url | append: '#recover' }}" data-change-password>
+          {{- 'customer.account.change_password' | t -}}
+        </a>
+      </li>
+      <li class="{{ 'customer.account.logout' | handleize }}">
+        <a href="{{ routes.account_logout_url }}">{{ 'customer.account.logout' | t }}</a>
+      </li>
+    </ul>
+  </div>
+</section>

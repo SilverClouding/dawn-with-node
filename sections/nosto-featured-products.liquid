@@ -1,0 +1,255 @@
+{% assign data = section.settings %}
+
+<div class="featured-products" data-featured-products>
+  <div class="container">
+    {% if data.title != blank or data.url != blank %}
+      <div class="featured-products__header">
+        {% if data.title != blank %}
+          <h2 class="heading-1">{{ data.title }}</h2>
+        {% endif %}
+        {% if data.cta_link != blank %}
+          <a class="btn btn--primary" href="{{ data.cta_link }}">{{ data.cta_text }}</a>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    {% render 'nosto-element', id: section.settings.nosto_id %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Nosto Featured Products",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title"
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "CTA Text",
+      "default": "Shop All"
+    },
+    {
+      "type": "url",
+      "id": "cta_link",
+      "label": "CTA Link"
+    },
+    {
+      "type": "text",
+      "id": "nosto_id",
+      "label": "Nosto ID",
+      "info": "Get this from Apps > Nosto > Recommendations > Recommendations > Placement. An example is: 'frontpage-nosto-1'"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Nosto Featured Products",
+      "category": "Baseline"
+    }
+  ],
+  "disabled_on": {
+    "templates": ["*"],
+    "groups": ["*"]
+  }
+}
+{% endschema %}
+
+{%- comment -%}
+  #if($products.size() > 4)
+      #set( $slider = true )
+  #else
+      #set( $slider = false )
+  #end
+
+  <div
+      #if($slider == true)
+          class="swiper featured-products__swiper"
+          data-swiper
+          id="swiper__$!divId"
+          data-id="swiper__$!divId"
+          data-swiper-config='{
+            "loop": true,
+            "slidesPerView": 2,
+            "spaceBetween": 15,
+            "threshold": 10,
+            "navigation": {
+              "nextEl": ".swiper-pagination-next",
+              "prevEl": ".swiper-pagination-prev"
+            },
+            "pagination": {
+              "el": ".swiper-pagination",
+              "type": "custom",
+              "clickable": true,
+              "renderCustom": true
+            },
+            "breakpoints": {
+              "768": {
+                "slidesPerView": 3,
+                "spaceBetween": 15
+              },
+              "1024": {
+                "slidesPerView": 4,
+                "spaceBetween": 20
+              }
+            }
+          }'
+      #else
+        class="product-card-container grid-list"
+      #end
+  >
+    <div #if($slider == true) class="swiper-wrapper" #else class="grid-list" #end>
+      #foreach($product in $products)
+        <div #if($slider == true) class="swiper-slide" #else class="grid-item" #end>
+          <div class="cl-product-card cl-product-card--images">
+            <a href="$!product.url" data-href-real="$!product.url" title="$!product.name">
+              <div class="cl-product-card-image">
+                <div class="image-snippet image-snippet__fill--desktop image-snippet__fill--tablet image-snippet__fill--mobile" style=" --aspect-ratio: 100.0%; --aspect-ratio-tablet: 100.0%; --aspect-ratio-mobile: 100.0%;">
+                    <img
+                    class="image-snippet__img image-snippet__img--fill cl-product-card-image-img"
+                    width="300" height="300"
+                    src="$product.imageUrl.concat('?crop=center&height=30&width=30')"
+                    data-src="$product.imageUrl.concat('?crop=center&height=300&width=300')"
+                    data-srcset="$product.imageUrl.concat('?crop=center&height=360&width=360') 360w,$product.imageUrl.concat('?crop=center&height=375&width=375') 375w,$product.imageUrl.concat('?crop=center&height=393&width=393') 393w,$product.imageUrl.concat('?crop=center&height=414&width=414') 414w$product.imageUrl.concat('?crop=center&height=1280&width=1280') 1280w,$product.imageUrl.concat('?crop=center&height=1366&width=1366') 1366w,$product.imageUrl.concat('?crop=center&height=1440&width=1440') 1440w,$product.imageUrl.concat('?crop=center&height=1536&width=1536') 1536w,$product.imageUrl.concat('?crop=center&height=1920&width=1920') 1920w,$product.imageUrl.concat('?crop=center&height=300&width=300') 300w,$product.imageUrl.concat('?crop=center&height=600&width=600') 600w"
+                    data-alt="$!product.name"
+                    loading="lazy">
+                </div>
+
+                #if($product.alternateImageUrls[0])
+                  <div class="image-snippet image-snippet__fill--desktop image-snippet__fill--tablet image-snippet__fill--mobile" style=" --aspect-ratio: 100.0%; --aspect-ratio-tablet: 100.0%; --aspect-ratio-mobile: 100.0%;">
+                      <img
+                      class="image-snippet__img image-snippet__img--fill cl-product-card-image-img"
+                      width="300" height="300"
+                      src="$product.alternateImageUrls[0].concat('?crop=center&height=30&width=30')"
+                      data-src="$product.alternateImageUrls[0].concat('?crop=center&height=300&width=300')"
+                      data-srcset="$product.alternateImageUrls[0].concat('?crop=center&height=360&width=360') 360w,$product.alternateImageUrls[0].concat('?crop=center&height=375&width=375') 375w,$product.alternateImageUrls[0].concat('?crop=center&height=393&width=393') 393w,$product.alternateImageUrls[0].concat('?crop=center&height=414&width=414') 414w$product.alternateImageUrls[0].concat('?crop=center&height=1280&width=1280') 1280w,$product.alternateImageUrls[0].concat('?crop=center&height=1366&width=1366') 1366w,$product.alternateImageUrls[0].concat('?crop=center&height=1440&width=1440') 1440w,$product.alternateImageUrls[0].concat('?crop=center&height=1536&width=1536') 1536w,$product.alternateImageUrls[0].concat('?crop=center&height=1920&width=1920') 1920w,$product.alternateImageUrls[0].concat('?crop=center&height=300&width=300') 300w,$product.alternateImageUrls[0].concat('?crop=center&height=600&width=600') 600w"
+                      data-alt="$!product.name"
+                      loading="lazy">
+                  </div>
+                #end
+                <div class="cl-product-card-quick-add">
+                  <button type="button" data-quick-add-btn="$!product.lastPathOfProductUrl()" class="quick-add-btn btn btn--secondary" onclick="event.preventDefault(); window.blubolt.quickadd.open('$!product.lastPathOfProductUrl()', {'stockMap': '{#foreach($sku in $product.skus)  \n\'$!sku.id\':  \'#if($sku.inventoryLevel < 4  && $sku.inventoryLevel > 1)low#end#if($sku.inventoryLevel > 3)available#end\' #if($sku.inventoryLevel < 1)oos#end#if($forCount != $product.skus.size())#set($forCount = $forCount + 1),#end #end }'})">Quick add</button>
+                </div>
+              </div>
+
+              <div class="cl-product-card-info">
+                <h2 class="cl-product-card-name heading-4" data-aid="product-card">$!product.name</h2>
+                <div class="cl-product-card-price">
+                  <div class="product-price-snippet">
+                    <p class="subheading-2">
+                      <span #if($product.discounted) class="price-variation nosto_money" x-nosto-url="$!product.url" #else class="nosto_money" x-nosto-url="$!product.url" #end >$!product.price</span>
+                      #if($product.discounted)
+                        <s class="nosto_list_money" x-nosto-url="$!product.url">$!product.listPrice</s>
+                      #end
+                      #if($!sku.available)
+                        <span>Sold out</span>
+                      #end
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
+        </div>
+      #end
+    </div>
+
+    #if($slider == true)
+      <div class="swiper-pagination"></div>
+    #end
+  </div>
+
+  <script type="text/javascript">
+    var currency = _targetWindow.Shopify?.currency?.active || 'GBP';
+    var market_root = '/';
+    if (_targetWindow.Shopify?.routes?.root) {
+      market_root = _targetWindow.Shopify?.routes?.root;
+    }
+
+    function formatMoney(cents, format) {
+      if (typeof cents === 'string') {
+        cents = cents.replace('.', '');
+      }
+      let value = '';
+      const placeholderRegex = /\{\{\s*(\w+)\s*\}\}/;
+      const formatString = format || moneyFormat;
+
+      function formatWithDelimiters(number, precision = 2, thousands = ',', decimal = '.') {
+        if (isNaN(number) || number == null) {
+          return 0;
+        }
+
+        number = (number / 100.0).toFixed(precision);
+
+        const parts = number.split('.');
+        const dollarsAmount = parts[0].replace(/(\d)(?=(\d\d\d)+(?!\d))/g, `$1${thousands}`);
+        const centsAmount = parts[1] ? decimal + parts[1] : '';
+
+        return dollarsAmount + centsAmount;
+      }
+
+      switch (formatString.match(placeholderRegex)[1]) {
+        case 'amount':
+          value = formatWithDelimiters(cents, 2);
+          break;
+        case 'amount_no_decimals':
+          value = formatWithDelimiters(cents, 0);
+          break;
+        case 'amount_with_comma_separator':
+          value = formatWithDelimiters(cents, 2, '.', ',');
+          break;
+        case 'amount_no_decimals_with_comma_separator':
+          value = formatWithDelimiters(cents, 0, '.', ',');
+          break;
+      }
+
+      return formatString.replace(placeholderRegex, value);
+    }
+
+    function marketFetchPresentmentPrice(productHandle, fetchListPrice) {
+      return (
+        fetch(`${market_root}products/${productHandle}.json?currency=${currency}`)
+          .then((response) => response.json())
+          .then((json) => json.product.variants)
+          .then((variants) => variants.find((v) => v))
+          //.then(variant => (fetchListPrice ? variant.compare_at_price : variant.price))
+          .then((variant) => (fetchListPrice ? variant.compare_at_price : variant.price))
+          .then((price) => formatMoney(price, _targetWindow['theme'].moneyFormat))
+      );
+    }
+
+    function marketSetPresentmentPricesUrl(priceElement, productUrl, fetchListPrice) {
+      const elements = _targetWindow.document.querySelectorAll(priceElement);
+      const promises = Array.from(elements).map((element) => {
+        const productUrlAttribute = element.getAttribute(productUrl);
+        if (!productUrlAttribute) {
+          return Promise.reject(new Error(`${productUrl} not found: ${element.outerHTML}`));
+        }
+
+        const productHandle = new URL(productUrlAttribute).pathname.substring('/products/'.length);
+        return marketFetchPresentmentPrice(productHandle, fetchListPrice).then((price) => {
+          element.replaceChildren(document.createTextNode(price));
+        });
+      });
+      return Promise.all(promises);
+    }
+    // CURRENCY CONVERTING
+    if (_targetWindow.Shopify?.currency?.active != 'GBP') {
+      // Testing
+      //if(_targetWindow.Shopify?.AdminBarInjector?.length) {
+      marketSetPresentmentPricesUrl('.nosto_money', 'x-nosto-url', false);
+      // marketSetPresentmentPricesUrl('.nosto_list_money', 'x-nosto-url', true)
+      const hideList = _targetWindow.document.querySelectorAll('.nosto_list_money');
+
+      Array.from(hideList).map((lp) => lp.classList.add('hide'));
+      // sort out urls
+      const urls = _targetWindow.document.querySelectorAll('.nosto_url');
+      Array.from(urls).map((url) => {
+        url.href = url.href.replace(_targetWindow.location.hostname + '/', _targetWindow.location.hostname + _targetWindow.Shopify.routes.root);
+      });
+      //}
+    }
+  </script>
+{%- endcomment -%}

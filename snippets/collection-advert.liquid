@@ -1,0 +1,54 @@
+{%- comment -%}
+  Either comes from section blocks (in collection-main.liquid)
+  ---or---
+  From metaobjects which will work if created with the following names, keys and field types
+
+  Image - image - File
+  Image Mobile - image_mobile - File
+  Title - title - Single Line Text
+  Content - content - Rich Text
+  CTA Text - cta_text - Single Line Text
+  CTA Link - cta_link - URL
+
+  Additionally add these classes if the adverts span two rows and/or columns and change the image size accordingly:
+  grid-item--double-width
+  grid-item--double-height
+  Additionally add this class if the advert spans the full width
+  grid-item--full-width
+
+  Adverts don't show in react i.e. when a filter is applied. Example below of one that can.
+  https://github.com/blubolt/ipl-shopify/blob/main/theme/snippets/collection-advert-mini.liquid
+  https://github.com/blubolt/ipl-shopify/blob/main/src/app-layer/components/portals/Search/SearchFilteredProducts.tsx
+  https://github.com/blubolt/ipl-shopify/blob/main/src/scripts/sections/products/loadMore.js
+{%- endcomment -%}
+
+{% comment %} Ensure that the correct metafield namespace is put in here. I usually set it to the site name, such as rixo {% endcomment %}
+{% assign metaAds = collection.metafields.NAMESPACE.adverts.value %}
+
+{% if metaAds != blank %}
+  {% comment %} We only want one advert and we can't get them using square brackets so we use an offset {% endcomment %}
+  {% comment %} The offset is generated from the block forloop (for example the second block/advert will have an index of 1) {% endcomment %}
+  {% for ad in metaAds limit: 1 offset: index %}
+    {% comment %} When getting an image you have to use .value {% endcomment %}
+    {% assign image = ad.image.value %}
+    {% assign image_mobile = ad.image_mobile.value | default: image %}
+    {% assign title = ad.title %}
+    {% comment %} When getting rich text you have to use | metafield_tag {% endcomment %}
+    {% assign content = ad.content | metafield_tag %}
+    {% assign cta_text = ad.cta_text %}
+    {% assign cta_link = ad.cta_link %}
+  {% endfor %}
+{% elsif useBlock %}
+  {% assign image = block_settings.image_desktop %}
+  {% assign image_mobile = block_settings.image_mobile | default: image %}
+  {% assign title = block_settings.title %}
+  {% assign content = block_settings.content %}
+  {% assign cta_text = block_settings.cta_text %}
+  {% assign cta_link = block_settings.cta_link %}
+{% endif %}
+
+{% if image != blank %}
+  <div class="grid-item collection-advert">
+    {% render 'ad-banner', image: image, image_mobile: image_mobile, title: title, text: content, cta_text: cta_text, url: cta_link %}
+  </div>
+{% endif %}

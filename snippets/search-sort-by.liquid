@@ -1,0 +1,20 @@
+<div
+  class="filter-and-sort__sort"
+  data-app-layer-portal="search-sort-by"
+></div>
+
+<script>
+  window.sortBy = {
+    strings: {
+      "sort_button": {{ 'collections.general.sort_button' | t | json }},
+      "relevance": {{ 'collections.general.sort_by_relevance' | t | json }},
+      "best_selling": {{ 'collections.general.sort_by_best_selling' | t | json }},
+      "price_asc": {{ 'collections.general.sort_by_price_ascending' | t | json }},
+      "price_desc": {{ 'collections.general.sort_by_price_descending' | t | json }},
+      "name_asc": {{ 'collections.general.sort_by_title_ascending' | t | json }},
+      "name_desc": {{ 'collections.general.sort_by_title_descending' | t | json }},
+      "new_arrival_asc": {{ 'collections.general.sort_by_created_ascending' | t | json }},
+      "new_arrival_desc": {{ 'collections.general.sort_by_created_descending' | t | json }}
+    }
+  }
+</script>

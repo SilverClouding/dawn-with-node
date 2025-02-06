@@ -1,0 +1,93 @@
+.absolute-center {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+[data-anim] {
+  transition-duration: 333ms;
+  transition-timing-function: ease-in-out;
+}
+[data-anim].anim-delay-333 {
+  transition-delay: 333ms;
+}
+[data-anim].anim-delay-666 {
+  transition-delay: 666ms;
+}
+[data-anim].anim-delay-999 {
+  transition-delay: 999ms;
+}
+[data-anim].anim-fade-in {
+  opacity: 0;
+  transition-property: opacity;
+}
+@media screen and (prefers-reduced-motion: reduce) {
+  [data-anim].anim-fade-in {
+    opacity: 1;
+  }
+}
+[data-anim].anim-fade-in.anim-active {
+  opacity: 1;
+}
+[data-anim].anim-slide-in-left {
+  transform: translateX(66px);
+  transition-property: transform, opacity;
+  opacity: 0;
+}
+@media screen and (prefers-reduced-motion: reduce) {
+  [data-anim].anim-slide-in-left {
+    opacity: 1;
+    transform: none;
+  }
+}
+[data-anim].anim-slide-in-left.anim-active {
+  transform: translateX(0);
+  opacity: 1;
+}
+@media screen and (prefers-reduced-motion: reduce) {
+  [data-anim].anim-active {
+    transition: none;
+  }
+}
+
+.quantity-selector {
+  position: relative;
+  max-width: 110px;
+  overflow: hidden;
+}
+.quantity-selector__btn {
+  position: absolute;
+  width: 42px;
+  height: 42px;
+  top: 0;
+  bottom: 0;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  color: #434944;
+  background: center center/10px no-repeat;
+}
+.quantity-selector__btn:hover {
+  cursor: pointer;
+}
+.quantity-selector__btn:disabled {
+  color: rgba(33, 67, 56, 0.5);
+}
+.quantity-selector__btn.quantity-selector__btn--dec {
+  left: 0;
+  background-image: url("icon-minus.svg");
+}
+.quantity-selector__btn.quantity-selector__btn--inc {
+  right: 0;
+  background-image: url("icon-plus.svg");
+}
+.quantity-selector__input {
+  height: 42px;
+  width: 100%;
+  text-align: center;
+  appearance: textfield;
+}
+.quantity-selector__input::-webkit-inner-spin-button, .quantity-selector__input::-webkit-outer-spin-button {
+  appearance: none;
+}

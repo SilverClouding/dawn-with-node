@@ -1,0 +1,75 @@
+{% style %}
+  :root {
+    --header-height-mb: 100px;
+    --header-height-tb: 100px;
+    --header-height-dt: 100px;
+
+    --image-aspect-ratio: 1 / 1;
+
+    --font-heading: Helvetica, Arial, sans-serif;
+    --font-family: Helvetica, Arial, sans-serif;
+
+    --color-main-1: {{ settings.color_1 }};
+    --rgb-main-1: {{ settings.color_1 | color_to_rgb | replace: 'rgb(', '' | replace: ')', '' }};
+    --color-main-2: {{ settings.color_2 }};
+    --rgb-main-2: {{ settings.color_2 | color_to_rgb | replace: 'rgb(', '' | replace: ')', '' }};
+    --color-main-3: {{ settings.color_3 }};
+    --rgb-main-3: {{ settings.color_3 | color_to_rgb | replace: 'rgb(', '' | replace: ')', '' }};
+    --color-main-4: {{ settings.color_4 }};
+    --rgb-main-4: {{ settings.color_4 | color_to_rgb | replace: 'rgb(', '' | replace: ')', '' }};
+    --color-main-5: {{ settings.color_5 }};
+    --rgb-main-5: {{ settings.color_5 | color_to_rgb | replace: 'rgb(', '' | replace: ')', '' }};
+    --color-main-6: {{ settings.color_6 }};
+    --rgb-main-6: {{ settings.color_6 | color_to_rgb | replace: 'rgb(', '' | replace: ')', '' }};
+    --color-main-7: {{ settings.color_7 }};
+    --rgb-main-7: {{ settings.color_7 | color_to_rgb | replace: 'rgb(', '' | replace: ')', '' }};
+    --color-main-8: {{ settings.color_8 }};
+    --rgb-main-8: {{ settings.color_8 | color_to_rgb | replace: 'rgb(', '' | replace: ')', '' }};
+    --color-main-9: {{ settings.color_9 }};
+    --rgb-main-9: {{ settings.color_9 | color_to_rgb | replace: 'rgb(', '' | replace: ')', '' }};
+    --color-main-10: {{ settings.color_10 }};
+    --rgb-main-10: {{ settings.color_10 | color_to_rgb | replace: 'rgb(', '' | replace: ')', '' }};
+    --color-main-11: {{ settings.color_11 }};
+    --rgb-main-11: {{ settings.color_11 | color_to_rgb | replace: 'rgb(', '' | replace: ')', '' }};
+    --color-main-12: {{ settings.color_12 }};
+    --rgb-main-12: {{ settings.color_12 | color_to_rgb | replace: 'rgb(', '' | replace: ')', '' }};
+
+    --color-success: {{ settings.color_success }};
+    --color-info: {{ settings.color_info }};
+    --color-warning: {{ settings.color_warning }};
+    --color-error: {{ settings.color_error }};
+
+    --color-border: {{ settings.color_8 }};
+
+    --color-font-1: {{ settings.color_3 }};
+    --color-font-2: {{ settings.color_3 }};
+
+    --btn-primary-font-color: {{ settings.color_1 }};
+    --btn-primary-bg-color: {{ settings.color_2 }};
+    --btn-primary-border-color: {{ settings.color_2 }};
+    --btn-primary-font-color-hover: {{ settings.color_1 }};
+    --btn-primary-bg-color-hover: {{ settings.color_12 }};
+    --btn-primary-border-color-hover: {{ settings.color_12 }};
+
+    --btn-primary-outline-font-color: {{ settings.color_2 }};
+    --btn-primary-outline-bg-color: transparent;
+    --btn-primary-outline-border-color: {{ settings.color_2 }};
+    --btn-primary-outline-font-color-hover: {{ settings.color_1 }};
+    --btn-primary-outline-bg-color-hover: {{ settings.color_2 }};
+    --btn-primary-outline-border-color-hover: {{ settings.color_2 }};
+
+    --btn-secondary-font-color: {{ settings.color_2 }};
+    --btn-secondary-bg-color: {{ settings.color_1 }};
+    --btn-secondary-border-color: {{ settings.color_1 }};
+    --btn-secondary-font-color-hover: {{ settings.color_2 }};
+    --btn-secondary-bg-color-hover: {{ settings.color_1 }};
+    --btn-secondary-border-color-hover: {{ settings.color_1 }};
+
+    --btn-secondary-outline-font-color: {{ settings.color_1 }};
+    --btn-secondary-outline-bg-color: transparent;
+    --btn-secondary-outline-border-color: {{ settings.color_1 }};
+    --btn-secondary-outline-font-color-hover: {{ settings.color_2 }};
+    --btn-secondary-outline-bg-color-hover: {{ settings.color_1 }};
+    --btn-secondary-outline-border-color-hover: {{ settings.color_1 }};
+  }
+{% endstyle %}

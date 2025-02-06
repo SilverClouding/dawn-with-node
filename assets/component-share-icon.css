@@ -1,0 +1,95 @@
+.absolute-center {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+[data-anim] {
+  transition-duration: 333ms;
+  transition-timing-function: ease-in-out;
+}
+[data-anim].anim-delay-333 {
+  transition-delay: 333ms;
+}
+[data-anim].anim-delay-666 {
+  transition-delay: 666ms;
+}
+[data-anim].anim-delay-999 {
+  transition-delay: 999ms;
+}
+[data-anim].anim-fade-in {
+  opacity: 0;
+  transition-property: opacity;
+}
+@media screen and (prefers-reduced-motion: reduce) {
+  [data-anim].anim-fade-in {
+    opacity: 1;
+  }
+}
+[data-anim].anim-fade-in.anim-active {
+  opacity: 1;
+}
+[data-anim].anim-slide-in-left {
+  transform: translateX(66px);
+  transition-property: transform, opacity;
+  opacity: 0;
+}
+@media screen and (prefers-reduced-motion: reduce) {
+  [data-anim].anim-slide-in-left {
+    opacity: 1;
+    transform: none;
+  }
+}
+[data-anim].anim-slide-in-left.anim-active {
+  transform: translateX(0);
+  opacity: 1;
+}
+@media screen and (prefers-reduced-motion: reduce) {
+  [data-anim].anim-active {
+    transition: none;
+  }
+}
+
+.share-icon {
+  position: relative;
+  cursor: pointer;
+  width: 18px;
+  height: 20px;
+  background: url("data:image/svg+xml,%3Csvg width='18' height='20' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M15 14.08c-.76 0-1.44.3-1.96.77L5.91 10.7c.05-.23.09-.46.09-.7 0-.24-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L5.04 7.81C4.5 7.31 3.79 7 3 7c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92 0-1.61-1.31-2.92-2.92-2.92ZM15 2c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1ZM3 11c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1Zm12 7.02c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1Z' fill='%23212121'/%3E%3C/svg%3E") center no-repeat;
+}
+.share-icon.share-icon--pdp {
+  margin: 0 0 16px;
+}
+.share-icon__notify {
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+  white-space: nowrap;
+  display: block;
+  background-color: #212a2f;
+  top: 100%;
+  margin-top: 12px;
+  left: 50%;
+  font-size: 10px;
+  transform: translateX(-50%);
+  color: #fff;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  transition: opacity 333ms ease-in-out;
+}
+.share-icon__notify::before {
+  display: block;
+  position: absolute;
+  content: "";
+  width: 10px;
+  height: 10px;
+  background-color: #212a2f;
+  left: calc(50% - 5px);
+  top: -5px;
+  transform: rotate(45deg);
+}
+.share-icon.share-icon--copied .share-icon__notify {
+  opacity: 1;
+  transition: none;
+}

@@ -1,0 +1,336 @@
+{%- comment -%}
+  All settings:
+  {% render 'image',
+    img: section.settings.img,
+    width: 400,
+    height: 300,
+    img_tab: section.settings.img_tab,
+    width_tab: 300,
+    height_tab: 300,
+    img_mob: section.settings.img_mob,
+    width_mob: 300,
+    height_mob: 300,
+
+    alt: 'alt text',
+    class: 'product-card__img',
+    data: 'data-attribute'
+    crop: 'center',
+    no_lazy: false,
+    fetchpriority: 'high',
+    accentuate: false
+  %}
+
+  Most common implementation:
+  {% render 'image',
+    img: section.settings.img,
+    width: 400,
+    height: 300,
+    img_mob: section.settings.img_mob,
+    width_mob: 300,
+    height_mob: 300,
+  %}
+
+  !PLEASE READ IF USING ACCENTUATE FOR IMAGES!
+  Ensure you pass accentuate: true as well as numberical width: and height: settings. This snippet WILL NOT work without them.
+  An alt tag is also recommended.
+  Crop is ignored when using accentuate, it will resize them to ensure the image covers the dimensions given
+  https://www.twicpics.com/docs/reference/transformations#cover
+{%- endcomment -%}
+{%- liquid
+  comment
+    If we have no device image, use default
+  endcomment
+  if img_mob == blank
+    assign img_mob = img
+    assign width_mob = width
+    assign height_mob = height
+  endif
+  if img_tab == blank
+    assign img_tab = img
+    assign width_tab = width
+    assign height_tab = height
+  endif
+
+  comment
+    Check if we're using the same image across all 3
+  endcomment
+  assign singleImage = false
+  if img == img_tab and img == img_mob
+    assign singleImage = true
+  endif
+  comment
+    If we have different dimensions but the same image we need to use multiple images
+  endcomment
+  if img_mob == img and width_mob != width or height_mob != height
+    assign singleImage = false
+  endif
+  if img_tab == img and width_tab != width or height_tab != height
+    assign singleImage = false
+  endif
+
+  comment
+    If we have no dimensions use the native image size
+  endcomment
+  if width == blank
+    if height == blank
+      assign width = img.width
+    else
+      assign ar_calc_width = img.width | times: 1.0
+      assign ar_calc_height = img.height | times: 1.0
+      assign ar_calc = ar_calc_width | divided_by: ar_calc_height
+      assign matched_width = height | times: ar_calc
+      assign width = matched_width | round: 0
+    endif
+  endif
+  comment
+    Now we have the width, generate the two times
+  endcomment
+  assign width_two_times = width | times: 2
+  if height == blank
+    if width == blank
+      assign height = img.height
+    else
+      assign ar_calc_width = img.width | times: 1.0
+      assign ar_calc_height = img.height | times: 1.0
+      assign ar_calc = ar_calc_height | divided_by: ar_calc_width
+      assign matched_height = width | times: ar_calc
+      assign height = matched_height | round: 0
+    endif
+  endif
+
+  comment
+    If we have a tablet image but no dimensions use the native tablet image size
+  endcomment
+  if img_tab != blank and width_tab == blank
+    if height_tab == blank
+      assign width_tab = img_tab.width
+      assign height_tab = img_tab.height
+    else
+      assign ar_calc_width_tab = img_tab.width | times: 1.0
+      assign ar_calc_height_tab = img_tab.height | times: 1.0
+      assign ar_calc_tab = ar_calc_width_tab | divided_by: ar_calc_height_tab
+      assign matched_width_tab = height_tab | times: ar_calc_tab
+      assign width_tab = matched_width_tab | round: 0
+    endif
+  endif
+  comment
+    Now we have the width, generate the two times
+  endcomment
+  assign width_two_times_tab = width_tab | times: 2
+  if img_tab != blank and height_tab == blank
+    if width_tab == blank
+      assign width_tab = img_tab.width
+      assign height_tab = img_tab.height
+    else
+      assign ar_calc_width_tab = img_tab.width | times: 1.0
+      assign ar_calc_height_tab = img_tab.height | times: 1.0
+      assign ar_calc_tab = ar_calc_height_tab | divided_by: ar_calc_width_tab
+      assign matched_height_tab = width_tab | times: ar_calc_tab
+      assign height_tab = matched_height_tab | round: 0
+    endif
+  endif
+
+  comment
+    If we have a mobile image but no dimensions use the native mobile image size
+  endcomment
+  if img_mob != blank and width_mob == blank
+    if height_mob == blank
+      assign width_mob = img_mob.width
+      assign height_mob = img_mob.height
+    else
+      assign ar_calc_width_mob = img_mob.width | times: 1.0
+      assign ar_calc_height_mob = img_mob.height | times: 1.0
+      assign ar_calc_mob = ar_calc_width_mob | divided_by: ar_calc_height_mob
+      assign matched_width_mob = height_mob | times: ar_calc_mob
+      assign width_mob = matched_width_mob | round: 0
+    endif
+  endif
+  comment
+    Now we have the width, generate the two times
+  endcomment
+  assign width_two_times_mob = width_mob | times: 2
+  if img_mob != blank and height_mob == blank
+    if width_mob == blank
+      assign width_mob = img_mob.width
+      assign height_mob = img_mob.height
+    else
+      assign ar_calc_width_mob = img_mob.width | times: 1.0
+      assign ar_calc_height_mob = img_mob.height | times: 1.0
+      assign ar_calc_mob = ar_calc_height_mob | divided_by: ar_calc_width_mob
+      assign matched_height_mob = width_mob | times: ar_calc_mob
+      assign height_mob = matched_height_mob | round: 0
+    endif
+  endif
+
+  comment
+    Converting deprecated class_names variable to class
+  endcomment
+  if class_names != blank
+    assign class = class_names
+  endif
+
+  comment
+    Generate the aspect ratio
+  endcomment
+  assign ar_width = width | times: 1.0
+  assign ar_height = height | times: 1.0
+
+  comment
+    Generate the tablet aspect ratio
+  endcomment
+  assign ar_width_tab = width_tab | times: 1.0
+  assign ar_height_tab = height_tab | times: 1.0
+
+  comment
+    Generate the mobile aspect ratio
+  endcomment
+  assign ar_width_mob = width_mob | times: 1.0
+  assign ar_height_mob = height_mob | times: 1.0
+
+  comment
+    Set a default crop
+  endcomment
+  unless crop
+    assign crop = 'center'
+  endunless
+
+  comment
+    Setup breakpoints/sizes array
+  endcomment
+  if vw_mobile == blank
+    assign vw_mobile = 100
+  endif
+  if breakpoint_tablet == blank
+    comment
+      This should match the tabletMin variable in image.scss
+    endcomment
+    assign breakpoint_tablet = 768
+  endif
+  if vw_tablet == blank
+    assign vw_tablet = 50
+  endif
+  if breakpoint_desktop == blank
+    comment
+      This should match the desktopMin variable in image.scss
+    endcomment
+    assign breakpoint_desktop = 1024
+  endif
+  if vw_desktop == blank
+    assign vw_desktop = 25
+  endif
+
+  if sizes == blank
+    assign sizes = '(min-width: $1px) $2vw, (min-width: $3px) $4vw, $5vw' | replace: '$1', breakpoint_tablet | replace: '$2', vw_tablet | replace: '$3', breakpoint_desktop | replace: '$4', vw_desktop | replace: '$5', vw_mobile
+  endif
+
+  comment
+    Generate the main class
+    If it's a single image we add an is-single modifier
+    Else we add has desktop, has tablet and has mobile modifiers
+  endcomment
+  assign image_snippet_class = 'image-snippet'
+  if singleImage
+    assign image_snippet_class = image_snippet_class | append: ' image-snippet--is-single'
+  else
+    assign image_snippet_class = image_snippet_class | append: ' image-snippet--has-desktop'
+    assign image_snippet_class = image_snippet_class | append: ' image-snippet--has-tablet'
+    assign image_snippet_class = image_snippet_class | append: ' image-snippet--has-mobile'
+  endif
+
+  comment
+    Set up a default array of values for our srcset
+    These values are based on the screen sizes at https://gs.statcounter.com/screen-resolution-stats as of May '23'
+  endcomment
+  assign image_widths_default = settings.default_setting_sizes_array
+  comment
+    We then add the image width and two times width to our array of predefined widths and split the array and ensure we're only generating unique image sizes
+  endcomment
+  assign image_widths = image_widths_default | append: ',' | append: width | append: ',' | append: width_two_times | split: ',' | uniq
+  assign image_widths_tab = image_widths_default | append: ',' | append: width_tab | append: ',' | append: width_two_times_tab | split: ',' | uniq
+  assign image_widths_mob = image_widths_default | append: ',' | append: width_mob | append: ',' | append: width_two_times_mob | split: ',' | uniq
+
+  assign placeholder_scale = 10
+  comment
+    For the placeholder width we just take the normal image with and divide it by placeholder_scale
+  endcomment
+  assign placeholder_width = width | divided_by: placeholder_scale
+  assign placeholder_height = height | divided_by: placeholder_scale
+  if img_tab != blank
+    assign placeholder_width_tab = width_tab | divided_by: placeholder_scale
+    assign placeholder_height_tab = height_tab | divided_by: placeholder_scale
+  endif
+  if img_mob != blank
+    assign placeholder_width_mob = width_mob | divided_by: placeholder_scale
+    assign placeholder_height_mob = height_mob | divided_by: placeholder_scale
+  endif
+
+  comment
+    We then generate URL's for the placeholder image, and the regular image
+  endcomment
+  if accentuate
+    assign placeholder_url = img | append: '&transform=cover=' | append: placeholder_width | append: 'x' | append: placeholder_height
+    assign image_url = img | append: '&transform=cover=' | append: width | append: 'x' | append: height
+  else
+    assign placeholder_url = img | image_url: width: placeholder_width, height: placeholder_height, crop: crop, format: format
+    assign image_url = img | image_url: width: width, height: height, crop: crop, format: format
+  endif
+  if img_tab != blank
+    if accentuate
+      assign placeholder_url_tab = img_tab | append: '&transform=cover=' | append: placeholder_width_tab | append: 'x' | append: placeholder_height_tab
+      assign image_url_tab = img_tab | append: '&transform=cover=' | append: width_tab | append: 'x' | append: height_tab
+    else
+      assign placeholder_url_tab = img_tab | image_url: width: placeholder_width_tab, height: placeholder_height_tab, crop: crop, format: format
+      assign image_url_tab = img_tab | image_url: width: width_tab, height: height_tab, crop: crop, format: format
+    endif
+  endif
+  if img_mob != blank
+    if accentuate
+      assign placeholder_url_mob = img_mob | append: '&transform=cover=' | append: placeholder_width_mob | append: 'x' | append: placeholder_height_mob
+      assign image_url_mob = img_mob | append: '&transform=cover=' | append: width_mob | append: 'x' | append: height_mob
+    else
+      assign placeholder_url_mob = img_mob | image_url: width: placeholder_width_mob, height: placeholder_height_mob, crop: crop, format: format
+      assign image_url_mob = img_mob | image_url: width: width_mob, height: height_mob, crop: crop, format: format
+    endif
+  endif
+
+  comment
+    We use a couple of snippets to generate the markup
+
+    image-srcset just generates the srcset, and has a few variables passed into it
+    image-tag generates the image <img> tag and has lots of variables passed into it
+
+    Having these as snippets means we only need to adjust the markup once, not 4 times
+
+    Ideally these wouldn't be on a single line but prettier is being silly, sorry!
+  endcomment
+-%}
+
+<div
+  class="{{ image_snippet_class }}"
+>
+  {% if singleImage %}
+    {% if fetchpriority == 'high' and no_lazy %}
+      <link rel="preload" as="image" href="{{ image_url }}" imagesrcset="{% render 'image-srcset', image_widths: image_widths, width_two_times: width_two_times, ar_width: ar_width, ar_height: ar_height, crop: crop, img: img %}">
+    {% endif %}
+    {% render 'image-tag', width: width, height: height, placeholder_url: placeholder_url, image_url: image_url, image_widths: image_widths, width_two_times: width_two_times, ar_width: ar_width, ar_height: ar_height, crop: crop, img: img, modifier: '', class: class, no_lazy: no_lazy, alt: alt, data: data, fetchpriority: fetchpriority, sizes: sizes %}
+  {% else %}
+    {% if img != blank %}
+      {% if fetchpriority == 'high' and no_lazy %}
+        <link rel="preload" as="image" href="{{ image_url }}" imagesrcset="{% render 'image-srcset', image_widths: image_widths, width_two_times: width_two_times, ar_width: ar_width, ar_height: ar_height, crop: crop, img: img %}">
+      {% endif %}
+      {% render 'image-tag', width: width, height: height, placeholder_url: placeholder_url, image_url: image_url, image_widths: image_widths, width_two_times: width_two_times, ar_width: ar_width, ar_height: ar_height, crop: crop, img: img, modifier: 'image-snippet__img--desktop', class: class, no_lazy: no_lazy, alt: alt, data: data, fetchpriority: fetchpriority, sizes: sizes %}
+    {% endif %}
+    {% if img_tab != blank %}
+      {% if fetchpriority == 'high' and no_lazy %}
+        <link rel="preload" as="image" href="{{ image_url_tab }}" imagesrcset="{% render 'image-srcset', image_widths: image_widths_tab, width_two_times: width_two_times_tab, ar_width: ar_width_tab, ar_height: ar_height_tab, crop: crop, img: img_tab %}">
+      {% endif %}
+      {% render 'image-tag', width: width_tab, height: height_tab, placeholder_url: placeholder_url_tab, image_url: image_url_tab, image_widths: image_widths_tab, width_two_times: width_two_times_tab, ar_width: ar_width_tab, ar_height: ar_height_tab, crop: crop, img: img_tab, modifier: 'image-snippet__img--tablet', class: class, no_lazy: no_lazy, alt: alt, data: data, fetchpriority: fetchpriority, sizes: sizes %}
+    {% endif %}
+    {% if img_mob != blank %}
+      {% if fetchpriority == 'high' and no_lazy %}
+        <link rel="preload" as="image" href="{{ image_url_mob }}" imagesrcset="{% render 'image-srcset', image_widths: image_widths_mob, width_two_times: width_two_times_mob, ar_width: ar_width_mob, ar_height: ar_height_mob, crop: crop, img: img_mob %}">
+      {% endif %}
+      {% render 'image-tag', width: width_mob, height: height_mob, placeholder_url: placeholder_url_mob, image_url: image_url_mob, image_widths: image_widths_mob, width_two_times: width_two_times_mob, ar_width: ar_width_mob, ar_height: ar_height_mob, crop: crop, img: img_mob, modifier: 'image-snippet__img--mobile', class: class, no_lazy: no_lazy, alt: alt, data: data, fetchpriority: fetchpriority, sizes: sizes %}
+    {% endif %}
+  {% endif %}
+</div>

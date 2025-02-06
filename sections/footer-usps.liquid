@@ -1,0 +1,69 @@
+{%- liquid
+  assign password = false
+  if template == 'password'
+    assign password = true
+  endif
+-%}
+{% unless password %}
+  {% if section.blocks != blank %}
+    <section class="footer-usps">
+      <div class="container">
+        <div class="footer-usps__grid">
+          {% for block in section.blocks %}
+            <div class="footer-usps__usp">
+              <div class="footer-usps__icon">
+                {% if block.settings.icon != blank %}
+                  {{ block.settings.icon }}
+                {% elsif block.settings.image != blank %}
+                  {% render 'image', img: block.settings.image, width: 60, height: 60, sizes: '60px' %}
+                {% endif %}
+              </div>
+              <p class="footer-usps__title">{{ block.settings.title }}</p>
+              <p class="footer-usps__content">{{ block.settings.content }}</p>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+  {% endif %}
+{% endunless %}
+
+{% schema %}
+{
+  "name": "Footer USPs",
+  "settings": [],
+  "max_blocks": 3,
+  "blocks": [
+    {
+      "type": "usp",
+      "name": "USP",
+      "settings": [
+        {
+          "type": "html",
+          "id": "icon",
+          "label": "Icon",
+          "info": "Visit https://jakearchibald.github.io/svgomg/ and drag and drop the svg onto the page to optimise the image. Click the copy icon (above the blue download arrow) and paste the contents into this field. Icon should be 40x40px"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Icon"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "text",
+          "id": "content",
+          "label": "Content"
+        }
+      ]
+    }
+  ],
+  "enabled_on": {
+    "groups": ["footer"]
+  }
+}
+{% endschema %}

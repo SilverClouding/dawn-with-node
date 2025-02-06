@@ -1,0 +1,17 @@
+{% assign wishlistUrl = routes.root_url | append: '/pages/wishlist-all' | replace: '//pages', '/pages' %}
+{% if customer %}
+  {% assign wishlistUrl = routes.account_url | append: '?view=wishlist' %}
+{% endif %}
+<section class="header-icon header-icon__wishlist">
+  <a
+    href="{{ wishlistUrl }}"
+    {% if button_only %}
+      class="header__icon-wrapper" aria-label="{{ 'customer.account.wishlist' | t }}"
+    {% endif %}
+  >
+    {% render 'icon-wishlist' %}
+    {% unless button_only %}
+      <p>{{ 'customer.account.wishlist' | t }}</p>
+    {% endunless %}
+  </a>
+</section>

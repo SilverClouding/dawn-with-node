@@ -1,0 +1,21 @@
+.yotpo-instagram__header {
+  text-align: center;
+  margin: 0 0 20px;
+}
+@media screen and (min-width: 1280px) {
+  .yotpo-instagram__header {
+    margin: 0 0 30px;
+  }
+}
+.yotpo-instagram__header .heading-2 {
+  margin: 0 0 8px;
+}
+.yotpo-instagram__header .heading-5 {
+  margin: 0;
+}
+.yotpo-instagram__header .heading-5 a {
+  color: var(--color-main-1);
+}
+.yotpo-instagram__header .heading-5 a:hover {
+  color: var(--color-main-3);
+}

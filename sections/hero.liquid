@@ -1,0 +1,282 @@
+<div class="hero{% if section.settings.container %} hero--contained{% endif %}">
+  {% if section.settings.contained %}
+    <div class="container">
+  {% endif %}
+
+  {% if section.blocks.size > 1 %}
+    <section
+      class="swiper"
+      data-swiper
+      data-swiper-config='
+        {
+          "loop": true,
+          "slidesPerView": 1,
+          "spaceBetween": 0,
+          "navigation": {
+            "nextEl": ".swiper-button-next",
+            "prevEl": ".swiper-button-prev"
+          },
+          "pagination": {
+            "el": ".swiper-pagination",
+            "type": "bullets",
+            "clickable": true
+          }
+        }
+      '
+    >
+      <div class="swiper-wrapper">
+  {% endif %}
+
+  {% for block in section.blocks %}
+    <div class="swiper-slide">
+      {% render 'hero-slide', section: section, data: block.settings %}
+    </div>
+  {% endfor %}
+
+  {% if section.blocks.size > 1 %}
+    </div>
+
+    <button aria-label="Previous Slide" class="swiper-button swiper-button-prev"></button>
+    <button aria-label="Next Slide" class="swiper-button swiper-button-next"></button>
+
+    <div class="swiper-pagination"></div>
+    </section>
+  {% endif %}
+
+  {% if section.settings.contained %}
+    </div>
+  {% endif %}
+</div>
+
+{% schema %}
+{
+  "name": "Hero Banner",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "contained",
+      "label": "Contained",
+      "default": false,
+      "info": "If checked hero will display within the page container"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Slide",
+      "settings": [
+        {
+          "type": "header",
+          "content": "Images"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_desktop",
+          "label": "Background Image",
+          "info": "Recommended Size: 1920x935"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_tablet",
+          "label": "Tablet Background Image",
+          "info": "Optional. Recommended Size: 1024x580"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_mobile",
+          "label": "Mobile Background Image",
+          "info": "Optional. Recommended Size: 375x550"
+        },
+        {
+          "type": "header",
+          "content": "Video"
+        },
+        {
+          "type": "header",
+          "content": "Video"
+        },
+        {
+          "type": "video",
+          "id": "video",
+          "label": "Video",
+          "info": "16:9 aspect ratio."
+        },
+        {
+          "type": "video",
+          "id": "mob_video",
+          "label": "Mobile Video",
+          "info": "15:28 aspect ratio."
+        },
+        {
+          "type": "header",
+          "content": "YouTube",
+          "info": "Ensure Video fields above are empty if using YouTube. URL format needs to be https://www.youtube.com/watch?v=XXXXXXXXXXX."
+        },
+        {
+          "type": "video_url",
+          "id": "video_url",
+          "label": "YouTube Video",
+          "accept": ["youtube"]
+        },
+        {
+          "type": "video_url",
+          "id": "mob_video_url",
+          "label": "Mobile YouTube Video",
+          "accept": ["youtube"]
+        },
+        {
+          "type": "header",
+          "content": "Typography"
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "Text Color",
+          "default": "#FCF7E6"
+        },
+        {
+          "type": "select",
+          "id": "heading",
+          "label": "Heading",
+          "options": [
+            {
+              "value": "heading heading--primary",
+              "label": "Heading Primary"
+            },
+            {
+              "value": "heading heading--secondary",
+              "label": "Heading Secondary"
+            },
+            {
+              "value": "heading-1",
+              "label": "Heading 1"
+            },
+            {
+              "value": "heading-2",
+              "label": "Heading 2"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "text_position",
+          "label": "Text Position",
+          "options": [
+            {
+              "value": "flex-start",
+              "label": "left"
+            },
+            {
+              "value": "center",
+              "label": "center"
+            },
+            {
+              "value": "flex-end",
+              "label": "right"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "text_vertical_position",
+          "label": "Text Vertical Position",
+          "options": [
+            {
+              "value": "flex-start",
+              "label": "top"
+            },
+            {
+              "value": "center",
+              "label": "center"
+            },
+            {
+              "value": "flex-end",
+              "label": "bottom"
+            }
+          ],
+          "default": "center"
+        },
+        {
+          "type": "select",
+          "id": "text_alignment",
+          "label": "Text alignment",
+          "options": [
+            {
+              "value": "left",
+              "label": "left"
+            },
+            {
+              "value": "center",
+              "label": "center"
+            },
+            {
+              "value": "right",
+              "label": "right"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "text",
+          "id": "subtitle",
+          "label": "Subtitle"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Content",
+          "default": "<p></p>"
+        },
+        {
+          "type": "text",
+          "id": "cta_text",
+          "label": "CTA Text"
+        },
+        {
+          "id": "link",
+          "type": "url",
+          "label": "CTA Link"
+        },
+        {
+          "type": "select",
+          "id": "cta_style",
+          "label": "CTA Style",
+          "options": [
+            {
+              "value": "btn--primary",
+              "label": "Primary"
+            },
+            {
+              "value": "btn--primary-outline",
+              "label": "Primary Outline"
+            },
+            {
+              "value": "btn--secondary",
+              "label": "Secondary"
+            },
+            {
+              "value": "btn--secondary-outline",
+              "label": "Secondary Outline"
+            }
+          ],
+          "default": "btn--secondary-outline"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero Banner",
+      "category": "Baseline"
+    }
+  ]
+}
+{% endschema %}

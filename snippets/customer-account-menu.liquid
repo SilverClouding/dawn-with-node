@@ -1,0 +1,52 @@
+{%- comment -%}
+  {%- assign example_linklist = section.settings.example_linklist -%}
+
+  {% render 'account-menu', linklist: linklists[example_linklist], class_name: 'example-menu', linklist_header: linklists[example_linklist].title %}
+{%- endcomment -%}
+{% assign orderTemplates = 'customers/account,customers/order' | split: ',' %}
+{% assign requestPath = request.path | split: '/' %}
+{% assign requestTempate = requestPath[2] %}
+{% unless linklist %}
+  {% assign linklist = linklists['account-menu'] %}
+{% endunless %}
+
+<section class="{{ class_name }}">
+  {% if linklist.links.size > 0 and customer %}
+    {% if linklist_header %}
+      <h4 class="heading-4">{{ linklist_header }}</h4>
+    {% endif %}
+
+    <ul class="desktop-menu" data-account-menu>
+      {% for link in linklist.links %}
+        <li class="{{ link.title | handleize }} {% if link.active or orderTemplates contains template and link.url contains requestTempate %}active{% endif %}">
+          <a href="{{ link.url }}" data-account-link>{{ link.title }}</a>
+        </li>
+      {% endfor %}
+      <li class="{{ 'customer.account.change_password' | handleize }}">
+        <a href="{{ routes.account_login_url | append: '#recover' }}" data-change-password>
+          {{- 'customer.account.change_password' | t -}}
+        </a>
+      </li>
+      <li class="{{ 'customer.account.logout' | handleize }}">
+        <a href="{{ routes.account_logout_url }}">{{ 'customer.account.logout' | t }}</a>
+      </li>
+    </ul>
+
+    <div class="mobile-menu" data-mobile-account-title>
+      {% for link in linklist.links %}
+        <span class="menu-title {{ link.title | handleize }} hide"
+          ><a href="{{ link.url }}">{{ link.title }}</a></span
+        >
+      {% endfor %}
+    </div>
+  {% else %}
+    <ul>
+      <li>
+        <a href="{{ routes.account_login_url }}">{{ 'layout.customer.log_in' | t }}</a>
+      </li>
+      <li>
+        <a href="{{ routes.account_register_url }}">{{ 'layout.customer.sign_up' | t }}</a>
+      </li>
+    </ul>
+  {% endif %}
+</section>

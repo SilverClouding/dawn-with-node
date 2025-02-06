@@ -1,0 +1,8 @@
+<section class="account-popup">
+  <div class="account-popup-wrapper">
+    {% if customer %}
+      <div class="popup-title">Hello, {{ customer.first_name }}</div>
+    {% endif %}
+    {% render 'customer-account-menu', class_name: 'account-menu' %}
+  </div>
+</section>

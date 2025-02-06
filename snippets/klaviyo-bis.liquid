@@ -1,0 +1,84 @@
+{% if settings.klaviyo_enabled %}
+  <script src="https://a.klaviyo.com/media/js/onsite/onsite.js" async></script>
+
+  {% capture klaiyo_css %}
+    {% render 'klaviyo-bis.css' %}
+  {% endcapture %}
+
+  <script>
+    const klaviyo = klaviyo || [];
+    klaviyo.init({
+      account: {{ settings.klaviyo_id | json }},
+      {% if settings.klaviyo_bis_list_id != blank %}list: {{ settings.klaviyo_bis_list_id | json }},{% endif %}
+      platform: "shopify"
+    });
+    {% comment %} Taken from https://help.klaviyo.com/hc/en-us/articles/360001895651 {% endcomment %}
+    klaviyo.enable("backinstock",{
+      trigger: {
+        product_page_text: {{ 'products.klaviyo_modal.cta' | t | json }},
+        product_page_class: "klaviyo-bis-trigger",
+        product_page_text_align: "center",
+        product_page_margin: "0px",
+        replace_anchor: false
+      },
+      modal: {
+        headline: {{ 'products.klaviyo_modal.title' | t | json }},
+        close_label: {{ 'layout.general.close' | t | json }},
+        body_content: {{ 'products.klaviyo_modal.body' | t | json }},
+        email_field_label: {{ 'products.klaviyo_modal.label' | t | json }},
+        button_label: {{ 'products.klaviyo_modal.cta' | t | json }},
+        subscription_success_label: {{ 'products.klaviyo_modal.success' | t | json }},
+        newsletter_subscribe_label: "{{ 'products.klaviyo_modal.subscription_label' | t }}",
+        additional_styles: {{ klaiyo_css | strip | strip_newlines | json }}
+      }
+    });
+
+    {% if settings.klaviyo_analytics_enabled %}
+      {% comment %} Taken from https://help.klaviyo.com/hc/en-us/articles/115001396711 {% endcomment %}
+      window.addEventListener('load', function() {
+      var _learnq = window._learnq || [];
+      function addedToCart() {
+      fetch(`${window.location.origin}/cart.js`)
+      .then(res => res.clone().json().then(data => {
+        var cart = {
+          total_price: data.total_price/100,
+          $value: data.total_price/100,
+          total_discount: data.total_discount,
+          original_total_price: data.original_total_price/100,
+          items: data.items
+        }
+        if (item !== 'undefined') {
+          cart = Object.assign(cart, item)
+        }
+        if (klAjax) {
+          _learnq.push(['track', 'Added to Cart', cart]);
+          klAjax = false;
+          }
+      }))
+      };
+      (function (ns, fetch) {
+        ns.fetch = function() {
+          const response = fetch.apply(this, arguments);
+          response.then(res => {
+            if (`${window.location.origin}/cart/add.js`
+              .includes(res.url) && res.url !== '') {
+                  addedToCart()
+            }
+          });
+          return response
+        }
+      }(window, window.fetch));
+      var klAjax = true;
+      var atcButtons = document.querySelectorAll("form[action*='/cart/add'] button[type='submit']");
+      for (var i = 0; i < atcButtons.length; i++) {
+        atcButtons[i].addEventListener("click", function() {
+          if (klAjax) {
+            _learnq.push(['track', 'Added to Cart', item]);
+            klAjax = false;
+          }
+        })
+      }
+      });
+    {% endif %}
+  </script>
+{% endif %}

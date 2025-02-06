@@ -1,0 +1,12 @@
+{% assign low_stock_limit = settings.low_stock_limit %}
+{%- comment -%}
+  see if we have a custom
+  low_stock_limit for product
+  don't unncessarily loop through all tags:
+{%- endcomment -%}
+{%- assign joint_tags = product.tags | join: '||' -%}
+{%- if joint_tags contains '||low-stock-limit:' -%}
+  {%- assign right = joint_tags | split: '||low-stock-limit:' | last -%}
+  {%- assign low_stock_limit = right | split: '||' | first -%}
+{%- endif -%}
+{{ low_stock_limit }}

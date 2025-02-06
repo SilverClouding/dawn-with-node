@@ -1,0 +1,107 @@
+.absolute-center {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+[data-anim] {
+  transition-duration: 333ms;
+  transition-timing-function: ease-in-out;
+}
+[data-anim].anim-delay-333 {
+  transition-delay: 333ms;
+}
+[data-anim].anim-delay-666 {
+  transition-delay: 666ms;
+}
+[data-anim].anim-delay-999 {
+  transition-delay: 999ms;
+}
+[data-anim].anim-fade-in {
+  opacity: 0;
+  transition-property: opacity;
+}
+@media screen and (prefers-reduced-motion: reduce) {
+  [data-anim].anim-fade-in {
+    opacity: 1;
+  }
+}
+[data-anim].anim-fade-in.anim-active {
+  opacity: 1;
+}
+[data-anim].anim-slide-in-left {
+  transform: translateX(66px);
+  transition-property: transform, opacity;
+  opacity: 0;
+}
+@media screen and (prefers-reduced-motion: reduce) {
+  [data-anim].anim-slide-in-left {
+    opacity: 1;
+    transform: none;
+  }
+}
+[data-anim].anim-slide-in-left.anim-active {
+  transform: translateX(0);
+  opacity: 1;
+}
+@media screen and (prefers-reduced-motion: reduce) {
+  [data-anim].anim-active {
+    transition: none;
+  }
+}
+
+body.geo-open {
+  overflow: hidden;
+}
+
+.geo-switcher {
+  z-index: 100;
+  position: fixed;
+  inset: 0;
+  justify-content: center;
+  align-items: center;
+  display: none;
+}
+body.geo-open .geo-switcher {
+  display: flex;
+}
+.geo-switcher__underlay {
+  position: absolute;
+  inset: 0;
+  background-color: #212a2f;
+  opacity: 0.2;
+}
+.geo-switcher__inner {
+  position: relative;
+  z-index: 1;
+  background: #fff;
+  color: var(--color-main-3);
+  max-width: 414px;
+  width: 90%;
+  padding: 60px 16px;
+}
+@media screen and (min-width: 768px) {
+  .geo-switcher__inner {
+    padding: 80px 30px;
+  }
+}
+.geo-switcher__close {
+  background: var(--icon--close-alt) center/22px 22px no-repeat;
+  width: 22px;
+  height: 22px;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  cursor: pointer;
+}
+@media screen and (min-width: 1024px) {
+  .geo-switcher__close {
+    top: 30px;
+    right: 30px;
+  }
+}
+.geo-switcher .heading-3 {
+  text-align: center;
+  margin: 0 0 30px;
+}

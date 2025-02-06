@@ -1,0 +1,141 @@
+{% comment %} Enable the init file within global.js to use this file {% endcomment %}
+
+<section class="hotspots-banner" data-hotspots-banner>
+  <div class="hotspots-banner__container">
+    <div class="hotspots-banner__image">
+      {% assign image_mobile = section.settings.image_mobile | default: section.settings.image_desktop %}
+      {% render 'image', img: section.settings.image_desktop, img_mob: image_mobile, sizes: '100vw' %}
+
+      {% for block in section.blocks %}
+        <div class="hotspots-banner__spot" data-hotspots-spot="hotspots-banner__{{ block.settings.product.id }}" style="--left-mob: {{ block.settings.position_x_mob }}%; --top-mob: {{ block.settings.position_y_mob }}%; --left: {{ block.settings.position_x }}%; --top: {{ block.settings.position_y }}%;"></div>
+        <div class="hotspots-banner__product" data-hotspots-product="hotspots-banner__{{ block.settings.product.id }}">
+          <button class="hotspots-banner__close" data-hotspots-close>{% render 'icon-close' %}</button>
+          {% render 'product-card', product: block.settings.product, simple: true %}
+        </div>
+      {% endfor %}
+    </div>
+    <div class="hotspots-banner__footer hotspots-banner__footer--{{ section.settings.footer_position }}">
+      {% if section.settings.title != blank %}
+        <h2 class="heading-2">{{ section.settings.title }}</h2>
+      {% endif %}
+      {% if section.settings.cta_link != blank %}
+        <a href="{{ section.settings.cta_link }}" class="btn btn--primary btn--fit">{{ section.settings.cta_text }}</a>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Hotspots Banner",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image_desktop",
+      "label": "Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_mobile",
+      "label": "Image (Mobile)"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "CTA Text"
+    },
+    {
+      "type": "url",
+      "id": "cta_link",
+      "label": "CTA Link"
+    },
+    {
+      "type": "select",
+      "id": "footer_position",
+      "label": "Footer Position",
+      "options": [
+        {
+          "value": "left",
+          "label": "left"
+        },
+        {
+          "value": "center",
+          "label": "center"
+        },
+        {
+          "value": "right",
+          "label": "right"
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "name": "Hotspot",
+      "type": "hotspot",
+      "settings": [
+        {
+          "type": "range",
+          "id": "position_x",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "label": "Horizontal",
+          "default": 50
+        },
+        {
+          "type": "range",
+          "id": "position_y",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "label": "Vertical",
+          "default": 50
+        },
+        {
+          "type": "range",
+          "id": "position_x_mob",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "label": "Horizontal (Mobile)",
+          "default": 50
+        },
+        {
+          "type": "range",
+          "id": "position_y_mob",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "label": "Vertical (Mobile)",
+          "default": 50
+        },
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hotspots Banner",
+      "category": "Baseline"
+    }
+  ],
+  "disabled_on": {
+    "templates": ["*"],
+    "groups": ["*"]
+  }
+}
+{% endschema %}

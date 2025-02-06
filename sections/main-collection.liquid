@@ -1,0 +1,211 @@
+{%- liquid
+  comment
+    If you're updating the schmea/markup it needs to be copied over to main-search.liquid and tested thorougly
+    as main-search.liquid uses a simplified version
+  endcomment
+
+  comment
+    We don't have reliable access to query string,
+    but we do to tags.
+    If arbitrary tag settings.filter_dummy_tag is in url,
+    we have requested a URL with filtered products
+    & we shoudn't render the liquid product list, or
+    we'll get a nasty repaint
+  endcomment
+  assign render_liquid_products = true
+  if current_tags contains settings.filter_dummy_tag
+    assign render_liquid_products = false
+  endif
+
+  comment
+    Adding 0 converts the string to a number
+  endcomment
+  assign pagination = settings.pagination_count | plus: 0
+
+  assign filter_layout = section.settings.filter_layout
+-%}
+
+{% capture collectionProducts %}
+  <div data-products-wrapper>
+    <main class="collection-list-wrapper grid-list {% if settings.products_infinite_scroll %}infinite-scroll{% endif %}">
+      {% if render_liquid_products == false and settings.products_infinite_scroll and current_page > 1 %}
+        {% assign current_page_minus_1 = current_page | minus: 1 %}
+        {% for i in (1..current_page_minus_1) %}
+          <div
+            data-app-layer-portal="search-filtered-products"
+            data-no-results-search-page="{{ 'general.search.no_results_html' | t | escape }}"
+            data-requested-page="{{ current_page }}"
+            data-page-to-render="{{ i }}"
+            data-curr-collection-handle="{{ collection.handle }}"
+          >
+            <div class="product-card-container" data-liquid-dummies>
+              {% for i in (1..pagination) %}
+                {% render 'product-card', loading: true %}
+              {% endfor %}
+            </div>
+          </div>
+        {% endfor %}
+      {% endif %}
+
+      <div
+        data-app-layer-portal="search-filtered-products"
+        data-no-results-search-page="{{ 'general.search.no_results_html' | t | escape }}"
+        data-requested-page="{{ current_page }}"
+        data-page-to-render="{{ current_page }}"
+        data-curr-collection-handle="{{ collection.handle }}"
+      >
+        <div data-liquid-products>
+          {% if render_liquid_products %}
+            {% render 'product-list', section_id: section.id, pagination: pagination, section_settings: section.settings, infinite: settings.products_infinite_scroll, use_load_more_button: settings.use_load_more_button, blocks: section.blocks %}
+          {% else %}
+            <div class="product-card-container">
+              {% for i in (1..pagination) %}
+                {% render 'product-card', loading: true %}
+              {% endfor %}
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </main>
+  </div>
+{% endcapture %}
+
+{% case section.settings.filter_layout %}
+  {% when 'button' %}
+    {% render 'filter-and-sort-bar', filter_layout: filter_layout %}
+    {% render 'search-filters', filter_layout: filter_layout %}
+
+    <div class="collection">
+      <div class="container">
+        {{ collectionProducts }}
+      </div>
+    </div>
+
+  {% when 'horizontal' %}
+    {% render 'filter-and-sort-bar', filter_layout: filter_layout %}
+
+    <div class="collection">
+      <div class="container">
+        {{ collectionProducts }}
+      </div>
+    </div>
+
+  {% when 'vertical' %}
+    {% render 'filter-and-sort-bar', filter_layout: filter_layout %}
+
+    <div class="collection">
+      <div class="container">
+        <div class="collection__grid">
+          <div class="collection__col collection__col--filters">
+            {% render 'search-filters', filter_layout: filter_layout %}
+          </div>
+          <div class="collection__col collection__col--products">
+            {{ collectionProducts }}
+          </div>
+        </div>
+      </div>
+    </div>
+{% endcase %}
+
+{% comment %}
+   Uncomment if using SWYM
+  <script defer>
+    function swymCallbackFn(swat) {
+      // your API calls go here
+      document.addEventListener('swym:collections-loaded', function () {
+        swat.initializeActionButtons('.product-card-container');
+      });
+    }
+    if (!window.SwymCallbacks) {
+      window.SwymCallbacks = [];
+    }
+    window.SwymCallbacks.push(swymCallbackFn);
+  </script>
+{% endcomment %}
+
+{% schema %}
+{
+  "name": "Collection Settings",
+  "settings": [
+    {
+      "type": "header",
+      "content": "This should only be used on collection.json"
+    },
+    {
+      "type": "header",
+      "content": "Filter settings"
+    },
+    {
+      "type": "select",
+      "id": "filter_layout",
+      "label": "Filter Layout",
+      "options": [
+        {
+          "value": "button",
+          "label": "Button"
+        },
+        {
+          "value": "horizontal",
+          "label": "Horizontal"
+        },
+        {
+          "value": "vertical",
+          "label": "Vertical"
+        }
+      ],
+      "default": "horizontal"
+    }
+  ],
+  "max_blocks": 2,
+  "blocks": [
+    {
+      "type": "advert",
+      "name": "Advert",
+      "settings": [
+        {
+          "type": "number",
+          "id": "position",
+          "label": "Advert Position",
+          "info": "Advert appears at this position on grid",
+          "default": 5
+        },
+        {
+          "type": "image_picker",
+          "id": "image_desktop",
+          "label": "Image",
+          "info": "1910x1000"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_mobile",
+          "label": "Mobile Image",
+          "info": "686x800"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Lorem ipsum dolor sit amet consectet"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Content",
+          "default": "<p></p>"
+        },
+        {
+          "type": "text",
+          "id": "cta_text",
+          "label": "CTA Text",
+          "default": "Shop now"
+        },
+        {
+          "type": "url",
+          "id": "cta_link",
+          "label": "CTA Link"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,105 @@
+{% comment %}
+  This file assumes recommended products are setup using Shopify Search and Discovery
+  However this can be easily adjusted as long as the metafield is a product reference type
+  in which case the metafield reference would be product.metafields.SITE_NAME.complementary_products (or similar)
+{% endcomment %}
+
+{% if product.metafields['shopify--discovery--product_recommendation'].complementary_products != blank %}
+  {% assign useProductRecommandationsAPI = false %}
+  {% assign productList = product.metafields['shopify--discovery--product_recommendation'].complementary_products %}
+{% else %}
+  {% assign useProductRecommandationsAPI = true %}
+  {% assign productList = recommendations.products %}
+{% endif %}
+<div
+  class="featured-products"
+  {% if useProductRecommandationsAPI %}
+    data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ product.id }}&limit=8&intent=complementary"
+  {% endif %}
+>
+  <div class="container">
+    <div class="featured-products__header">
+      <h2 class="heading-3">{{ section.settings.title }}</h2>
+      {% if section.settings.cta_link != blank %}
+        <a class="view-all cta cta--arrow" href="{{ section.settings.cta_link }}">{{ section.settings.cta_text }}</a>
+      {% endif %}
+    </div>
+    <div
+      class="swiper featured-products__swiper"
+      data-swiper
+      id="swiper__{{ section.id }}"
+      data-id="swiper__{{ section.id }}"
+      data-swiper-config='
+        {
+          "loop": true,
+          "slidesPerView": 1.5,
+          "spaceBetween": 16,
+          "freeMode": true,
+          "navigation": {
+            "nextEl": ".swiper-button-next",
+            "prevEl": ".swiper-button-prev"
+          },
+          "pagination": {
+            "el": ".swiper-pagination",
+            "type": "progressbar"
+          },
+          "breakpoints": {
+            "768": {
+              "slidesPerView": 3,
+              "spaceBetween": 16
+            },
+            "1024": {
+              "slidesPerView": 4,
+              "spaceBetween": 8,
+              "freeMode": false
+            }
+          }
+        }
+      '
+    >
+      <div class="swiper-wrapper">
+        {% for p in productList %}
+          <div class="swiper-slide">
+            {% render 'product-card', product: p %}
+          </div>
+        {% endfor %}
+      </div>
+      <button aria-label="Previous Slide" class="swiper-button swiper-button-prev"></button>
+      <button aria-label="Next Slide" class="swiper-button swiper-button-next"></button>
+      <div class="swiper-pagination"></div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Recommended Products",
+  "limit": 1,
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title"
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "CTA Text"
+    },
+    {
+      "type": "url",
+      "id": "cta_link",
+      "label": "CTA Link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Recommended Products",
+      "category": "Baseline"
+    }
+  ],
+  "enabled_on": {
+    "templates": ["product"]
+  }
+}
+{% endschema %}

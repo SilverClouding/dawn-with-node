@@ -1,0 +1,27 @@
+<div class="newsletter-form {{ class }}">
+  {% form 'customer' %}
+    {{ form.errors | default_errors }}
+    {% if form.posted_successfully or form.email %}
+      <p class="newsletter-success">
+        {{ 'general.newsletter_form.confirmation' | t }}
+      </p>
+    {% else %}
+      <div class="input-wrapper">
+        <input type="hidden" name="contact[tags]" value="newsletter">
+        <input
+          type="email"
+          name="contact[email]"
+          id="Email"
+          value="{% if customer.email != blank %}{{ customer.email }}{% endif %}"
+          placeholder="{{ 'general.newsletter_form.email_placeholder' | t }}"
+          autocorrect="off"
+          autocapitalize="off"
+          class="text-input"
+        >
+        <button type="submit" name="commit" id="Subscribe" class="btn btn--primary btn--lg">
+          <span>{{ 'general.newsletter_form.submit' | t }}</span>
+        </button>
+      </div>
+    {% endif %}
+  {% endform %}
+</div>

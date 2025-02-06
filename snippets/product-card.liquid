@@ -1,0 +1,117 @@
+{%- comment -%}
+  {% render 'product-card', product: product %}
+{%- endcomment -%}
+
+{% comment %}
+  "loading" is true when rendering a product lazy product card that'll be replaced, eg
+  for previous-page placeholders in infinte scroll product listings
+  to counteract layout shift you will need to make sure that "loading" product cards
+  take up the same amount of space as real product cards, this is especially important to make sure
+  that scroll position persists on back navigation
+{% endcomment %}
+
+{%- comment -%}
+  The featured image can be different depending on the collection or article we're on.
+  This is controlled with the alt tags on the images.
+  The alt tag should match the handle of the collection, or article, such as 'skateboards', or 'our-top-3-picks-for-summer'
+  They can also be comma separated, such as 'skateboards,wheels,on-sale' to get that image to appear on those collections.
+{%- endcomment -%}
+
+{%- liquid
+  assign featuredImage = product.featured_image
+  assign matchedHandle = blank
+  if collection
+    assign matchedHandle = collection.handle
+  endif
+  if article
+    assign matchedHandle = article.handle
+  endif
+
+  if matchedHandle != blank
+    for img in product.images
+      assign imgAlts = img.alt | split: ','
+
+      for alt in imgAlts
+        if alt == matchedHandle
+          assign featuredImage = img
+          break
+        endif
+      endfor
+    endfor
+  endif
+-%}
+
+<div class="product-card{% if simple %} product-card--simple{% endif %}">
+  {% comment %}
+    Wishlist Button
+
+    SWYM
+    <button
+      aria-label="Add to Wishlist"
+      data-with-epi="true"
+      class="swym-button swym-add-to-wishlist-view-product product_{{product.id}}"
+      data-swaction="addToWishlist"
+      data-product-id="{{ product.id | json }}"
+      data-variant-id="{{ product.variants[0].id }}"
+      data-product-url="{{ shop.url }}{{ product.url }}"
+    ></button>
+
+    Smart Wishlist
+    <span class="smartwishlist" data-product="{{ product.id }}" data-variant="{{ product.variants[0].id }}"></span>
+
+    Yotpo Reviews
+
+    The Instance ID is the part of the URL after
+    https://yap.yotpo.com/wadmin/#/reviews-star-ratings/widget
+    To get it open the Yotpo Product Reviews & UGC App in Shopify
+    Click Yotpo Reviews Admin (top right)
+    Click On Site Widgets > Star Rating > Edit
+    <div
+      class="yotpo-widget-instance"
+      data-yotpo-instance-id="XXXXX"
+      data-yotpo-product-id="{{ product_id }}"
+      data-yotpo-cart-product-id="{{ item_product_id }}"
+      data-yotpo-section-id="productSearchCard-{{ product_id }}"
+    ></div>
+  {% endcomment %}
+
+  <div class="product-card__image-container">
+    <a href="{{ product.url }}" title="{{ product.title }}" aria-label="{{ product.title }}">
+      {% if loading %}
+        <div class="product-card__image">{% render 'loading' %}</div>
+      {% else %}
+        <div class="product-card__image">
+          {% comment %} Main image {% endcomment %}
+          {% render 'image', img: featuredImage, width: 300, height: 300, class: 'product-card__img' %}
+
+          {% comment %} Image hover {% endcomment %}
+          {% for img in product.images %}
+            {% if img != featuredImage %}
+              {% render 'image', img: img, width: 300, height: 300, class: 'product-card__img img-hover' %}
+              {% break %}
+            {% endif %}
+          {% endfor %}
+
+          {% render 'product-stickers', product: product, class: 'product-stickers--overlay' %}
+        </div>
+      {% endif %}
+    </a>
+    {% unless simple %}
+      <div class="product-card__quick-add">
+        {% if loading == blank %}
+          {% render 'product-quick-add-button', product: product %}
+        {% endif %}
+      </div>
+    {% endunless %}
+  </div>
+
+  {% render 'product-swatches', product: product, product_card: true %}
+
+  {% comment %} Description {% endcomment %}
+  <div class="product-card__info">
+    {% unless loading %}
+      <h3 class="product-card__title" data-aid="product-card">{{ product.title }}</h3>
+      <div class="product-card__price">{% render 'product-price', product: product %}</div>
+    {% endunless %}
+  </div>
+</div>

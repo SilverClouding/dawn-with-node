@@ -1,0 +1,11 @@
+<section class="header__icon header__icon--cart">
+  <a
+    href="{{ routes.cart_url }}"
+    aria-label="{{ 'layout.cart.title' | t }}"
+    onclick="window.blubolt.minicart.clickOpen(event)"
+    class="header__icon-wrapper"
+  >
+    {% render 'icon-cart' %}
+    <div data-app-layer-portal="cart-count-badge"></div>
+  </a>
+</section>

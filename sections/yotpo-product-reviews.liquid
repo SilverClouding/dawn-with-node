@@ -1,0 +1,17 @@
+<div class="yotpo-widget-instance" data-yotpo-instance-id="XXXXX" data-yotpo-product-id="{{product.id}}" data-yotpo-name="{{ product.title | escape }}" data-yotpo-url="{{ shop.url }}{{ product.url }}" data-yotpo-image-url="{{ product.featured_image | image_url: width: 1000, height: 1000 |replace: '?', '%3F' | replace: '&','%26'}}" data-yotpo-description="{{ product.description | escape }}"></div>
+
+{% schema %}
+{
+  "name": "Yotpo Product Reviews",
+  "settings": [],
+  "presets": [
+    {
+      "name": "Yotpo Product Reviews"
+    }
+  ],
+  "disabled_on": {
+    "templates": ["*"],
+    "groups": ["*"]
+  }
+}
+{% endschema %}

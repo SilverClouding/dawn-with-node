@@ -1,0 +1,141 @@
+{%- assign formatted_current_balance = gift_card.balance | money -%}
+
+<div class="gift-card" style="--bg: {{ section.settings.background_color }}">
+  <div class="container">
+    <h1 class="heading-1">{{ 'gift_cards.issued.subtext' | t }}</h1>
+    {% unless gift_card.enabled %}
+      <p class="gift-card__description">{{ 'gift_cards.issued.disabled' | t }}</p>
+    {% endunless %}
+
+    <p class="gift-card__description">{{ 'gift_cards.issued.description' | t }}</p>
+
+    <div class="gift-card__container">
+      <div class="gift-card__image">
+        {% render 'image', img: section.settings.image, width: 880, alt: 'Gift card illustration', class: 'gift-card__img', sizes: '50vw' %}
+      </div>
+
+      <div class="gift-card__main-info">
+        <div class="gift-card__info{% if gift_card.expires_on == blank %} gift-card__info--no-expiration{% endif %}">
+          <div class="gift-card__balance">
+            <h2 class="heading-2">{{ 'gift_cards.issued.remaining_html' | t: balance: formatted_current_balance }}</h2>
+            <p class="gift-card__value">{{ formatted_current_balance }}</p>
+          </div>
+          <div class="gift-card__expiration">
+            {% if gift_card.expired != true and gift_card.expires_on and gift_card.enabled %}
+              <h2 class="heading-2">{{ 'gift_cards.issued.active' | t }}</h2>
+              <p class="gift-card__value">{{ gift_card.expires_on | date: '%d/%m/%y' }}</p>
+            {% endif %}
+            {% if gift_card.expired and gift_card.enabled %}
+              <h2 class="heading-2">{{ 'gift_cards.issued.expired' | t }}</h2>
+              <p class="gift-card__value">{{ gift_card.expires_on | date: '%d/%m/%y' }}</p>
+            {% endif %}
+          </div>
+        </div>
+
+        <div class="gift-card__code">
+          <h2 class="heading-2">{{ 'gift_cards.issued.redeem' | t }}</h2>
+          <div class="gift-card__code-wrapper">
+            <p id="GiftCardDigits" class="heading-4 gift-card__code-value" data-gift-card-digits>
+              {{ gift_card.code | format_code }}
+            </p>
+            <button class="gift-card__code-button" title="Copy to clipboard" data-copy-code>
+              <span class="visually-hidden">{{ 'gift_cards.issued.copy_code' | t }}</span>
+              {% render 'icon-copy' %}
+            </button>
+          </div>
+          <p class="gift-card__code-notification" data-copy-notification>{{ 'gift_cards.issued.code_copied' | t }}</p>
+        </div>
+      </div>
+
+      {% if section.settings.cta1_url != blank or section.settings.cta2_url != blank %}
+        <div class="gift-card__ctas-wrapper">
+          {% if section.settings.cta1_url != blank %}
+            <a href="{{ section.settings.cta1_url }}" class="gift-card__cta btn btn--primary" target="_blank">
+              {{- section.settings.cta1 -}}
+            </a>
+          {% endif %}
+          {% if section.settings.cta2_url != blank %}
+            <a href="{{ section.settings.cta2_url }}" class="gift-card__cta btn btn--primary" target="_blank">
+              {{- section.settings.cta2 -}}
+            </a>
+          {% endif %}
+        </div>
+      {% endif %}
+
+      <div class="gift-card__controls">
+        <button class="gift-card__print-btn" data-gift-card-pdf>
+          {% render 'icon-download' %}
+          {{ 'gift_cards.issued.download_pdf' | t }}
+        </button>
+        <button class="gift-card__print-btn" data-gift-card-print>
+          {% render 'icon-print' %}
+          {{ 'gift_cards.issued.print' | t }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  function toDataURL(url, callback) {
+    var xhr = new XMLHttpRequest();
+    xhr.onload = function () {
+      var reader = new FileReader();
+      reader.onloadend = function () {
+        callback(reader.result);
+      };
+      reader.readAsDataURL(xhr.response);
+    };
+    xhr.open('GET', url);
+    xhr.responseType = 'blob';
+    xhr.send();
+  }
+
+  const images = document.querySelectorAll('.gift-card__img');
+  const imageSize = images.length - 1;
+
+  document.querySelectorAll('.gift-card__img').forEach((img, i, images) => {
+    const src = img.getAttribute('src');
+    toDataURL(src, function (dataUrl) {
+      img.setAttribute('src', dataUrl);
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Gift Card Main",
+  "class": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "This should only be used on gift_card.liquid"
+    },
+    {
+      "type": "header",
+      "content": "CTAs"
+    },
+    {
+      "type": "text",
+      "id": "cta1",
+      "label": "CTA 1 Text",
+      "default": "Start Shopping"
+    },
+    {
+      "type": "url",
+      "id": "cta1_url",
+      "label": "CTA 1 URL"
+    },
+    {
+      "type": "text",
+      "id": "cta2",
+      "label": "CTA 2 Text",
+      "default": "Find a Store"
+    },
+    {
+      "type": "url",
+      "id": "cta2_url",
+      "label": "CTA 2 URL"
+    }
+  ]
+}
+{% endschema %}

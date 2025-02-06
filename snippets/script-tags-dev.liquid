@@ -1,0 +1,33 @@
+<script defer src="{{ 'bb-global.dev.js' | asset_url }}"></script>
+
+<script defer src="{{ 'bb-app-layer.dev.js' | asset_url }}"></script>
+
+{% if template contains 'cart' %}
+  <script defer src="{{ 'bb-template.cart.dev.js' | asset_url }}"></script>
+{% else %}
+  <link rel="prefetch" href="{{ 'bb-template.cart.dev.js' | asset_url }}" as="script">
+{% endif %}
+
+{% if template contains 'customer' %}
+  <script defer src="{{ 'bb-template.customer.dev.js' | asset_url }}"></script>
+{% else %}
+  <link rel="prefetch" href="{{ 'bb-template.customer.dev.js' | asset_url }}" as="script">
+{% endif %}
+
+{% if template contains 'gift-card' %}
+  <script defer src="{{ 'bb-template.gift-card.dev.js' | asset_url }}"></script>
+{% else %}
+  <link rel="prefetch" href="{{ 'bb-template.gift-card.dev.js' | asset_url }}" as="script">
+{% endif %}
+
+{% if template contains 'page' %}
+  <script defer src="{{ 'bb-template.page.dev.js' | asset_url }}"></script>
+{% else %}
+  <link rel="prefetch" href="{{ 'bb-template.page.dev.js' | asset_url }}" as="script">
+{% endif %}
+
+{% if template contains 'product' %}
+  <script defer src="{{ 'bb-template.product.dev.js' | asset_url }}"></script>
+{% else %}
+  <link rel="prefetch" href="{{ 'bb-template.product.dev.js' | asset_url }}" as="script">
+{% endif %}

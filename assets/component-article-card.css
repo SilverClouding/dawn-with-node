@@ -1,0 +1,12 @@
+.article-card {
+  display: grid;
+  gap: 12px;
+}
+.article-card .heading-4 {
+  margin: 0;
+}
+.article-card__meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}

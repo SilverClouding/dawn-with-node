@@ -1,0 +1,14 @@
+.custom-find-your-perfect-cup__title {
+  margin-bottom: 2rem;
+}
+.custom-find-your-perfect-cup__content {
+  margin-bottom: 2rem;
+}
+@media screen and (width >= 750px) {
+  .custom-find-your-perfect-cup__title {
+    margin-bottom: 3rem;
+  }
+  .custom-find-your-perfect-cup__content {
+    margin-bottom: 3rem;
+  }
+}

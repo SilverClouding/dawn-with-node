@@ -1,0 +1,11 @@
+<section class="customer-account-header">
+  <div class="customer-welcome">
+    <h2 class="heading-1">Welcome, {{ customer.first_name }}</h2>
+  </div>
+
+  <div class="customer-member-date">
+    {{ customer.orders_count }} Order
+    {%- if customer.orders_count == 0 or customer.orders_count >= 2 %}s{% endif %}
+    placed
+  </div>
+</section>

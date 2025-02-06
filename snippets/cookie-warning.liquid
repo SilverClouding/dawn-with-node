@@ -1,0 +1,28 @@
+{% if section.settings.cookie_message != blank %}
+  <section class="cookie-warning-snippet hide" data-cookie-warning>
+    <div class="cookie-warning-inner">
+      <div class="container">
+        <div class="cookie-warning-message">
+          {{ section.settings.cookie_message }}
+        </div>
+
+        <button
+          class="cookie-warning-btn btn btn--primary"
+          data-cookie-warning-btn
+          type="text"
+        >
+          {{ section.settings.cookie_message_btn_text }}
+        </button>
+        {% if section.settings.show_reject_btn %}
+          <button
+            class="cookie-warning-btn btn btn--secondary"
+            data-cookie-warning-btn-reject
+            type="text"
+          >
+            {{ section.settings.cookie_message_btn_text_reject }}
+          </button>
+        {% endif %}
+      </div>
+    </div>
+  </section>
+{% endif %}

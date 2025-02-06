@@ -1,0 +1,125 @@
+{%- liquid
+  assign password = false
+  if template == 'password'
+    assign password = true
+  endif
+-%}
+<div class="container">
+  {% unless password %}
+    <div class="footer__upper">
+      <div class="footer__row">
+        {%- assign footer_linklist = linklists[section.settings.footer_linklist] -%}
+        <section class="footer__menu-wrapper">
+          {% if footer_linklist.links.size > 0 %}
+            <ul class="footer__menu-list footer__menu-list--parent">
+              {% for link in footer_linklist.links %}
+                {% assign hasChildren = false %}
+                {% if link.links != blank %}
+                  {% assign hasChildren = true %}
+                {% endif %}
+                <li class="footer__menu-item{% if hasChildren %} footer__menu-item--parent{% else %} footer__menu-item--single{% endif %}" id="footer-links-{{ link.title | handleize }}">
+                  <button
+                    type="button"
+                    class="footer__menu-link {% if hasChildren %} footer__menu-link--parent{% else %} footer__menu-link--single{% endif %}"
+                    {% if hasChildren %}
+                      data-click-toggle='
+                        [
+                          {"target": "#footer-links-{{ link.title | handleize }} .footer__menu-link--parent", "toggle": "footer__menu-link--open"},
+                          {"target": "#footer-links-{{ link.title | handleize }} .footer__menu-list--child", "toggle": "footer__menu-list--open"}
+                        ]
+                      '
+                    {% endif %}
+                  >
+                    {{ link.title }}
+                  </button>
+                  {% if hasChildren %}
+                    <ul class="footer__menu-list footer__menu-list--child">
+                      {% for child_link in link.links %}
+                        <li class="footer__menu-item footer__menu-item--child">
+                          <a href="{{ child_link.url }}" class="footer__menu-link footer__menu-link--child">{{ child_link.title }}</a>
+                        </li>
+                      {% endfor %}
+                    </ul>
+                  {% endif %}
+                </li>
+              {% endfor %}
+              <li class="footer__menu-item footer__menu-item--single footer__menu-item--social">
+                {% render 'social-icons', class: 'social-icons--footer' %}
+              </li>
+            </ul>
+          {% endif %}
+        </section>
+        <div class="footer__newsletter">
+          {% render 'newsletter-signup', class: 'newsletter-signup--footer', form_class: 'newsletter-form--footer' %}
+        </div>
+      </div>
+    </div>
+  {% endunless %}
+  <footer class="footer__lower">
+    <div class="footer__copyright">
+      {% assign date = 'now' | date: '%Y' %}
+      {{ 'layout.footer.copyright_text' | t: shop_name: shop.name, date: date }}
+    </div>
+    {% if section.settings.show_payment_icons %}
+      <div class="footer__payment-icons">
+        {% render 'payment-icons', no_title: true %}
+      </div>
+    {% endif %}
+  </footer>
+</div>
+{% comment %} {% render 'cookie-warning' %} {% endcomment %}
+
+{% schema %}
+{
+  "name": "Footer",
+  "class": "footer",
+  "tag": "footer",
+  "limit": 1,
+  "settings": [
+    {
+      "type": "link_list",
+      "id": "footer_linklist",
+      "label": "First menu",
+      "default": "footer"
+    },
+    {
+      "type": "header",
+      "content": "Payment Icons"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_payment_icons",
+      "label": "Show payment icons",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Cookie Banner"
+    },
+    {
+      "id": "cookie_message",
+      "type": "richtext",
+      "label": "Cookie message",
+      "default": "<p>We use cookies to personalise your experience and make it as smooth as possible. If you’d like to read our cookie policy, it can be found [INSERT LINK (customiser > footer)].</p>"
+    },
+    {
+      "id": "cookie_message_btn_text",
+      "type": "text",
+      "label": "Cookie button text",
+      "default": "Accept & close"
+    },
+    {
+      "id": "show_reject_btn",
+      "type": "checkbox",
+      "label": "Show reject button?",
+      "default": true
+    },
+    {
+      "id": "cookie_message_btn_text_reject",
+      "type": "text",
+      "label": "Cookie button reject text",
+      "default": "Reject & close"
+    }
+  ]
+}
+{% endschema %}

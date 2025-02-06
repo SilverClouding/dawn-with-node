@@ -1,0 +1,39 @@
+<section class="social-sharing">
+  <h4 class="social-sharing__title heading-5">{{ 'blogs.article.share' | t }}</h4>
+  <ul class="social-sharing__items">
+    {% if settings.social_facebook_article_share %}
+      <li class="social-sharing__item">
+        <a target="_blank" href="//www.facebook.com/sharer.php?u={{ shop.url | append: share_permalink }}" class="social-sharing__link">
+          <span class="visually-hidden">Share on Facebook</span>
+          {% render 'icon-facebook' %}
+        </a>
+      </li>
+    {% endif %}
+
+    {% if settings.social_x_article_share %}
+      <li class="social-sharing__item">
+        <a
+          target="_blank"
+          href="//x.com/share?text={{ share_title | url_param_escape }}&amp;url={{ shop.url | append: share_permalink }}"
+          class="social-sharing__link"
+        >
+          <span class="visually-hidden">Share on X</span>
+          {% render 'icon-x' %}
+        </a>
+      </li>
+    {% endif %}
+
+    {% if settings.social_pinterest_article_share %}
+      <li class="social-sharing__item">
+        <a
+          target="_blank"
+          href="//pinterest.com/pin/create/button/?url={{ shop.url | append: share_permalink }}&amp;media={{ share_image | image_url: width: 1024, height: 1024 }}&amp;description={{ share_title | url_param_escape }}"
+          class="social-sharing__link"
+        >
+          <span class="visually-hidden">Share on Pinterest</span>
+          {% render 'icon-pinterest' %}
+        </a>
+      </li>
+    {% endif %}
+  </ul>
+</section>

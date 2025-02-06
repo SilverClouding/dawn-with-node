@@ -1,0 +1,11 @@
+.social-sharing__items {
+  display: flex;
+  gap: 12px;
+}
+.social-sharing__link {
+  display: block;
+}
+.social-sharing__link svg {
+  width: 24px;
+  height: 24px;
+}

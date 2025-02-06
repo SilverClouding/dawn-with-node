@@ -1,0 +1,37 @@
+{% unless randomNumber %}
+  {% assign randomNumber = 'now' | date: '%N' | modulo: 100 %}
+{% endunless %}
+{% assign quantity = item.quantity | default: 1 %}
+<div class="quantity-selector {{ class }}" data-quantity-selector>
+  <label for="quantity-input-{{ item.id }}-{{ randomNumber }}" class="label hide">{{ 'products.product.quantity' | t }}</label>
+  <button
+    role="button"
+    type="button"
+    data-quantity-dec
+    class="quantity-selector__btn quantity-selector__btn--dec"
+    aria-label="decrease quantity"
+    {% if quantity == 1 %}
+      disabled
+    {% endif %}
+  ></button>
+  <input
+    type="number"
+    readonly
+    class="quantity-selector__input"
+    value="{{ quantity }}"
+    id="quantity-input-{{ item.id }}-{{ randomNumber }}"
+    name="{% if name %}{{ name }}{% else %}updates[]{% endif %}"
+    data-quantity-input
+    {% if product %}
+      data-product-form-quantity-input
+    {% endif %}
+    aria-label="{{ 'cart.general.item_quantity' | t }}"
+  >
+  <button
+    role="button"
+    type="button"
+    data-quantity-inc
+    class="quantity-selector__btn quantity-selector__btn--inc"
+    aria-label="increase quantity"
+  ></button>
+</div>

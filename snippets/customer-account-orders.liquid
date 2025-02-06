@@ -1,0 +1,66 @@
+<div class="orders-overivew-title">
+  {{ 'customer.orders.title' | t }}
+</div>
+
+{% paginate customer.orders by 20 %}
+  {% for order in customer.orders %}
+    <section class="orders-overview">
+      {% if customer.orders.size != 0 %}
+        <div class="customer-title customer-title--orders">
+          <div class="title">{{ 'customer.orders.order_name' | t }} - {{ order.name }}</div>
+
+          <div class="order-actions">
+            {% assign reorder_url = '/' %}
+            {% for line_item in order.line_items %}
+              {% capture reorder_url %}{{ reorder_url | append: line_item.variant_id | append: ':' | append: line_item.quantity | append: ',' }}{% endcapture %}
+            {% endfor %}
+
+            <a href="{{ routes.cart_url | append: reorder_url }}" class="btn btn--primary">
+              {{- 'customer.orders.order_again' | t -}}
+            </a>
+            <a href="{{ order.customer_url }}" class="view">{{ 'customer.orders.view_details' | t }}</a>
+          </div>
+        </div>
+
+        <div class="customer-details-wrapper customer-details-wrapper--order">
+          <table class="responsive-table">
+            <thead>
+              <tr>
+                <th>{{ 'customer.orders.date' | t }}</th>
+                <th>{{ 'customer.orders.payment_status' | t }}</th>
+                <th>{{ 'customer.orders.fulfillment_status' | t }}</th>
+                <th>{{ 'customer.orders.total' | t }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td data-label="{{ 'customer.orders.date' | t }}">
+                  {{ order.created_at | date: format: 'month_day_year' }}
+                </td>
+                <td data-label="{{ 'customer.orders.payment_status' | t }}">{{ order.financial_status_label }}</td>
+                <td data-label="{{ 'customer.orders.fulfillment_status' | t }}">
+                  {{ order.fulfillment_status_label }}
+                </td>
+                <td data-label="{{ 'customer.orders.total' | t }}">{{ order.total_price | money }}</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="mobile-reorder">
+            {% assign reorder_url = '/' %}
+            {% for line_item in order.line_items %}
+              {% capture reorder_url %}{{ reorder_url | append: line_item.variant_id | append: ':' | append: line_item.quantity | append: ',' }}{% endcapture %}
+            {% endfor %}
+
+            <a href="{{ routes.cart_url | append: reorder_url }}" class="btn btn--primary">
+              {{- 'customer.orders.order_again' | t -}}
+            </a>
+          </div>
+        </div>
+      {% endif %}
+    </section>
+  {% endfor %}
+  {% if paginate.pages > 1 %}
+    {% render 'pagination', paginate: paginate %}
+  {% endif %}
+{% endpaginate %}

@@ -1,0 +1,30 @@
+<ul class="product-media product-media--grid">
+  {% assign image_count_for_zoom_overlay = 0 %}
+  {% for media in product.media %}
+    {% case media.media_type %}
+      {% when 'image' %}
+        <li
+          data-image-zoom-toggle
+          data-image-index="{{ image_count_for_zoom_overlay | plus: 1 }}"
+        >
+          {% render 'image', img: media.image, vw_desktop: 50 %}
+        </li>
+        {% assign image_count_for_zoom_overlay = image_count_for_zoom_overlay | plus: 1 %}
+      {% when 'external_video' %}
+        <li
+          class="product-media__iframe"
+          data-media-id="{{ media.id }}"
+        >
+          {{ media | external_video_tag }}
+        </li>
+      {% when 'video' %}
+        <li class="product-media__video" data-media-id="{{ media.id }}">
+          {{ media | video_tag: controls: true }}
+        </li>
+      {% when 'model' %}
+        <li class="product-media__model" data-media-id="{{ media.id }}">
+          {{ media | model_viewer_tag: interaction-policy: 'allow-when-focused', disable-zoom: 'true' }}
+        </li>
+    {% endcase %}
+  {% endfor %}
+</ul>

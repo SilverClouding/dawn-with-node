@@ -1,0 +1,53 @@
+<section class="blog-articles">
+  <div class="container">
+    {% if section.settings.title != blank %}
+      <h2 class="blog-articles__heading heading-2">{{ section.settings.title | escape }}</h2>
+    {% endif %}
+
+    {%- assign blog = blogs[section.settings.blog] -%}
+
+    <main class="blog-articles__articles">
+      {% for article in blog.articles limit: section.settings.post_limit %}
+        {% render 'article-card', article: article %}
+      {% endfor %}
+    </main>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Blog Articles",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Blog Articles"
+    },
+    {
+      "id": "blog",
+      "type": "blog",
+      "label": "Blog"
+    },
+    {
+      "type": "range",
+      "id": "post_limit",
+      "label": "Limit",
+      "min": 3,
+      "max": 12,
+      "step": 3,
+      "default": 3
+    }
+  ],
+  "presets": [
+    {
+      "name": "Blog Articles",
+      "category": "Blog",
+      "settings": {
+        "blog": "News",
+        "post_limit": 3
+      }
+    }
+  ]
+}
+{% endschema %}

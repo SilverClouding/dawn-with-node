@@ -1,0 +1,136 @@
+{%- comment -%}
+  For Nosto minicart upsells see Rixo or Green People
+{%- endcomment -%}
+
+{% assign message_slides = section.blocks | where: 'type', 'message_slide' %}
+{% assign shipping_content = section.blocks | where: 'type', 'shipping_row' %}
+
+<div
+  data-app-layer-portal="minicart"
+  data-promo-bar-text="{{ settings.promo_bar_text }}"
+  data-promo-bar-text-success="{{ settings.promo_bar_text_success }}"
+  data-promo-bar-enable="{{ settings.promo_bar_enable }}"
+  data-promo-bar-cart-value="{{ cart.total_price }}"
+  data-show-shopify-upsells="{{ settings.show_shopify_upsells | json }}"
+  {% comment %} data-gift-product="{{ section.settings.gift_product }}" {% endcomment %}
+  data-cart-notes="{{ settings.cart_notes_enable }}"
+  data-cart-notes-length="{{ settings.cart_notes_max_characters }}"
+  data-gift-message="{{ settings.gift_message_enable }}"
+  data-gift-message-length="{{ settings.gift_message_max_characters }}"
+  data-gwp-threshold="{{ settings.gwp_threshold | times: 100 | json }}"
+  data-gwp-product="{{ settings.gwp_product }}"
+></div>
+
+<script>
+  window.miniCart = {
+    strings: {
+      "title" : {{ 'cart.general.title' | t | json }},
+      "summaryTitle": {{ 'cart.general.summary_title' | t | json }},
+      "orderTitle": {{ 'cart.general.subotal_text' | t | json }},
+      "itemsText": {{ 'cart.general.items_text' | t | json }},
+      "savingTitle": {{ 'cart.general.savings' | t | json }},
+      "subTotalTitle": {{ 'cart.general.total' | t | json }},
+      "proccedCta": {{ 'cart.general.checkout' | t | json }},
+      "viewCartCta": {{ 'cart.general.view_bag' | t | json }},
+      "removeText": {{ 'cart.general.remove' | t | json }},
+      "lastItemText": {{ 'cart.general.last_item_text' | t | json }},
+      "additionalMinicartHTML": {{ 'cart.general.additional_html' | t | json }},
+      "giftProductTitle": {{ 'cart.general.gift_product_title' | t | json }},
+      "giftProductModalTitle": {{ 'cart.general.gift_product_modal_title' | t | json }},
+      "giftProductMessage": {{ 'cart.general.gift_product_message' | t | json }},
+      "addToCartText": {{ 'products.product.add_to_cart' | t | json }},
+      "giftProductDropdown": {{ 'cart.general.gift_product_dropdown' | t | json }},
+      "addText": {{ 'products.product.upsell_add_to_cart' | t | json }},
+      "emptyText": {{ 'cart.general.empty' | t | json }},
+      "shopNow": {{ 'cart.general.shop_now' | t | json }},
+      "upsellTitle": {{ 'cart.general.upsell_title' | t | json }},
+      "freeShippingText": {{ 'cart.general.free_shipping_success_html' | t | json }},
+      "remainingShippingText": {{ 'cart.general.free_shipping_prompt_html' | t | json }},
+      "deliveryInformation": {{ 'cart.general.delivery_information' | t | json }},
+      "giftWithPurchaseTitle": {{ 'cart.general.gift_with_purchase_title' | t | json }},
+      "noteTitle": {{ 'cart.general.note_title' | t | json }},
+      "notePlaceholder": {{ 'cart.general.note_placeholder' | t | json }},
+      "noteSupportText": {{ 'cart.general.note_support_text' | t | json }},
+      "noteBtnText": {{ 'cart.general.note_btn_text' | t | json }},
+      "giftMessageTitle": {{ 'cart.general.gift_message_title' | t | json }},
+      "giftMessagePlaceholder": {{ 'cart.general.gift_message_placeholder' | t | json }},
+      "giftMessageSupportText": {{ 'cart.general.gift_message_support_text' | t | json }},
+      "giftMessageBtnText": {{ 'cart.general.gift_message_btn_text' | t | json }}
+    },
+    messageBlocks: [
+      {% for block in message_slides %}
+        {
+          "title": {{ block.settings.title | json }}
+        }{% unless forloop.last %},{% endunless %}
+      {% endfor %}
+    ],
+    shippingContent: [
+      {% for block in shipping_content %}
+        {
+          "title": {{ block.settings.title | json }},
+          "price": {{ block.settings.price | json }}
+        }{% unless forloop.last %},{% endunless %}
+      {% endfor %}
+    ],
+    {% if section.settings.shipping_cta_link != blank and section.settings.shipping_cta_text != blank %}
+      shippingLink: [
+        {
+          "link": {{ section.settings.shipping_cta_link | json }},
+          "text": {{ section.settings.shipping_cta_text | json }}
+        }
+      ],
+    {% endif %}
+  }
+</script>
+
+{% schema %}
+{
+  "name": "Minicart",
+  "settings": [
+    {
+      "type": "product",
+      "id": "gift_product",
+      "label": "Gift product"
+    },
+    {
+      "type": "url",
+      "id": "shipping_cta_link",
+      "label": "Shipping CTA Link"
+    },
+    {
+      "type": "text",
+      "id": "shipping_cta_text",
+      "label": "Shipping CTA Text"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "message_slide",
+      "name": "Message Slide",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        }
+      ]
+    },
+    {
+      "type": "shipping_row",
+      "name": "Shipping Row",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Service"
+        },
+        {
+          "type": "text",
+          "id": "price",
+          "label": "Price"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

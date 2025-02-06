@@ -1,0 +1,15 @@
+<div class="newsletter-signup {{ class }}">
+  {% if section != blank %}
+    <h1 class="heading-1">{{ section.settings.title }}</h1>
+  {% else %}
+    <h3 class="heading-3">{{ 'general.newsletter_form.title' | t }}</h3>
+  {% endif %}
+
+  {% if section != blank %}
+    {{ section.settings.content }}
+  {% else %}
+    <p>{{ 'general.newsletter_form.description' | t }}</p>
+  {% endif %}
+
+  {% render 'newsletter-form', class: form_class %}
+</div>

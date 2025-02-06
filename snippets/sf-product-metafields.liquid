@@ -1,0 +1,63 @@
+{% layout none %} {
+{% if product.metafields.SITE_NAME.stickers != blank %}
+  "stickers": {
+  {% for sticker in product.metafields.SITE_NAME.stickers.value %}
+    {{ sticker.title | json }}: { "title": {{ sticker.title | json }}, "backgroundColor": "{{ sticker.background_color }}", "textColor": "{{ sticker.text_color }}" }{% unless forloop.last %},{% endunless %}
+  {% endfor %}
+  },
+{% endif %}
+{% if product.metafields.SITE_NAME.swatch_products != blank %}
+  "swatches": {
+  {% for p in product.metafields.SITE_NAME.swatch_products.value.products.value %}
+    {%- liquid
+      comment
+        Ensure this logic matches theme-base/snippets/product-swatches.liquid
+      endcomment
+      assign swatch = p.metafields.SITE_NAME.swatch.value
+      assign colorCount = swatch.colors.value.size
+      case colorCount
+        when 1
+          comment
+            We want the color to be set, the pattern exists because I was playing around
+          endcomment
+          assign color = swatch.color
+          assign pattern = blank
+        when 2
+          comment
+            Remove the colour
+            The SVG markup comes from src/app-layer/context/search/helpers/GetSwatchData.ts
+          endcomment
+          assign color = blank
+          assign pattern = "data:image/svg+xml,%3Csvg width='50' height='50' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M50 0v50H0L50 0Z' fill='$0'/%3E%3Cpath d='M0 50V0h50L0 50Z' fill='$1'/%3E%3C/svg%3E" | replace: '$0', swatch.colors.value[0] | replace: '$1', swatch.colors.value[1] | replace: '#', '%23'
+      endcase
+      comment
+        Always override with the image
+      endcomment
+      if swatch.pattern != blank
+        assign pattern = swatch.pattern | image_url: width: 80, height: 80
+      endif
+    -%}
+
+    {{ p.handle | json }}: { "title": {{ p.title | json }},
+    {%- if swatch.color != blank -%}"colors": ["{{ swatch.color }}"],{%- endif -%}
+    {%- if swatch.colors.value != blank -%}
+      "colors": [
+      {%- for color in swatch.colors.value -%}
+        "{{ color }}"
+        {%- unless forloop.last -%},{%- endunless -%}
+      {%- endfor -%}
+      ],
+    {%- endif -%}
+    {%- if pattern != blank %}"pattern": {{ pattern | json }},{% endif %} "url": {{ p.url | json }}, "active": {% if p.handle == product.handle %}true{% else %}false{% endif %} }{% unless forloop.last %},{% endunless %}
+  {% endfor %}
+  },
+{% endif %}
+"global":
+{{- product.metafields.global | json -}}
+, "reviews":
+{{- product.metafields.reviews | json -}}
+, "productBoosts":
+{{- product.metafields['shopify--discovery--product_search_boost'] | json -}}
+, "productRecommendation":
+{{- product.metafields['shopify--discovery--product_recommendation'] | json -}}
+}

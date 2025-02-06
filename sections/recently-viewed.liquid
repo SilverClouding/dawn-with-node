@@ -1,0 +1,58 @@
+<div class="featured-products" data-featured-products>
+  <div class="container">
+    <div class="featured-products__header">
+      <h2 class="heading-3">{{ section.settings.title }}</h2>
+      {% if section.settings.cta_link != blank %}
+        <a class="view-all cta cta--arrow" href="{{ section.settings.cta_link }}">{{ section.settings.cta_text }}</a>
+      {% endif %}
+    </div>
+    <div
+      data-app-layer-portal="recently-viewed"
+      data-limit="{{ section.settings.limit }}"
+      data-handle="{{ product.handle }}"
+      data-shop-domain="{{ shop.permanent_domain }}_{{ shop.id }}"
+    ></div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Recently Viewed",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Recently Viewed"
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "CTA Text",
+      "default": "Shop All"
+    },
+    {
+      "type": "url",
+      "id": "cta_link",
+      "label": "CTA Link"
+    },
+    {
+      "type": "range",
+      "id": "limit",
+      "min": 4,
+      "max": 12,
+      "step": 4,
+      "unit": "pr",
+      "label": "Limit",
+      "default": 8,
+      "info": "Total amount of products shown"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Recently Viewed",
+      "category": "Baseline"
+    }
+  ]
+}
+{% endschema %}

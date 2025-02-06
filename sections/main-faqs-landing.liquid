@@ -1,0 +1,114 @@
+<section class="faqs-landing">
+  <div class="container container--sm">
+    <div class="faqs-landing__header">
+      <h2 class="faqs-landing__heading heading-2">{{ section.settings.title }}</h2>
+      {% if section.settings.content != blank %}
+        <div class="faqs-landing__content">
+          {{ section.settings.content }}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+  <div class="container">
+    <ul class="faqs-landing__content-list">
+      {% for block in section.blocks %}
+        <li class="faqs-landing__content-item">
+          <a href="{{ block.settings.cta_link }}" class="faqs-landing__content-link">
+            {% if block.settings.icon != blank %}
+              {{ block.settings.icon }}
+            {% endif %}
+            <h3 class="faqs-landing__content-heading">{{ block.settings.title }}</h3>
+          </a>
+        </li>
+      {% endfor %}
+    </ul>
+    {% if section.settings.contact_banner_title != blank %}
+      <div class="faqs-landing__contact-banner">
+        <h4 class="faqs-landing__contact-banner-heading heading-3">{{ section.settings.contact_banner_title }}</h4>
+        {% if section.settings.contact_banner_text != blank %}
+          <div class="faqs-landing__contact-banner-text">
+            {{ section.settings.contact_banner_text }}
+          </div>
+        {% endif %}
+        {% if section.settings.contact_banner_link != blank %}
+          <a
+            class="faqs-landing__contact-banner-cta btn btn--primary"
+            href="{{ section.settings.contact_banner_link }}"
+          >
+            {{- section.settings.contact_banner_cta -}}
+          </a>
+        {% endif %}
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "FAQs Landing",
+  "settings": [
+    {
+      "type": "header",
+      "content": "This should only be used on page.faqs-landing.json"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title"
+    },
+    {
+      "type": "richtext",
+      "id": "content",
+      "label": "Content",
+      "default": "<p></p>"
+    },
+    {
+      "type": "text",
+      "id": "contact_banner_title",
+      "label": "Banner Title",
+      "default": "Need more help?"
+    },
+    {
+      "type": "richtext",
+      "id": "contact_banner_text",
+      "label": "Banner Text",
+      "default": "<p>Get in touch with us</p>"
+    },
+    {
+      "type": "text",
+      "id": "contact_banner_cta",
+      "label": "Banner CTA Text",
+      "default": "Get in touch"
+    },
+    {
+      "type": "url",
+      "id": "contact_banner_link",
+      "label": "Banner CTA Link"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "faq-item",
+      "name": "FAQ Item",
+      "settings": [
+        {
+          "type": "html",
+          "id": "icon",
+          "label": "Icon",
+          "info": "Visit https://jakearchibald.github.io/svgomg/ and drag and drop the svg onto the page to optimise the image. Click the copy icon (above the blue download arrow) and paste the contents into this field. Icon should be 40x40px"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "id": "cta_link",
+          "type": "url",
+          "label": "CTA Link"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,80 @@
+{% if page %}
+  {% assign metafields = page.metafields %}
+{% elsif collection %}
+  {% assign metafields = collection.metafields %}
+{% endif %}
+
+{% assign page_description = page_description | prepend: '<p>' | append: '</p>' %}
+
+{% assign seoTitle = metafields.SITE_NAME.seo_title | default: section.settings.title | default: page_title %}
+{% assign seoContent = metafields.SITE_NAME.seo_content | default: section.settings.content | default: page_description %}
+
+{% assign hasSeo = false %}
+{% if seoTitle != blank or seoContent != blank %}
+  {% assign hasSeo = true %}
+{% endif %}
+
+{% if hasSeo %}
+  <section class="seo-block">
+    <div class="container">
+      <div class="seo-block__content">
+        {% if seoTitle != blank %}
+          <h2 class="heading-5">{{ seoTitle }}</h2>
+        {% endif %}
+        {% if seoContent != blank %}
+          <div class="rte" data-seo-block-short>
+            <p>{{ seoContent | strip_html | truncate: 210 }}</p>
+            <button
+              class="link"
+              data-click-toggle='
+                [
+                  {"target": "[data-seo-block-full]", "remove": "hide"},
+                  {"target": "[data-seo-block-short]", "add": "hide"}
+                ]
+              '
+            >
+              {{ 'general.seo_block.read_more' | t }}
+            </button>
+          </div>
+          <div class="rte hide" data-seo-block-full>
+            {{ seoContent }}
+            <button
+              class="link"
+              data-click-toggle='
+                [
+                  {"target": "[data-seo-block-full]", "add": "hide"},
+                  {"target": "[data-seo-block-short]", "remove": "hide"}
+                ]
+              '
+            >
+              {{ 'general.seo_block.read_less' | t }}
+            </button>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </section>
+{% endif %}
+
+{% schema %}
+{
+  "name": "SEO Block",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title"
+    },
+    {
+      "type": "richtext",
+      "id": "content",
+      "label": "Content"
+    }
+  ],
+  "presets": [
+    {
+      "name": "SEO Block"
+    }
+  ]
+}
+{% endschema %}

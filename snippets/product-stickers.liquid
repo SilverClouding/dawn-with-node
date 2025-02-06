@@ -1,0 +1,38 @@
+{% comment %}
+  {% render 'product-stickers', product: product, class: 'stickers--class', limit: 3 %}
+
+  Setup
+
+  Uses a Metaobject named Stickers with the following fields
+  * Background Colour (background_color) - Color field
+  * Text Colour (text_color) - Color field
+  * Title (title) - Single Line Text field
+
+  Stored within Product on a metafield called Stickers, referencing the Stickers metaobject as a List of entries
+
+  There's no limit on the amount of stickers a product can have but a limit parameter can be passed through the render
+
+  --
+
+  Logic
+
+  This file loops through each of the stickers the Stickers metaobject.
+  It then populates the background and colour as inline css variables so they can fallback to defaults within product-stickers.scss
+
+  --
+
+  Notes
+
+  The HTML here should match the render of stickers in src/app-layer/components/portals/Search/Components/SearchProductCard.tsx
+{% endcomment %}
+{%- liquid
+  unless limit
+    assign limit = 3
+  endunless
+-%}
+
+<ul class="product-stickers {{ class }}">
+  {% for sticker in product.metafields.SITE_NAME.stickers.value limit: limit %}
+    <li class="product-stickers__sticker" style="{% if sticker.background_color != blank %}--bg: {{ sticker.background_color }};{% endif %}{% if sticker.text_color != blank %}--color: {{ sticker.text_color }};{% endif %}">{{ sticker.title }}</li>
+  {% endfor %}
+</ul>

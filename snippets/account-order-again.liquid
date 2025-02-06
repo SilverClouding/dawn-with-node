@@ -1,0 +1,50 @@
+<div class="order-again-title">
+  <h2 class="heading-2">{{ 'customer.orders.quickly_title' | t }}</h2>
+</div>
+
+<div
+  class="swiper"
+  id="account-image-slider"
+  data-swiper
+  data-id="account-image-slider"
+  data-swiper-config='
+    {
+      "loop": true,
+      "slidesPerView": 1.75,
+      "spaceBetween": 0,
+      "breakpoints": {
+        "768": {
+          "slidesPerView": 3.5,
+          "spaceBetween": 24
+        }
+      }
+    }
+  '
+>
+  <div class="swiper-wrapper">
+    {% for line_item in order.line_items %}
+      <div class="swiper-slide" data-image-index="1">
+        <div class="title-image-wrapper">
+          {% if line_item.image != blank %}
+            <a aria-label="{{ product.line_item.title }}" href="{{ line_item.product.url }}">
+              {% render 'image', img: line_item.image, width: 400, alt: product.line_item.title, sizes: '200px' %}
+            </a>
+          {% endif %}
+          <a href="{{ line_item.product.url }}">
+            <h5 class="heading-6">
+              <p>
+                {{ line_item.product.title }}
+              </p>
+              {% if line_item.variant.title != 'Default Title' and line_item.variant.title != blank %}
+                <p class="variant-title">
+                  {{ line_item.variant.title }}
+                </p>
+              {% endif %}
+            </h5>
+          </a>
+          {% render 'product-quick-add-button', product: line_item.product, current_variant: line_item.variant, classname_primary: true %}
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</div>

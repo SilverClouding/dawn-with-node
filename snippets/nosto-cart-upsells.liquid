@@ -1,0 +1,187 @@
+{%- comment -%}
+  <div
+    class="swiper swiper--upsells"
+    data-swiper
+    id="swiper__$!divId"
+    data-id="swiper__$!divId"
+    data-swiper-config='{
+      "loop": true,
+      "slidesPerView": 1,
+      "spaceBetween": 16,
+      "threshold": 10,
+      "navigation": {
+        "nextEl": ".swiper-pagination-next",
+        "prevEl": ".swiper-pagination-prev"
+      },
+      "pagination": {
+        "el": ".swiper-pagination",
+        "type": "custom",
+        "clickable": true,
+        "renderCustom": true
+      },
+      "breakpoints": {
+        "1024": {
+          "spaceBetween": 30
+        }
+      }
+    }'
+  >
+    <div class="swiper-wrapper">
+      #foreach($product in $products)
+        <div class="swiper-slide">
+          <div class="minicart-upsell">
+            <div class="upsell-image">
+              <img alt="$!product.name" width="164" height="164" src="$product.imageUrl&crop=center&height=328&width=328" />
+            </div>
+            <div class="upsell-details">
+              <h4 class='heading-4'>$!product.name</h4>
+              <div class="product-price-snippet">
+                <p class="subheading-2">
+                  <span #if($product.discounted) class="price-variation nosto_money" x-nosto-url="$!product.url" #else class="nosto_money" x-nosto-url="$!product.url" #end >$!product.price</span>
+                  #if($product.discounted)
+                    <s class="nosto_list_money" x-nosto-url="$!product.url">$!product.listPrice</s>
+                  #end
+                  #if($!sku.available)
+                    <span>Sold out</span>
+                  #end
+                </p>
+              </div>
+              #if($product.skus.size() > 1)
+                <div class="select-wrapper">
+                  <label for="product-options-$!product.id" class="visually-hidden">Select</label>
+                  <select
+                    name="id"
+                    id="product-options-$!product.id"
+                    value="Select"
+                    class="select"
+                  >
+                    <option value="Select" disabled selected>Select</option>
+                      #foreach($sku in $product.skus)
+                        <option value="$!sku.id" #if($!sku.available) data-variant-available="true" #else data-variant-available="false" disabled #end>
+                          $!sku.name
+                        </option>
+                      #end
+                  </select>
+                </div>
+                <button
+                  disabled="disabled"
+                  type="submit"
+                  class="btn btn--secondary btn--block"
+                  data-atc-product-id
+                >
+                  Select
+                </button>
+
+              #else
+                <button
+                  #if($!sku.available)
+                    disabled="disabled"
+                  #end
+                  type="submit"
+                  class="btn btn--secondary btn--block"
+                  data-atc-product-id="$!product.skus[0].id"
+                >
+                  #if($sku.available) Sold Out #else Add to Bag #end
+                </button>
+              #end
+
+            </div>
+          </div>
+        </div>
+      #end
+    </div>
+    <div class="swiper-pagination"></div>
+  </div>
+
+  <script type="text/javascript">
+    var currency = _targetWindow.Shopify?.currency?.active || 'GBP';
+    var market_root = '/';
+    if (_targetWindow.Shopify?.routes?.root) {
+      market_root = _targetWindow.Shopify?.routes?.root;
+    }
+
+    function formatMoney(cents, format) {
+      if (typeof cents === 'string') {
+        cents = cents.replace('.', '');
+      }
+      let value = '';
+      const placeholderRegex = /\{\{\s*(\w+)\s*\}\}/;
+      const formatString = format || moneyFormat;
+
+      function formatWithDelimiters(number, precision = 2, thousands = ',', decimal = '.') {
+        if (isNaN(number) || number == null) {
+          return 0;
+        }
+
+        number = (number / 100.0).toFixed(precision);
+
+        const parts = number.split('.');
+        const dollarsAmount = parts[0].replace(/(\d)(?=(\d\d\d)+(?!\d))/g, `$1${thousands}`);
+        const centsAmount = parts[1] ? decimal + parts[1] : '';
+
+        return dollarsAmount + centsAmount;
+      }
+
+      switch (formatString.match(placeholderRegex)[1]) {
+        case 'amount':
+          value = formatWithDelimiters(cents, 2);
+          break;
+        case 'amount_no_decimals':
+          value = formatWithDelimiters(cents, 0);
+          break;
+        case 'amount_with_comma_separator':
+          value = formatWithDelimiters(cents, 2, '.', ',');
+          break;
+        case 'amount_no_decimals_with_comma_separator':
+          value = formatWithDelimiters(cents, 0, '.', ',');
+          break;
+      }
+
+      return formatString.replace(placeholderRegex, value);
+    }
+
+    function marketFetchPresentmentPrice(productHandle, fetchListPrice) {
+      return (
+        fetch(`${market_root}products/${productHandle}.json?currency=${currency}`)
+          .then((response) => response.json())
+          .then((json) => json.product.variants)
+          .then((variants) => variants.find((v) => v))
+          //.then(variant => (fetchListPrice ? variant.compare_at_price : variant.price))
+          .then((variant) => (fetchListPrice ? variant.compare_at_price : variant.price))
+          .then((price) => formatMoney(price, _targetWindow['theme'].moneyFormat))
+      );
+    }
+
+    function marketSetPresentmentPricesUrl(priceElement, productUrl, fetchListPrice) {
+      const elements = _targetWindow.document.querySelectorAll(priceElement);
+      const promises = Array.from(elements).map((element) => {
+        const productUrlAttribute = element.getAttribute(productUrl);
+        if (!productUrlAttribute) {
+          return Promise.reject(new Error(`${productUrl} not found: ${element.outerHTML}`));
+        }
+
+        const productHandle = new URL(productUrlAttribute).pathname.substring('/products/'.length);
+        return marketFetchPresentmentPrice(productHandle, fetchListPrice).then((price) => {
+          element.replaceChildren(document.createTextNode(price));
+        });
+      });
+      return Promise.all(promises);
+    }
+    // CURRENCY CONVERTING
+    if (_targetWindow.Shopify?.currency?.active != 'GBP') {
+      // Testing
+      //if(_targetWindow.Shopify?.AdminBarInjector?.length) {
+      marketSetPresentmentPricesUrl('.nosto_money', 'x-nosto-url', false);
+      // marketSetPresentmentPricesUrl('.nosto_list_money', 'x-nosto-url', true)
+      const hideList = _targetWindow.document.querySelectorAll('.nosto_list_money');
+
+      Array.from(hideList).map((lp) => lp.classList.add('hide'));
+      // sort out urls
+      const urls = _targetWindow.document.querySelectorAll('.nosto_url');
+      Array.from(urls).map((url) => {
+        url.href = url.href.replace(_targetWindow.location.hostname + '/', _targetWindow.location.hostname + _targetWindow.Shopify.routes.root);
+      });
+      //}
+    }
+  </script>
+{%- endcomment -%}

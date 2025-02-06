@@ -1,0 +1,145 @@
+.absolute-center {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+[data-anim] {
+  transition-duration: 333ms;
+  transition-timing-function: ease-in-out;
+}
+[data-anim].anim-delay-333 {
+  transition-delay: 333ms;
+}
+[data-anim].anim-delay-666 {
+  transition-delay: 666ms;
+}
+[data-anim].anim-delay-999 {
+  transition-delay: 999ms;
+}
+[data-anim].anim-fade-in {
+  opacity: 0;
+  transition-property: opacity;
+}
+@media screen and (prefers-reduced-motion: reduce) {
+  [data-anim].anim-fade-in {
+    opacity: 1;
+  }
+}
+[data-anim].anim-fade-in.anim-active {
+  opacity: 1;
+}
+[data-anim].anim-slide-in-left {
+  transform: translateX(66px);
+  transition-property: transform, opacity;
+  opacity: 0;
+}
+@media screen and (prefers-reduced-motion: reduce) {
+  [data-anim].anim-slide-in-left {
+    opacity: 1;
+    transform: none;
+  }
+}
+[data-anim].anim-slide-in-left.anim-active {
+  transform: translateX(0);
+  opacity: 1;
+}
+@media screen and (prefers-reduced-motion: reduce) {
+  [data-anim].anim-active {
+    transition: none;
+  }
+}
+
+.variant-option {
+  margin: 0 0 16px;
+}
+@media screen and (min-width: 768px) {
+  .variant-option {
+    margin: 0 0 24px;
+  }
+}
+.variant-option__header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 6px;
+}
+@media screen and (min-width: 768px) {
+  .variant-option__header {
+    margin: 0 0 8px;
+  }
+}
+.variant-option__options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+.variant-option__radio:checked + .variant-option__label {
+  background: #ccc;
+  border: 1px solid #000;
+}
+.variant-option__option--low-stock .variant-option__radio:checked + .variant-option__label {
+  background: rgba(var(--color-info), 0.15);
+}
+.variant-option__option--oos .variant-option__radio:checked + .variant-option__label {
+  background: rgba(181, 181, 181, 0.15);
+  border-color: var(--color-error);
+}
+.variant-option__option--pre-order .variant-option__radio:checked + .variant-option__label {
+  background: rgba(var(--color-success), 0.06);
+}
+.variant-option__label {
+  display: block;
+  cursor: pointer;
+  padding: 7px;
+  text-align: center;
+  border: 1px solid var(--color-border);
+}
+@media screen and (min-width: 768px) {
+  .variant-option__label {
+    padding: 10px;
+  }
+}
+@media screen and (min-width: 1024px) {
+  .variant-option__label:hover {
+    border: 1px solid #000;
+  }
+}
+.variant-option__option--oos .variant-option__label {
+  background: rgba(181, 181, 181, 0.15);
+}
+.variant-option__option--low-stock .variant-option__label {
+  position: relative;
+}
+.variant-option__option--low-stock .variant-option__label::before {
+  content: "";
+  border-style: solid;
+  border-width: 10px 0 0 10px;
+  border-color: transparent transparent transparent var(--color-info);
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+.variant-option__option--pre-order .variant-option__label {
+  position: relative;
+}
+.variant-option__option--pre-order .variant-option__label::before {
+  content: "";
+  border-style: solid;
+  border-width: 10px 0 0 10px;
+  border-color: transparent transparent transparent var(--color-success);
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+.variant-option__stock-display {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.variant-option__stock {
+  position: relative;
+  margin: 0 0 12px;
+}

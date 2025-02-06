@@ -1,0 +1,75 @@
+.absolute-center {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+[data-anim] {
+  transition-duration: 333ms;
+  transition-timing-function: ease-in-out;
+}
+[data-anim].anim-delay-333 {
+  transition-delay: 333ms;
+}
+[data-anim].anim-delay-666 {
+  transition-delay: 666ms;
+}
+[data-anim].anim-delay-999 {
+  transition-delay: 999ms;
+}
+[data-anim].anim-fade-in {
+  opacity: 0;
+  transition-property: opacity;
+}
+@media screen and (prefers-reduced-motion: reduce) {
+  [data-anim].anim-fade-in {
+    opacity: 1;
+  }
+}
+[data-anim].anim-fade-in.anim-active {
+  opacity: 1;
+}
+[data-anim].anim-slide-in-left {
+  transform: translateX(66px);
+  transition-property: transform, opacity;
+  opacity: 0;
+}
+@media screen and (prefers-reduced-motion: reduce) {
+  [data-anim].anim-slide-in-left {
+    opacity: 1;
+    transform: none;
+  }
+}
+[data-anim].anim-slide-in-left.anim-active {
+  transform: translateX(0);
+  opacity: 1;
+}
+@media screen and (prefers-reduced-motion: reduce) {
+  [data-anim].anim-active {
+    transition: none;
+  }
+}
+
+.product-swatches {
+  display: flex;
+  gap: 6px;
+  padding: 0;
+  flex-wrap: wrap;
+}
+.product-swatches.product-swatches--pdp .product-swatches__swatch {
+  width: 32px;
+  height: 32px;
+}
+.product-swatches__swatch {
+  text-decoration: none;
+  display: block;
+  position: relative;
+  width: 24px;
+  height: 24px;
+  background: var(--bg) center no-repeat;
+  border: 1px solid var(--color-border);
+}
+.product-swatches__swatch.product-swatches__swatch--active {
+  border-color: var(--color-main-1);
+}

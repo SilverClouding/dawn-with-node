@@ -1,0 +1,107 @@
+{%- comment -%}
+  {% render 'hero-slide' %}
+{%- endcomment -%}
+
+<section class="hero__slide">
+  <div
+    class="hero__slide-wrapper"
+    style="--align-items: {{ data.text_vertical_position }}; --justify-content: {{ data.text_position }}; --color: {{ data.text_color }}; --text-align: {{ data.text_alignment }};"
+  >
+    <div class="hero__slide-content">
+      <div
+        class="hero__slide-text hero__slide-text--{{ text_align }}"
+        style="--align-items: {{ data.text_alignment }};"
+      >
+        <h1 class="heading {{ data.heading }}">{{ data.title }}</h1>
+        {% if data.subtitle != blank %}
+          <h3 class="subheading">{{ data.subtitle }}</h3>
+        {% endif %}
+
+        {% if data.content != blank %}
+          <div class="hero__slide-p">{{ data.content }}</div>
+        {% endif %}
+
+        {% if data.cta_text != blank %}
+          <a href="{{ data.link }}" class="btn {{ data.cta_style }}">{{ data.cta_text }}</a>
+        {% endif %}
+      </div>
+    </div>
+
+    {% assign hasVideo = false %}
+    {% assign videoClass = 'video-container--single' %}
+    {% assign hasMobileVideo = false %}
+
+    {% if data.mob_video != blank %}
+      {% assign hasVideo = true %}
+      {% assign hasMobileVideo = true %}
+      {% render 'video-native',
+        class: 'video-container--mobile',
+        video: data.mob_video,
+        autoplay: true,
+        loop: true,
+        muted: true,
+        controls: false
+      %}
+    {% elsif data.mob_video_url != blank %}
+      {% assign hasVideo = true %}
+      {% assign hasMobileVideo = true %}
+      {% render 'video-youtube', class: 'video-container--mobile', video: data.mob_video_url.id, id: section.id %}
+    {% endif %}
+
+    {% if hasMobileVideo %}
+      {% assign videoClass = 'video-container--desktop' %}
+    {% endif %}
+
+    {% if data.video != blank %}
+      {% assign hasVideo = true %}
+      {% render 'video-native',
+        class: videoClass,
+        video: data.video,
+        autoplay: true,
+        loop: true,
+        muted: true,
+        controls: false
+      %}
+    {% elsif data.video_url != blank %}
+      {% assign hasVideo = true %}
+      {% render 'video-youtube', class: videoClass, video: data.video_url.id, id: section.id %}
+    {% endif %}
+
+    {% if data.image_desktop != blank and hasVideo != true %}
+      <div class="hero__slide-image">
+        {%- liquid
+          comment
+            Assign all images to the desktop image
+            then override them if they images are set
+          endcomment
+          assign image = data.image_desktop
+          assign image_tablet = data.image_tablet | default: image
+          assign image_mobile = data.image_mobile | default: image
+          assign fetchpriority = 'auto'
+          assign no_lazy = false
+          comment
+            If this is the first section on the page then
+            fetchpriority is high, and we don't want to
+            lazyload anything
+          endcomment
+          if section.index == 1
+            assign fetchpriority = 'high'
+            assign no_lazy = true
+          else
+            assign fetchpriority = 'auto'
+            assign no_lazy = false
+          endif
+        %}
+        {% render 'image',
+          img: image,
+          img_tab: image_tablet,
+          img_mob: image_mobile,
+          no_lazy: no_lazy,
+          fetchpriority: fetchpriority,
+          format: 'pjpg',
+          sizes: '100vw'
+        %}
+      </div>
+    {% endif %}
+  </div>
+</section>

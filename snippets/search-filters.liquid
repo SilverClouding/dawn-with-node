@@ -1,0 +1,40 @@
+<aside class="search-filters__container search-filters__container--{{ filter_layout }}" data-search-filters-slide-out>
+  <div class="search-filters__inner">
+    <header class="search-filters__header">
+      <h5>{{ 'collections.general.filter_title' | t }}</h5>
+      <button
+        aria-label="{{ 'collections.general.filter_close' | t }}"
+        type="button"
+        data-click-toggle='
+          [
+            {"target":"body", "remove":"filters-open,modal-open"},
+            {"target":"html", "remove":"modal-open"}
+          ]
+        '
+        class="search-filters__header-close"
+      >
+        {% render 'icon-close' %}
+      </button>
+    </header>
+
+    <div
+      class="search-filters__filters search-filters__filters--{{ filter_layout }}"
+      data-app-layer-portal="search-filters"
+    ></div>
+  </div>
+</aside>
+
+<div
+  aria-hidden
+  role="button"
+  {% comment %}overlay shouldn't be tabbable{% endcomment %}
+  tabindex="-1"
+  aria-label="{{ 'collections.general.filter_close' | t }}"
+  data-click-toggle='
+    [
+      {"target":"body", "remove":"filters-open,modal-open"},
+      {"target":"html", "remove":"modal-open"}
+    ]
+  '
+  class="search-filters__overlay"
+></div>

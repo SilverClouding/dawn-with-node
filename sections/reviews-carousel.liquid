@@ -1,0 +1,118 @@
+<section class="reviews-carousel anim-slide-in-bottom" data-anim>
+  <div class="container">
+    {% assign slideBlocks = section.blocks | where: 'type', 'review' %}
+
+    {% if slideBlocks != blank %}
+      <section
+        class="swiper"
+        data-swiper
+        data-swiper-config='
+          {
+            "loop": true,
+            "slidesPerView": 1,
+            "navigation": {
+              "nextEl": ".swiper-button-next",
+              "prevEl": ".swiper-button-prev"
+            }
+          }
+        '
+      >
+        <div class="swiper-wrapper">
+          {% for block in slideBlocks %}
+            <div class="swiper-slide">
+              <div class="reviews-carousel__review">
+                <div class="reviews-carousel__content">
+                  <ul class="reviews-carousel__stars">
+                    {% for i in (1..5) %}
+                      <li
+                        class="reviews-carousel__star{% if i <= block.settings.stars %} reviews-carousel__star--active{% endif %}"
+                      ></li>
+                    {% endfor %}
+                  </ul>
+                  <figure class="reviews-carousel__quote">
+                    <blockquote>&ldquo;{{ block.settings.review }}&rdquo;</blockquote>
+                    <figcaption>{{ block.settings.title }}</figcaption>
+                  </figure>
+                </div>
+                <div class="reviews-carousel__product">
+                  {% if block.settings.product_image != blank %}
+                    <a href="{{ block.settings.cta_link }}" class="reviews-carousel__link">
+                      <span class="visually-hidden">{{ block.settings.cta_text }}</span>
+                      {%- assign alt = block.settings.cta_text | append: ' product image' -%}
+                      {% render 'image', img: block.settings.product_image, width: 1000, height: 1000, alt: alt, class: 'reviews-carousel__img', vw_desktop: 50 %}
+                    </a>
+                    <a href="{{ block.settings.cta_link }}" class="cta cta--arrow">{{ block.settings.cta_text }}</a>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+        <div class="reviews-carousel__buttons">
+          <button aria-label="Previous Slide" class="swiper-button swiper-button-prev"></button>
+          <button aria-label="Next Slide" class="swiper-button swiper-button-next"></button>
+        </div>
+      </section>
+    {% endif %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Reviews Carousel",
+  "settings": [],
+  "blocks": [
+    {
+      "name": "Review",
+      "type": "review",
+      "settings": [
+        {
+          "type": "range",
+          "id": "stars",
+          "label": "Stars",
+          "min": 0,
+          "max": 5,
+          "step": 1,
+          "default": 5
+        },
+        {
+          "type": "textarea",
+          "id": "review",
+          "label": "Review"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Author"
+        },
+        {
+          "type": "image_picker",
+          "id": "product_image",
+          "label": "Product Image",
+          "info": "Recommended Size: 980x980"
+        },
+        {
+          "type": "text",
+          "id": "cta_text",
+          "label": "CTA Text",
+          "default": "Shop the ..."
+        },
+        {
+          "type": "url",
+          "id": "cta_link",
+          "label": "CTA Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Reviews Carousel"
+    }
+  ],
+  "disabled_on": {
+    "templates": ["*"],
+    "groups": ["*"]
+  }
+}
+{% endschema %}

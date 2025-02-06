@@ -1,0 +1,90 @@
+{%- comment -%}
+  {% render 'product-variant-options', product: product %}
+{%- endcomment -%}
+
+{% for option in product.options_with_values %}
+  {% assign optionName = option.name | downcase %}
+  {% if option.values.size > 1 %}
+    <div class="variant-option variant-option--{{ optionName }}" data-variant-option="{{ optionName }}">
+      <div class="variant-option__header">
+        <span class="variant-option__name">Select {{ option.name | downcase }}:</span>
+        <span class="variant-option__value" data-variant-selected>
+          {% comment %} {{ current_variant.title }} {% endcomment %}
+        </span>
+      </div>
+      <div class="variant-option__options{% if option.values.size == 1 %} variant-option__options--single{% endif %}">
+        {% for value in option.values %}
+          <div class="variant-option__option">
+            <input
+              type="radio"
+              {% if option.selected_value == value or option.values.size <= 1 %}
+                checked="checked"
+              {% endif %}
+              value="{{ value | escape }}"
+              data-index="option{{ option_index }}"
+              name="{{ option.name }}"
+              data-option-name="{{ option.name }}"
+              data-option-label="{{ value | escape }}"
+              data-option-value="{{ value }}"
+              data-option-select
+              class="variant-option__radio visually-hidden"
+              id="variant-option__{{ option.name | handleize }}-{{ value | url_encode }}"
+            >
+
+            <label
+              for="variant-option__{{ option.name | handleize }}-{{ value | url_encode }}"
+              class="variant-option__label"
+            >
+              {{ value }}
+            </label>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  {% endif %}
+{% endfor %}
+
+{% comment %}
+  {% if product.variants.size > 1 %}
+    {% for option in product.options_with_values %}
+      <label for="option-{{ option.position }}" class="label">{{ 'products.product.option' | t: option: option.name }}</label>
+      <div class="select-wrapper">
+        <select data-option-select id="option-{{ option.position }}" class="select">
+          {% for value in option.values %}
+            <option {% if current_variant.options contains value %} selected="selected" {% endif %} value="{{ value | escape }}">{{ value }}</option>
+          {% endfor %}
+        </select>
+      </div>
+    {% endfor %}
+
+    <noscript>
+      <select name="id">
+        {% for variant in product.variants %}
+          <option {% if variant == current_variant.id %} selected="selected" {% endif %}  value="{{ variant.id }}">{{ variant.title }} - {{ variant.price | money }}</option>
+        {% endfor %}
+      </select>
+    </noscript>
+  {% endif %}
+{% endcomment %}
+
+{% assign currentVariantInventory = current_variant.inventory_quantity | times: 1.0 %}
+{% assign lowStocklimit = settings.low_stock_limit | times: 1.0 %}
+
+{% assign inStock = true %}
+{% assign lowStock = false %}
+{% assign ooStock = false %}
+{% if currentVariantInventory < lowStocklimit %}
+  {% assign inStock = false %}
+  {% assign lowStock = true %}
+{% endif %}
+{% unless current_variant.available %}
+  {% assign inStock = false %}
+  {% assign lowStock = false %}
+  {% assign ooStock = true %}
+{% endunless %}
+<div class="variant-option__stock-display{% unless option.values.size > 1 %} variant-option__stock-display--single{% endunless %}" data-variant-stock-display data-variant-stock-display-id="{{ current_variant.id }}">
+  <span class="label variant-option__stock variant-option__stock--in-stock{% unless inStock %} hide{% endunless %}" data-variant-stock-display-in-stock>{{ 'products.product.in_stock' | t }}</span>
+  <span class="label variant-option__stock variant-option__stock--low-stock{% unless lowStock %} hide{% endunless %}" data-variant-stock-display-low-stock>{{ 'products.product.low_stock' | t }}</span>
+  <span class="label variant-option__stock variant-option__stock--out-of-stock{% unless ooStock %} hide{% endunless %}" data-variant-stock-display-out-of-stock>{{ 'products.product.out_of_stock' | t }}</span>
+  <span class="label variant-option__stock variant-option__stock--out-of-stock hide" data-variant-stock-display-unavailable>{{ 'products.product.unavailable' | t }}</span>
+</div>

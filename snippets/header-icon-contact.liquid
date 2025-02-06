@@ -1,0 +1,13 @@
+<section class="header__icon header__icon--contact">
+  <a
+    href="{{ routes.root_url | append: 'pages/contact' }}"
+    {% if button_only %}
+      class="header__icon-wrapper" aria-label="{{ 'layout.contact.contact' | t }}"
+    {% endif %}
+  >
+    {% render 'icon-phone' %}
+    {% unless button_only %}
+      <p>{{ 'layout.contact.contact' | t }}</p>
+    {% endunless %}
+  </a>
+</section>

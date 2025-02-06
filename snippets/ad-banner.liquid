@@ -1,0 +1,33 @@
+{% comment %}
+  {% render 'ad-banner',
+    image: IMAGE,
+    image_mobile: IMAGE_MOBILE,
+    title: TITLE,
+    text: TEXT,
+    url: URL,
+    cta_text: TEXT  %}
+{% endcomment %}
+
+<a
+  class="ad-banner"
+  {% if url != blank %}
+    href="{{ url }}"
+  {% endif %}
+>
+  <div class="ad-banner__image">
+    {% render 'image', img: image, width: image.width, height: image.height, img_mob: image_mobile, width_mob: image_mobile.width, height_mob: image_mobile.height, vw_desktop: 50 %}
+  </div>
+  <div class="ad-banner__inner">
+    {% if title %}
+      <h3 class="ad-banner__header heading-2">{{ title }}</h3>
+    {% endif %}
+    {% if text != blank %}
+      <div class="ad-banner__content">
+        {{ text }}
+      </div>
+    {% endif %}
+    {% if cta_text != blank %}
+      <button type="button" class="ad-banner__cta btn btn--primary">{{ cta_text }}</button>
+    {% endif %}
+  </div>
+</a>
